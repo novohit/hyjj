@@ -429,4 +429,20 @@
         process_id = #{processId,jdbcType=BIGINT}
         where id = #{reportId}
     </update>
+
+    <select id="getReportDataListByUserId" resultType="com.hyjj.hyjjservice.dataobject.ReportDataList">
+        select id,`number`,title,report_date,fill_unit,submit_date,pro_status_name from report_data where user_id = #{userId}
+    </select>
+
+    <select id="getReportDataHtml" resultType="com.hyjj.hyjjservice.dataobject.ReportDataHtml">
+        select id,head_html,body_html,tail_html from report_data where id = #{id} and user_id = #{userId}
+    </select>
+
+    <update id="saveReportDataHtml" parameterType="com.hyjj.hyjjservice.dataobject.ReportDataHtml">
+        update report_data set head_html = #{headHtml},body_html = #{bodyHtml},tail_html = #{tailHtml} where id = #{id}
+    </update>
+
+    <update id="submitReportData" parameterType="com.hyjj.hyjjservice.dataobject.ReportDataHtml">
+        update report_data set head_html = #{headHtml},body_html = #{bodyHtml},tail_html = #{tailHtml},
+    </update>
 </mapper>

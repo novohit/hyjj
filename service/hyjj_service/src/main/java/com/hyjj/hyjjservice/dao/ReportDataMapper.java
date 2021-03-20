@@ -1,6 +1,8 @@
 package com.hyjj.hyjjservice.dao;
 
 import com.hyjj.hyjjservice.dataobject.ReportData;
+import com.hyjj.hyjjservice.dataobject.ReportDataHtml;
+import com.hyjj.hyjjservice.dataobject.ReportDataList;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -74,4 +76,13 @@ public interface ReportDataMapper {
                                  @Param("processId") Long processId,
                                  @Param("proStatus") String proStatus,
                                  @Param("proStatusName") String proStatusName);
+
+
+    List<ReportDataList> getReportDataListByUserId(Long userId);
+
+    ReportDataHtml getReportDataHtml(int id,Long userId);
+
+    int saveReportDataHtml(ReportDataHtml reportDataHtml);
+
+    int submitReportDataHtml(ReportDataHtml reportDataHtml);
 }
