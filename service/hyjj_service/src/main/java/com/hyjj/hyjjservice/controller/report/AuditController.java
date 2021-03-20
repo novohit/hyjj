@@ -44,8 +44,15 @@ public class AuditController {
 
     @GetMapping("statement")
     @ApiOperation("查看需要审核的报表")
+    @GetUser
     public CommonReturnType getStatement(AuditVO auditVO) throws Exception {
-        User user = checkUser();
+        User user = threadLocal.get();
+        //如果用户不是管理员则返回错误代码
+        List<Integer> userRoleIds = userRoleService.selectRoleIdByUserId(user.getId());
+        for (Integer userRoleId : userRoleIds) {
+            if (userRoleId < 3)
+                return CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION);
+        }
         return user == null ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
                 : CommonReturnType.ok().add("reportData", auditService.getStatement(auditVO, user));
     }

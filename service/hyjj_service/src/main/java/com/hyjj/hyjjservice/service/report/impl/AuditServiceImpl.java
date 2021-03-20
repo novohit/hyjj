@@ -44,7 +44,6 @@ public class AuditServiceImpl implements AuditService {
 
     @Override
     public List<ReportData> getStatement(AuditVO auditVO, User user) throws BusinessException {
-        //TODO ？？？？👇？？？？
         Long cominfoId = user.getCominfoId();
         //先查询出所有已选行业
         String industry = auditVO.getIndustry();
@@ -66,8 +65,15 @@ public class AuditServiceImpl implements AuditService {
         String year = auditVO.getYear() + "-01-01 00:00:00";
         String nextYear = (Integer.parseInt(auditVO.getYear()) + 1) + "-01-01 00:00:00";
 
+        String status = null;
+        if (auditVO.getStatus() == 1){
+            status = "审核";
+        }else if (auditVO.getStatus() == 2){
+            status = "审核通过";
+        }
+
         List<ReportData> reportData = reportDataMapper.selectReportDataByIndustryId(
-                industriesId, auditVO.getType(), auditVO.getStatus(), year, nextYear);
+                industriesId, auditVO.getType(), status, year, nextYear);
         return reportData;
     }
 

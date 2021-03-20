@@ -412,13 +412,17 @@
         FROM report_data rd
         INNER JOIN report_template rt
         ON rd.`report_template_id` = rt.`id`
-        where rt.type IN
-        <foreach collection="industriesIds" item="industriesId" open="(" close=")" separator=",">
-            #{industriesId}
-        </foreach>
-        and rt.`rep_class` = #{type}
-        and rd.`pro_status` = #{statue}
-        and rd.`submit_date` between #{year} and #{nextYear}
+        <where>
+            rt.type IN
+            <foreach collection="industriesIds" item="industriesId" open="(" close=")" separator=",">
+                #{industriesId}
+            </foreach>
+            and rt.`rep_class` = #{type}
+            and rd.`submit_date` between #{year} and #{nextYear}
+            <if test="statue != null">
+                and rd.`pro_status` = #{statue}
+            </if>
+        </where>
     </select>
 
     <update id="updateProcessByReportId">

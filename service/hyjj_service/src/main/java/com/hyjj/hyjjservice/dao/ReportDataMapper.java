@@ -65,7 +65,7 @@ public interface ReportDataMapper {
      */
     List<ReportData> selectReportDataByIndustryId(@Param("industriesIds") List<Integer> industriesIds,
                                                   @Param("type") Integer type,
-                                                  @Param("statue") Integer statue,
+                                                  @Param("statue") String statue,
                                                   @Param("year") String year,
                                                   @Param("nextYear") String nextYear);
 
