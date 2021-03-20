@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+    <context id="DB2Tables"    targetRuntime="MyBatis3">
+        <!--数据库链接地址账号密码-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/jmhyjj" userId="root" password="19991123">
+        </jdbcConnection>
+        <!--生成DataObject类存放位置-->
+        <javaModelGenerator targetPackage="com.hyjj.hyjjservice.dataobject" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <!--生成映射文件存放位置-->
+        <sqlMapGenerator targetPackage="mapping" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!--生成Dao类存放位置-->
+        <!-- 客户端代码，生成易于使用的针对Model对象和XML配置文件 的代码
+                type="ANNOTATEDMAPPER",生成Java Model 和基于注解的Mapper对象
+                type="MIXEDMAPPER",生成基于注解的Java Model 和相应的Mapper对象
+                type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper接口
+        -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.hyjj.hyjjservice.dao" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!--生成对应表及类名-->
+
+<!--        <table tableName="user"  domainObjectName="User" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+<!--        <table tableName="business"  domainObjectName="Business" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+<!--        <table tableName="industry"  domainObjectName="Industry" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+<!--        <table tableName="cominfo"  domainObjectName="ComInfo" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+<!--        <table tableName="cominfo_appendix"  domainObjectName="ComInfoAppendix" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+
+<!--        <table tableName="form_flow"  domainObjectName="FormFlow" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+        <table tableName="process"  domainObjectName="Process" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+<!--        <table tableName="publish"  domainObjectName="Publish" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false">-->
+<!--            <columnOverride column="rich_text" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+
+<!--        <table tableName="publish_keyword"  domainObjectName="PublishKeyword" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false">-->
+<!--        </table>-->
+
+<!--        <table tableName="report_data"  domainObjectName="ReportData" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false">-->
+
+<!--            <columnOverride column="head_html" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="body_html" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="tail_html" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+
+<!--        </table>-->
+
+<!--        <table tableName="report_data_row"  domainObjectName="ReportDataRow" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false">-->
+
+<!--        </table>-->
+
+<!--        <table tableName="report_template"  domainObjectName="ReportTemplate" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false">-->
+
+<!--            <columnOverride column="head_html" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="body_html" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="tail_html" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+
+<!--        </table>-->
+
+<!--        <table tableName="row_target_name"  domainObjectName="RowTargetName" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+<!--        <table tableName="statistics_target_key"  domainObjectName="StatisticsTargetKey" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+<!--        <table tableName="target_key_value"  domainObjectName="TargetKeyValue" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+<!--        <table tableName="target_value"  domainObjectName="TargetValue" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+<!--        <table tableName="urge_data"  domainObjectName="UrgeData" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+<!--        <table tableName="menu"  domainObjectName="Menu" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+<!--        <table tableName="formula"  domainObjectName="Formula" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+<!--                <table tableName="role"  domainObjectName="Role" enableCountByExample="false"-->
+<!--                       enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--                       enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+<!--                <table tableName="user_role"  domainObjectName="UserRole" enableCountByExample="false"-->
+<!--                       enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--                       enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+<!--                <table tableName="authority"  domainObjectName="Authority" enableCountByExample="false"-->
+<!--                       enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--                       enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+<!--                <table tableName="role_authority"  domainObjectName="RoleAuthority" enableCountByExample="false"-->
+<!--                       enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--                       enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+<!--                <table tableName="permission"  domainObjectName="Permission" enableCountByExample="false"-->
+<!--                       enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--                       enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+<!--                <table tableName="authority_permission"  domainObjectName="AuthorityPermission" enableCountByExample="false"-->
+<!--                       enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--                       enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+                        <table tableName="com_fill_report"  domainObjectName="ComFillReport" enableCountByExample="false"
+                               enableUpdateByExample="false" enableDeleteByExample="false"
+                               enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+                        <table tableName="com_audit_report"  domainObjectName="ComAuditReport" enableCountByExample="false"
+                               enableUpdateByExample="false" enableDeleteByExample="false"
+                               enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+
+
+    </context>
+</generatorConfiguration>

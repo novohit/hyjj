@@ -1,0 +1,21 @@
+package com.hyjj.hyjjservice.service.company;
+
+import com.hyjj.hyjjservice.controller.company.viewobject.CompanyVO;
+import com.hyjj.hyjjservice.service.company.model.CompanyAnalyseModel;
+import com.hyjj.hyjjservice.service.company.model.DeatailComInfoModel;
+import com.hyjj.util.error.BusinessException;
+import org.springframework.http.HttpRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+public interface CompanyService {
+
+    List<CompanyAnalyseModel> getAnalyseData(Integer type);
+    boolean addOrUpdateCompany(CompanyVO companyVO,Integer jude, HttpServletRequest request) throws BusinessException;
+    //boolean update(CompanyVO companyVO, HttpServletRequest request);
+    Long selectCountCompany();
+
+    DeatailComInfoModel getDeatailComInfo(Long id);
+
+}
