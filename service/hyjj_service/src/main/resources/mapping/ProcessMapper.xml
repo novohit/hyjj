@@ -210,7 +210,13 @@
     on p.`id` = rd.`process_id`
     where rd.`id` = #{reportId};
   </select>
-
+  <update id="updateProcessByReportId">
+    update process p
+    join report_data rd
+    on p.`id` = rd.`process_id`
+    set update_time = #{process.updateTime},prosess_description = #{process.prosessDescription},process_name = #{process.processName}
+    where rd.`id` = #{reportId}
+  </update>
 
 
 

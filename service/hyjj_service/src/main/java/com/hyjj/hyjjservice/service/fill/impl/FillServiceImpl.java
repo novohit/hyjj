@@ -1,12 +1,15 @@
 package com.hyjj.hyjjservice.service.fill.impl;
 
+import com.hyjj.hyjjservice.dao.ProcessMapper;
 import com.hyjj.hyjjservice.dao.ReportDataMapper;
+import com.hyjj.hyjjservice.dataobject.Process;
 import com.hyjj.hyjjservice.dataobject.ReportDataHtml;
 import com.hyjj.hyjjservice.dataobject.ReportDataList;
 import com.hyjj.hyjjservice.service.fill.FillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -14,6 +17,9 @@ public class FillServiceImpl implements FillService {
 
     @Autowired
     private ReportDataMapper reportDataMapper;
+
+    @Autowired
+    private ProcessMapper processMapper;
 
     @Override
     public List<ReportDataList> getReportListByUserId(Long userId){
@@ -30,10 +36,20 @@ public class FillServiceImpl implements FillService {
         return reportDataMapper.saveReportDataHtml(reportDataHtml);
     }
 
-//    @Override
-//    public int submitReportData(ReportDataHtml reportDataHtml){
-//
-//    }
+    @Override
+    public int submitReportData(ReportDataHtml reportDataHtml){
+        Integer j = reportDataMapper.saveReportDataHtml(reportDataHtml);
+        if(!j.equals(1)){
+            return 0;
+        }
+        Date date = new Date();
+        Process process = new Process();
+        process.setProcessName("审核数据");
+        process.setProsessDescription("审核数据");
+        process.setUpdateTime(date);
+        int i = processMapper.updateProcessByReportId(reportDataHtml.getId(), process);
+        return i;
+    }
 
 
 }

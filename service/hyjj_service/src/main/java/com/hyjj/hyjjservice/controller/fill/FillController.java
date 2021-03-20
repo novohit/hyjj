@@ -7,6 +7,7 @@ import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.fill.FillService;
 import com.hyjj.util.responce.CommonReturnType;
 import io.swagger.annotations.Api;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,7 +47,7 @@ public class FillController {
         return CommonReturnType.ok().add("data",reportDataHtml);
     }
 
-    @PutMapping("fill/save")
+    @PutMapping("save")
     public CommonReturnType saveReportDataHtml(ReportDataHtml reportDataHtml){
         Integer i = fillService.saveReportDataHtml(reportDataHtml);
         if(i.equals(1)){
@@ -56,10 +57,16 @@ public class FillController {
         }
     }
 
-//    @PutMapping("fill/submit")
-//    public CommonReturnType submitReport(ReportDataHtml reportDataHtml){
-//
-//    }
+
+    @PutMapping("submit")
+    public CommonReturnType submitReport(ReportDataHtml reportDataHtml){
+
+        Integer j = fillService.submitReportData(reportDataHtml);
+        if (j.equals(1)){
+            return CommonReturnType.ok();
+        }
+        return CommonReturnType.error();
+    }
 
     @PostMapping("/upload")
     @ResponseBody

@@ -57,4 +57,6 @@ public interface ProcessMapper {
      * @return
      */
     Process selectByReportId(@Param("reportId") Long reportId);
+
+    int updateProcessByReportId(@Param("reportId") Integer reportId,@Param("process")Process process);
 }

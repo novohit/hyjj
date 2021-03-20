@@ -1,16 +1,18 @@
 package com.hyjj.hyjjservice.dataobject;
 
+import io.swagger.models.auth.In;
+
 public class ReportDataHtml {
     private String headHtml;
     private String bodyHtml;
     private String tailHtml;
-    private int id;
+    private Integer id;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
