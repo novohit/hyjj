@@ -78,7 +78,7 @@ public class AuditController {
     }
 
     @GetMapping("urge")
-    @ApiOperation("催办业务")
+    @ApiOperation("获取催办名单")
     @GetUser
     @ApiImplicitParams({
             @ApiImplicitParam(name = "year", value = "年份", required = true, dataTypeClass = String.class),

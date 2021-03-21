@@ -118,7 +118,10 @@ public class AuditServiceImpl implements AuditService {
             process.setProsessDescription("审核通过");
         }
         if (process.getId() == null)    //如果id为null说明这是一个现在 new 出来的流程状态，因此叫添加到数据库
-            processMapper.insert(process);
+            processMapper.insertSelective(process);
+        else
+            processMapper.updateByPrimaryKeySelective(process);
+
         reportDataMapper.updateProcessByReportId(reportId, process.getId(), process.getProcessName(), process.getProcessName());
 
         return "audit success";
