@@ -47,13 +47,7 @@ public class AuditController {
     @GetUser
     public CommonReturnType getStatement(AuditVO auditVO) throws Exception {
         User user = threadLocal.get();
-        //如果用户不是管理员则返回错误代码
-        List<Integer> userRoleIds = userRoleService.selectRoleIdByUserId(user.getId());
-        for (Integer userRoleId : userRoleIds) {
-            if (userRoleId < 3)
-                return CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION);
-        }
-        return user == null ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
+        return checkUser(user) ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
                 : CommonReturnType.ok().add("reportData", auditService.getStatement(auditVO, user));
     }
 
@@ -66,13 +60,14 @@ public class AuditController {
 
     @PutMapping("report")
     @ApiOperation("审核报表")
+    @GetUser
     @ApiImplicitParams({
             @ApiImplicitParam(name = "reportId", value = "报表id", required = true, dataTypeClass = Long.class),
             @ApiImplicitParam(name = "judge", value = "审核结果，0为不通过，1为通过", required = true, dataTypeClass = Integer.class)
     })
     public CommonReturnType auditReport(Long reportId, Integer judge) {
-        User user = checkUser();
-        return user == null ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
+        User user = threadLocal.get();
+        return checkUser(user) ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
                 : CommonReturnType.ok().add("result", auditService.auditReport(reportId, judge, user));
     }
 
@@ -84,25 +79,24 @@ public class AuditController {
 
     @GetMapping("urge")
     @ApiOperation("催办业务")
+    @GetUser
     @ApiImplicitParams({
             @ApiImplicitParam(name = "year", value = "年份", required = true, dataTypeClass = String.class),
             @ApiImplicitParam(name = "company", value = "要催办的公司的名称", required = true, dataTypeClass = String.class)
     })
     public CommonReturnType getUrge(String year, String company) {
-        User user = checkUser();
-        return user == null ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
+        User user = threadLocal.get();
+        return checkUser(user) ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
                 : CommonReturnType.ok().add("result", auditService.getUrge(year, company));
     }
 
-    @GetUser
-    public User checkUser() {
-        User user = threadLocal.get();
+    public Boolean checkUser(User user) {
         //如果用户不是管理员则返回错误代码
         List<Integer> userRoleIds = userRoleService.selectRoleIdByUserId(user.getId());
         for (Integer userRoleId : userRoleIds) {
             if (userRoleId < 3)
-                return null;
+                return true;
         }
-        return user;
+        return false;
     }
 }
