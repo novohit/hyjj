@@ -7,6 +7,8 @@ import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.fill.FillService;
 import com.hyjj.util.responce.CommonReturnType;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,43 +31,38 @@ public class FillController {
 
     @GetUser
     @GetMapping("list")
+    @ApiOperation("获取待填报的报表")
     public CommonReturnType getReportList() {
         User user = threadLocal.get();
         System.out.println(user);
         Long userId = user.getId();
         List<ReportDataList> reportDataList = fillService.getReportListByUserId(userId);
-
         return CommonReturnType.ok().add("data", reportDataList);
     }
 
     @GetUser
     @GetMapping("fill")
-    public CommonReturnType getReportData(int id){
+    @ApiOperation("点击报表名称，返回报表的html")
+    @ApiImplicitParam(name = "id", value = "报表id", required = true, dataTypeClass = Integer.class)
+    public CommonReturnType getReportData(Integer id) {
         User user = threadLocal.get();
         Long userId = user.getId();
         ReportDataHtml reportDataHtml = fillService.getReportDataHtml(id, userId);
-        return CommonReturnType.ok().add("data",reportDataHtml);
+        return CommonReturnType.ok().add("data", reportDataHtml);
     }
 
     @PutMapping("save")
-    public CommonReturnType saveReportDataHtml(ReportDataHtml reportDataHtml){
+    @ApiOperation("填报界面点击保存按钮")
+    public CommonReturnType saveReportDataHtml(ReportDataHtml reportDataHtml) {
         Integer i = fillService.saveReportDataHtml(reportDataHtml);
-        if(i.equals(1)){
-            return CommonReturnType.ok();
-        }else{
-            return CommonReturnType.error().setErrMsg("保存失败");
-        }
+        return i.equals(1) ? CommonReturnType.ok() : CommonReturnType.error().setErrMsg("保存失败");
     }
 
 
     @PutMapping("submit")
-    public CommonReturnType submitReport(ReportDataHtml reportDataHtml){
-
+    public CommonReturnType submitReport(ReportDataHtml reportDataHtml) {
         Integer j = fillService.submitReportData(reportDataHtml);
-        if (j.equals(1)){
-            return CommonReturnType.ok();
-        }
-        return CommonReturnType.error();
+        return j.equals(1) ? CommonReturnType.ok() : CommonReturnType.error();
     }
 
     @PostMapping("/upload")
@@ -85,9 +82,6 @@ public class FillController {
         }
         return CommonReturnType.error().setErrMsg("上传失败");
     }
-
-
-
 
 
 }

@@ -1,11 +1,21 @@
 package com.hyjj.hyjjservice.dataobject;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.models.auth.In;
 
+@ApiModel
 public class ReportDataHtml {
+
+    @ApiModelProperty(value = "html的head，但这里的head并不是指<head>，而是指要填的报表以上的html")
     private String headHtml;
+
+    @ApiModelProperty(value = "同上，html的body，指的是填报部分的html")
     private String bodyHtml;
+
+    @ApiModelProperty(value = "同上，html的tail，指的是填报部分以下的html")
     private String tailHtml;
+
     private Integer id;
 
     public Integer getId() {

@@ -8,7 +8,7 @@ import java.util.List;
 public interface FillService {
      List<ReportDataList> getReportListByUserId(Long userid);
 
-     ReportDataHtml getReportDataHtml(int id,Long userId);
+     ReportDataHtml getReportDataHtml(Integer id,Long userId);
 
      int saveReportDataHtml(ReportDataHtml reportDataHtml);
 
