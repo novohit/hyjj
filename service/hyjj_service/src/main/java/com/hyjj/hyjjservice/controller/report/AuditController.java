@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("audit")
-@Api("审核相关的接口")
+@Api(tags = "审核相关的接口")
 public class AuditController {
 
     @Autowired
