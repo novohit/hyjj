@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,7 +47,7 @@ public class FillController {
     @ApiImplicitParam(name = "id", value = "报表id", required = true, dataTypeClass = Integer.class)
     public CommonReturnType getReportData(Integer id) {
         User user = threadLocal.get();
-        Long userId = user.getId();
+        long userId = user.getId();
         ReportDataHtml reportDataHtml = fillService.getReportDataHtml(id, userId);
         return CommonReturnType.ok().add("data", reportDataHtml);
     }
@@ -66,7 +67,7 @@ public class FillController {
         return j.equals(1) ? CommonReturnType.ok() : CommonReturnType.error();
     }
 
-    @PostMapping("/upload")
+    @PostMapping("upload")
     @ResponseBody
     public CommonReturnType upload(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
@@ -84,5 +85,13 @@ public class FillController {
         return CommonReturnType.error().setErrMsg("上传失败");
     }
 
-
+    @DeleteMapping("clear")
+    public CommonReturnType clearReportData(Integer reportId){
+        System.out.println(reportId);
+        Integer i= fillService.clearReportData(reportId);
+        if(i.equals(1)){
+            return CommonReturnType.ok();
+        }
+        return CommonReturnType.error();
+    }
 }

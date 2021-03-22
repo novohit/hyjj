@@ -13,4 +13,6 @@ public interface FillService {
      int saveReportDataHtml(ReportDataHtml reportDataHtml);
 
      int submitReportData(ReportDataHtml reportDataHtml);
+
+     int clearReportData(Integer reportId);
 }

@@ -52,5 +52,9 @@ public class FillServiceImpl implements FillService {
         return i;
     }
 
+    @Override
+    public int clearReportData(Integer reportId){
+        return reportDataMapper.clearReportDataByReportId(reportId);
+    }
 
 }

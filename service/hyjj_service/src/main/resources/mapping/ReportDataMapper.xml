@@ -449,4 +449,8 @@
     <update id="submitReportData" parameterType="com.hyjj.hyjjservice.dataobject.ReportDataHtml">
         update report_data set head_html = #{headHtml},body_html = #{bodyHtml},tail_html = #{tailHtml},pro_status_name = "审核数据",pro_status = "审核" where id = #{id}
     </update>
+
+    <update id="clearReportDataByReportId">
+        update report_data rd join report_template rt on rd.report_template_id = rt.`id` set rd.body_html = rt.body_html where rd.id = #{reportId}
+    </update>
 </mapper>

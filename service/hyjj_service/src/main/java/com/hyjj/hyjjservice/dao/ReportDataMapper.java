@@ -85,4 +85,6 @@ public interface ReportDataMapper {
     int saveReportDataHtml(ReportDataHtml reportDataHtml);
 
     int submitReportDataHtml(ReportDataHtml reportDataHtml);
+
+    int clearReportDataByReportId(Integer reportId);
 }
