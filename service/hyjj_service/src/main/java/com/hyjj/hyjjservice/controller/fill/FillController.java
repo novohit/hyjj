@@ -60,6 +60,7 @@ public class FillController {
 
 
     @PutMapping("submit")
+    @ApiOperation("填报界面提交按钮")
     public CommonReturnType submitReport(ReportDataHtml reportDataHtml) {
         Integer j = fillService.submitReportData(reportDataHtml);
         return j.equals(1) ? CommonReturnType.ok() : CommonReturnType.error();
