@@ -44,18 +44,17 @@ public class AuditServiceImpl implements AuditService {
 
     @Override
     public List<ReportData> getStatement(AuditVO auditVO, User user) throws BusinessException {
-        Long cominfoId = user.getCominfoId();
         //先查询出所有已选行业
         String industry = auditVO.getIndustry();
         //需要查询的行业id的集合
         List<Integer> industriesId = new ArrayList<>();
         if (industry.charAt(0) == 1) {
             //全选的情况
-            for (int i = 1; i < 15; i++) {
+            for (int i = 1; i < 36; i++) {
                 industriesId.add(i);
             }
         } else {
-            for (int i = 1; i < 15; i++) {
+            for (int i = 1; i < 36; i++) {
                 if (industry.charAt(i) == '1') {
                     industriesId.add(i);
                 }
