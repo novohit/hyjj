@@ -86,12 +86,10 @@ public class FillController {
     }
 
     @DeleteMapping("clear")
-    public CommonReturnType clearReportData(Integer reportId){
-        System.out.println(reportId);
-        Integer i= fillService.clearReportData(reportId);
-        if(i.equals(1)){
-            return CommonReturnType.ok();
-        }
-        return CommonReturnType.error();
+    @ApiOperation("填报界面删除按钮")
+    @ApiImplicitParam(name = "reportId", value = "报表id", required = true, dataTypeClass = Integer.class)
+    public CommonReturnType clearReportData(Integer reportId) {
+        Integer i = fillService.clearReportData(reportId);
+        return i.equals(1) ? CommonReturnType.ok() : CommonReturnType.error();
     }
 }
