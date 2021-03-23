@@ -406,8 +406,8 @@
     <select id="selectReportDataByIndustryId" resultMap="BaseResultMap">
         SELECT
         rd.`id`,rd.`fill_person`,rd.`fill_unit`,rd.`add_date`,rd.`area_name`,rd.`report_template_id`,rd.`area_code`,rd.`begin_date`,
-        rd.`end_date`,rd.`submit_date`,rd.`pro_status`,rd.`pro_status_name`,rd.`process_id`,rd.`statistics_principal`,rd.`unit_principal`,
-        rd.`head_html`,rd.`body_html`,rd.`tail_html`,rd.`org_code`,rd.`expire_date`,rd.`audit_id`,rd.`enterprise_name`,rd.`data_from`,
+        rd.`end_date`,rd.`submit_date`,rd.`pro_status`,rd.`pro_status_name`,rd.`process_id`,rd.`statistics_principal`,
+        rd.`unit_principal`,rd.`org_code`,rd.`expire_date`,rd.`audit_id`,rd.`enterprise_name`,rd.`data_from`,
         rd.`enterprise`,rd.`gmt_create`,rd.`gmt_modified`,rd.`report_date`,rd.`fill_date`,rd.`number`,rd.`title`
         FROM report_data rd
         INNER JOIN report_template rt
@@ -417,6 +417,24 @@
             <foreach collection="industriesIds" item="industriesId" open="(" close=")" separator=",">
                 #{industriesId}
             </foreach>
+            and rt.`rep_class` = #{type}
+            and rd.`submit_date` between #{year} and #{nextYear}
+            <if test="statue != null">
+                and rd.`pro_status` = #{statue}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAllIndustryReportData" resultMap="BaseResultMap">
+        SELECT
+        rd.`id`,rd.`fill_person`,rd.`fill_unit`,rd.`add_date`,rd.`area_name`,rd.`report_template_id`,rd.`area_code`,rd.`begin_date`,
+        rd.`end_date`,rd.`submit_date`,rd.`pro_status`,rd.`pro_status_name`,rd.`process_id`,rd.`statistics_principal`,
+        rd.`unit_principal`,rd.`org_code`,rd.`expire_date`,rd.`audit_id`,rd.`enterprise_name`,rd.`data_from`,
+        rd.`enterprise`,rd.`gmt_create`,rd.`gmt_modified`,rd.`report_date`,rd.`fill_date`,rd.`number`,rd.`title`
+        FROM report_data rd
+        INNER JOIN report_template rt
+        ON rd.`report_template_id` = rt.`id`
+        <where>
             and rt.`rep_class` = #{type}
             and rd.`submit_date` between #{year} and #{nextYear}
             <if test="statue != null">

@@ -70,6 +70,15 @@ public interface ReportDataMapper {
                                                   @Param("nextYear") String nextYear);
 
     /**
+     * 行业全选的情况
+     * @return
+     */
+    List<ReportData> selectAllIndustryReportData(@Param("type") Integer type,
+                                                 @Param("statue") String statue,
+                                                 @Param("year") String year,
+                                                 @Param("nextYear") String nextYear);
+
+    /**
      * 审核指定id的报表
      */
     void updateProcessByReportId(@Param("reportId") Long reportId,

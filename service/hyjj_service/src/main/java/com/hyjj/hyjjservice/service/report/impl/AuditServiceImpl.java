@@ -38,42 +38,48 @@ public class AuditServiceImpl implements AuditService {
 
     @Override
     public List<Industry> getIndustry() {
-        return industryMapper.selectSomeIndustry();
+        List<Industry> industries = industryMapper.selectSomeIndustry();
+        Industry industry = new Industry();
+        industry.setId(14);
+        industry.setName("其他");
+        industry.setGmtCreate(new Date());
+        industries.add(industry);
+        return industries;
     }
 
 
     @Override
     public List<ReportData> getStatement(AuditVO auditVO, User user) throws BusinessException {
-        //先查询出所有已选行业
-        String industry = auditVO.getIndustry();
-        //需要查询的行业id的集合
-        List<Integer> industriesId = new ArrayList<>();
-        if (industry.charAt(0) == 1) {
-            //全选的情况
-            for (int i = 1; i < 36; i++) {
-                industriesId.add(i);
-            }
-        } else {
-            for (int i = 1; i < 36; i++) {
-                if (industry.charAt(i) == '1') {
-                    industriesId.add(i);
-                }
-            }
-        }
         //指定搜索某一年
         String year = auditVO.getYear() + "-01-01 00:00:00";
         String nextYear = (Integer.parseInt(auditVO.getYear()) + 1) + "-01-01 00:00:00";
 
         String status = null;
-        if (auditVO.getStatus() == 1){
+        if (auditVO.getStatus() == 1) {
             status = "审核";
-        }else if (auditVO.getStatus() == 2){
+        } else if (auditVO.getStatus() == 2) {
             status = "审核通过";
         }
-
-        List<ReportData> reportData = reportDataMapper.selectReportDataByIndustryId(
-                industriesId, auditVO.getType(), status, year, nextYear);
-        return reportData;
+        //先查询出所有已选行业
+        String industry = auditVO.getIndustry();
+        //需要查询的行业id的集合
+        List<Integer> industriesId = new ArrayList<>();
+        if (industry.charAt(0) == '1') {
+            //全选的情况
+            return reportDataMapper.selectAllIndustryReportData(auditVO.getType(), status, year, nextYear);
+        } else {
+            for (int i = 1; i < 14; i++) {
+                if (industry.charAt(i) == '1') {
+                    industriesId.add(i);
+                }
+            }
+            if (industry.charAt(14) == 1) {  //勾选了其他选项
+                for (int i = 14; i < 35; i++) {
+                    industriesId.add(i);
+                }
+            }
+        }
+        return reportDataMapper.selectReportDataByIndustryId(industriesId, auditVO.getType(), status, year, nextYear);
     }
 
     @Override
