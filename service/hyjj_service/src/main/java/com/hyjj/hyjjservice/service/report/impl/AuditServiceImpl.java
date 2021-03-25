@@ -73,7 +73,7 @@ public class AuditServiceImpl implements AuditService {
                     industriesId.add(i);
                 }
             }
-            if (industry.charAt(14) == 1) {  //勾选了其他选项
+            if (industry.charAt(14) == '1') {  //勾选了其他选项
                 for (int i = 14; i < 35; i++) {
                     industriesId.add(i);
                 }

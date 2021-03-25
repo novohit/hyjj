@@ -56,5 +56,4 @@ public class FillServiceImpl implements FillService {
     public int clearReportData(Integer reportId){
         return reportDataMapper.clearReportDataByReportId(reportId);
     }
-
 }

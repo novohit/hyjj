@@ -1,6 +1,8 @@
 package com.hyjj.hyjjservice.controller.fill;
 
+import com.google.common.net.MediaType;
 import com.hyjj.hyjjservice.annotation.GetUser;
+import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
 import com.hyjj.hyjjservice.dataobject.ReportDataHtml;
 import com.hyjj.hyjjservice.dataobject.ReportDataList;
 import com.hyjj.hyjjservice.dataobject.User;
@@ -9,14 +11,22 @@ import com.hyjj.util.responce.CommonReturnType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
-import org.apache.ibatis.annotations.Param;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystem;
 import java.util.List;
 
 @RestController
@@ -91,5 +101,23 @@ public class FillController {
     public CommonReturnType clearReportData(Integer reportId) {
         Integer i = fillService.clearReportData(reportId);
         return i.equals(1) ? CommonReturnType.ok() : CommonReturnType.error();
+    }
+
+    @GetMapping("download")
+    @ApiOperation("导出报表的模板表（空表）")
+    @ApiImplicitParam(name = "fileName", value = "报表的名称", required = true, dataTypeClass = String.class)
+    public void download(String fileName) throws IOException {
+        String filename = fileName + ".xlsx";
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletResponse response = requestAttributes.getResponse();
+        // 设置信息给客户端不解析
+        String type = new MimetypesFileTypeMap().getContentType(filename);
+        // 设置contenttype，即告诉客户端所发送的数据属于什么类型
+        response.setHeader("Content-type", type);
+        // 设置编码
+        String encode = new String(filename.getBytes("utf-8"), "iso-8859-1");
+        // 设置扩展头，当Content-Type 的类型为要下载的类型时 , 这个信息头会告诉浏览器这个文件的名字和类型。
+        response.setHeader("Content-Disposition", "attachment;filename=" + encode);
+        FileUtil.download(filename, response);
     }
 }
