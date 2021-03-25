@@ -1,13 +1,21 @@
 package com.hyjj.hyjjservice.controller.fill.util;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
+@Component
 public class FileUtil {
 
-    public static void download(String filename, HttpServletResponse res) throws IOException {
+    @Value("${file.download.url}")
+    private String pathName;
+
+    public void download(String filename, HttpServletResponse res) throws IOException {
         // 发送给客户端的数据
-        File file = new File("C:\\Users\\86137\\Desktop\\" + filename);
+        System.out.println(pathName);
+        File file = new File(pathName + filename);
         OutputStream outputStream = res.getOutputStream();
         byte[] buff = new byte[1024];
         int last = (int)file.length() % buff.length;
@@ -22,5 +30,13 @@ public class FileUtil {
         }
         outputStream.write(buff, 0, last);
         outputStream.flush();
+    }
+
+    public String getPathName() {
+        return pathName;
+    }
+
+    public void setPathName(String pathName) {
+        this.pathName = pathName;
     }
 }

@@ -22,7 +22,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystem;
 import java.util.List;
 
 @RestController
@@ -35,6 +34,9 @@ public class FillController {
 
     @Resource(name = "userThreadLocal")
     private ThreadLocal<User> threadLocal;
+
+    @Autowired
+    private FileUtil fileUtil;
 
     @GetUser
     @GetMapping("list")
@@ -108,12 +110,12 @@ public class FillController {
         HttpServletResponse response = requestAttributes.getResponse();
         // 设置信息给客户端不解析
         String type = new MimetypesFileTypeMap().getContentType(filename);
-        // 设置contenttype，即告诉客户端所发送的数据属于什么类型
+        // 设置contentType，即告诉客户端所发送的数据属于什么类型
         response.setHeader("Content-type", type);
         // 设置编码
         String encode = new String(filename.getBytes("utf-8"), "iso-8859-1");
         // 设置扩展头，当Content-Type 的类型为要下载的类型时 , 这个信息头会告诉浏览器这个文件的名字和类型。
         response.setHeader("Content-Disposition", "attachment;filename=" + encode);
-        FileUtil.download(filename, response);
+        fileUtil.download(filename, response);
     }
 }
