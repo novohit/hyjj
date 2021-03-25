@@ -1,6 +1,5 @@
 package com.hyjj.hyjjservice.controller.fill;
 
-import com.google.common.net.MediaType;
 import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
 import com.hyjj.hyjjservice.dataobject.ReportDataHtml;
@@ -13,9 +12,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
