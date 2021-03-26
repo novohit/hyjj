@@ -1,6 +1,7 @@
 package com.hyjj.hyjjservice.dao;
 
 import com.hyjj.hyjjservice.dataobject.StatisticsTargetKey;
+import org.apache.ibatis.annotations.Param;
 
 public interface StatisticsTargetKeyMapper {
     /**
@@ -18,4 +19,6 @@ public interface StatisticsTargetKeyMapper {
      * @mbg.generated Wed Dec 16 22:56:19 CST 2020
      */
     int insertSelective(StatisticsTargetKey record);
+
+    StatisticsTargetKey selectStatisticsTargetKeyByParentId(@Param("parentId") Long parentId);
 }
