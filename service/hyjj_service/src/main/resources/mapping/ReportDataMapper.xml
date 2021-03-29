@@ -479,13 +479,14 @@
         rd.`unit_principal`,rd.`org_code`,rd.`expire_date`,rd.`audit_id`,rd.`enterprise_name`,rd.`data_from`,
         rd.`enterprise`,rd.`report_date`,rd.`fill_date`,rd.`number`,rd.`title`
         FROM report_data rd
+        inner join process on rd.`process_id` = process.`id`
         <where>
             rd.`user_id` = #{userId}
             <if test="week != null">
-                and week(rd.`report_date`) = #{week}
+                and week(process.`update_time`) = #{week}
             </if>
             <if test="month != null">
-                and MONTH(rd.`report_date`) = #{month}
+                and MONTH(process.`update_time`) = #{month}
             </if>
             <if test="audit != null">
                 and rd.`pro_status` like #{audit}

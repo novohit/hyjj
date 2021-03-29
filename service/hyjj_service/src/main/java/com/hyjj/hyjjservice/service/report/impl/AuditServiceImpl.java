@@ -53,9 +53,9 @@ public class AuditServiceImpl implements AuditService {
             case 1:         //获取待审核列表
                 return reportDataMapper.getStatement(null, null, "审核", user.getId());
             case 2:         //获取本周已审核列表
-                return reportDataMapper.getStatement(g.get(Calendar.WEEK_OF_YEAR), null, "审核%", user.getId());
+                return reportDataMapper.getStatement(g.get(Calendar.WEEK_OF_YEAR) - 1, null, "审核%", user.getId());
             case 3:         //获取本周已审核列表
-                return reportDataMapper.getStatement(null, g.get(Calendar.MONTH), "审核%", user.getId());
+                return reportDataMapper.getStatement(null, g.get(Calendar.MONTH) + 1, "审核%", user.getId());
             case 4:         //获取累计审核
                 return reportDataMapper.getStatement(null, null, "审核%", user.getId());
             default:
