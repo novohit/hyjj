@@ -96,4 +96,16 @@ public interface ReportDataMapper {
     int submitReportDataHtml(ReportDataHtml reportDataHtml);
 
     int clearReportDataByReportId(Integer reportId);
+
+    /**
+     * 首页那几个功能
+     * @param week
+     * @param month
+     * @param audit
+     * @return
+     */
+    List<ReportData> getStatement(@Param("week") Integer week,
+                                  @Param("month") Integer month,
+                                  @Param("audit") String audit,
+                                  @Param("userId") Long userId);
 }

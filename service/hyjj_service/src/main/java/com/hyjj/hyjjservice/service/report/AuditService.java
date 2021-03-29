@@ -20,4 +20,6 @@ public interface AuditService {
     String urge(User user, String year, String company);
 
     UrgeData getUrge(String year, String company);
+
+    public List<ReportData> getStatement(Integer select, User user);
 }

@@ -430,7 +430,7 @@
         rd.`id`,rd.`fill_person`,rd.`fill_unit`,rd.`add_date`,rd.`area_name`,rd.`report_template_id`,rd.`area_code`,rd.`begin_date`,
         rd.`end_date`,rd.`submit_date`,rd.`pro_status`,rd.`pro_status_name`,rd.`process_id`,rd.`statistics_principal`,
         rd.`unit_principal`,rd.`org_code`,rd.`expire_date`,rd.`audit_id`,rd.`enterprise_name`,rd.`data_from`,
-        rd.`enterprise`,rd.`gmt_create`,rd.`gmt_modified`,rd.`report_date`,rd.`fill_date`,rd.`number`,rd.`title`
+        rd.`enterprise`,rd.`report_date`,rd.`fill_date`,rd.`number`,rd.`title`
         FROM report_data rd
         INNER JOIN report_template rt
         ON rd.`report_template_id` = rt.`id`
@@ -471,4 +471,25 @@
     <update id="clearReportDataByReportId">
         update report_data rd join report_template rt on rd.report_template_id = rt.`id` set rd.body_html = rt.body_html where rd.id = #{reportId}
     </update>
+
+    <select id="getStatement" resultMap="BaseResultMap">
+        SELECT
+        rd.`id`,rd.`fill_person`,rd.`fill_unit`,rd.`add_date`,rd.`area_name`,rd.`report_template_id`,rd.`area_code`,rd.`begin_date`,
+        rd.`end_date`,rd.`submit_date`,rd.`pro_status`,rd.`pro_status_name`,rd.`process_id`,rd.`statistics_principal`,
+        rd.`unit_principal`,rd.`org_code`,rd.`expire_date`,rd.`audit_id`,rd.`enterprise_name`,rd.`data_from`,
+        rd.`enterprise`,rd.`report_date`,rd.`fill_date`,rd.`number`,rd.`title`
+        FROM report_data rd
+        <where>
+            rd.`user_id` = #{userId}
+            <if test="week != null">
+                and week(rd.`report_date`) = #{week}
+            </if>
+            <if test="month != null">
+                and MONTH(rd.`report_date`) = #{month}
+            </if>
+            <if test="audit != null">
+                and rd.`audit` like #{audit}
+            </if>
+        </where>
+    </select>
 </mapper>

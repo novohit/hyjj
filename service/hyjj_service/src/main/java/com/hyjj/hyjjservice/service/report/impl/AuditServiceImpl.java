@@ -9,9 +9,7 @@ import com.hyjj.util.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -47,6 +45,23 @@ public class AuditServiceImpl implements AuditService {
         return industries;
     }
 
+    @Override
+    public List<ReportData> getStatement(Integer select, User user) {
+        GregorianCalendar g = new GregorianCalendar();
+        g.setTime(new Date());
+        switch (select) {
+            case 1:         //获取待审核列表
+                return reportDataMapper.getStatement(null, null, "审核", user.getId());
+            case 2:         //获取本周已审核列表
+                return reportDataMapper.getStatement(g.get(Calendar.WEEK_OF_YEAR), null, "审核%", user.getId());
+            case 3:         //获取本周已审核列表
+                return reportDataMapper.getStatement(null, g.get(Calendar.MONTH), "审核%", user.getId());
+            case 4:         //获取累计审核
+                return reportDataMapper.getStatement(null, null, "审核%", user.getId());
+            default:
+                return null;
+        }
+    }
 
     @Override
     public List<ReportData> getStatement(AuditVO auditVO, User user) throws BusinessException {
