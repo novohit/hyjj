@@ -47,21 +47,21 @@ public class IndexController {
     }
 
     @ApiOperation(value = "获取当前用户本周已审核列表")
-    @GetMapping("AlreadyAuditInWeek")
+    @GetMapping("alreadyAuditInWeek")
     @GetUser
     public CommonReturnType alreadyAuditInWeek() {
         return CommonReturnType.ok().add("reports", auditService.getStatement(2, threadLocal.get()));
     }
 
     @ApiOperation(value = "获取当前用户本月已审核列表")
-    @GetMapping("AlreadyAuditInMonth")
+    @GetMapping("alreadyAuditInMonth")
     @GetUser
     public CommonReturnType alreadyAuditInMonth() {
         return CommonReturnType.ok().add("reports", auditService.getStatement(3, threadLocal.get()));
     }
 
     @ApiOperation(value = "获取当前用户累计列表")
-    @GetMapping("AlreadyAuditTotal")
+    @GetMapping("alreadyAuditTotal")
     @GetUser
     public CommonReturnType alreadyAuditTotal() {
         return CommonReturnType.ok().add("reports", auditService.getStatement(4, threadLocal.get()));
