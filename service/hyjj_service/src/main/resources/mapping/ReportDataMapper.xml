@@ -488,7 +488,7 @@
                 and MONTH(rd.`report_date`) = #{month}
             </if>
             <if test="audit != null">
-                and rd.`audit` like #{audit}
+                and rd.`pro_status` like #{audit}
             </if>
         </where>
     </select>
