@@ -1,10 +1,12 @@
 package com.hyjj.hyjjservice.controller.fill.util;
 
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.net.URLEncoder;
 
 @Component
 public class FileUtil {
@@ -12,24 +14,20 @@ public class FileUtil {
     @Value("${file.download.url}")
     private String pathName;
 
-    public void download(String filename, HttpServletResponse res) throws IOException {
-        // 发送给客户端的数据
-        System.out.println(pathName);
-        File file = new File(pathName + filename);
-        OutputStream outputStream = res.getOutputStream();
-        byte[] buff = new byte[1024];
-        int last = (int)file.length() % buff.length;
-        BufferedInputStream bis = null;
-        // 读取filename
-        bis = new BufferedInputStream(new FileInputStream(file));
-        int i = bis.read(buff);
-        while (i > 0) {
-            outputStream.write(buff, 0, buff.length);
-            outputStream.flush();
-            i = bis.read(buff);
+    public void download(String filename, HttpServletResponse res) {
+        try {
+            filename = filename + ".xlsx";
+            System.out.println(filename);
+            Workbook workbook = new XSSFWorkbook(pathName + filename);
+            System.out.println(pathName);
+            String fileName = URLEncoder.encode(filename, "utf-8");
+            res.setContentType("application/octet-stream");
+            res.setHeader("content-disposition", "attachment;filename=" + fileName);
+            res.setHeader("filename", filename);
+            workbook.write(res.getOutputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        outputStream.write(buff, 0, last);
-        outputStream.flush();
     }
 
     public String getPathName() {
