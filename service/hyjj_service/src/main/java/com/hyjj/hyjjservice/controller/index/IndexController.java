@@ -7,6 +7,7 @@ import com.hyjj.hyjjservice.service.report.AuditService;
 import com.hyjj.hyjjservice.service.user.UserRoleService;
 import com.hyjj.util.error.EmBusinessError;
 import com.hyjj.util.responce.CommonReturnType;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@Api(tags = "首页相关的接口")
 public class IndexController {
 
     private final MenuService menuService;
