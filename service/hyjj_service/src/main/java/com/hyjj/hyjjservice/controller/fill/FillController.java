@@ -2,6 +2,7 @@ package com.hyjj.hyjjservice.controller.fill;
 
 import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
+import com.hyjj.hyjjservice.controller.fill.vo.FileVo;
 import com.hyjj.hyjjservice.dataobject.ReportDataHtml;
 import com.hyjj.hyjjservice.dataobject.ReportDataList;
 import com.hyjj.hyjjservice.dataobject.User;
@@ -99,7 +100,7 @@ public class FillController {
 
     @GetMapping("download")
     @ApiOperation("导出报表的模板表（空表）")
-    @ApiImplicitParam(name = "fileName", value = "报表的名称", required = true, dataTypeClass = String.class)
+    @ApiImplicitParam(name = "filename", value = "报表的名称", required = true, dataTypeClass = String.class)
     public void download(String filename, HttpServletResponse response){
         fileUtil.download(filename, response);
     }

@@ -6,6 +6,8 @@ import com.hyjj.hyjjservice.service.statistic.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StatisticServiceImpl implements StatisticService {
 
@@ -13,7 +15,7 @@ public class StatisticServiceImpl implements StatisticService {
     private StatisticsTargetKeyMapper statisticsTargetKeyMapper;
 
     @Override
-    public StatisticsTargetKey getStatisticTargetKey(Long parentId) {
+    public List<StatisticsTargetKey> getStatisticTargetKey(Long parentId) {
         return statisticsTargetKeyMapper.selectStatisticsTargetKeyByParentId(parentId);
     }
 }

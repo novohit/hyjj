@@ -2,6 +2,8 @@ package com.hyjj.hyjjservice.service.statistic;
 
 import com.hyjj.hyjjservice.dataobject.StatisticsTargetKey;
 
+import java.util.List;
+
 public interface StatisticService {
-    StatisticsTargetKey getStatisticTargetKey(Long parentId);
+    List<StatisticsTargetKey> getStatisticTargetKey(Long parentId);
 }

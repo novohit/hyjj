@@ -21,5 +21,5 @@ public interface AuditService {
 
     UrgeData getUrge(String year, String company);
 
-    public List<ReportData> getStatement(Integer select, User user);
+    public List<ReportData> getStatement(Integer select, User user, Boolean isManager);
 }

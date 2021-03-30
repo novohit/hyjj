@@ -4,6 +4,8 @@ import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.dataobject.Menu;
 import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.report.AuditService;
+import com.hyjj.hyjjservice.service.user.UserRoleService;
+import com.hyjj.util.error.EmBusinessError;
 import com.hyjj.util.responce.CommonReturnType;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class IndexController {
     @Autowired
     private AuditService auditService;
 
+    @Autowired
+    private UserRoleService userRoleService;
+
     @Resource(name = "userThreadLocal")
     private ThreadLocal<User> threadLocal;
 
@@ -39,31 +44,48 @@ public class IndexController {
         return CommonReturnType.ok().add("menu", menus);
     }
 
-    @ApiOperation(value = "获取当前用户待审核列表")
+    @ApiOperation(value = "获取当前用户待审核/填报列表")
     @GetMapping("waitToAudit")
     @GetUser
-    public CommonReturnType checkPending() {
-        return CommonReturnType.ok().add("reports", auditService.getStatement(1, threadLocal.get()));
+    public CommonReturnType checkPendingOrFill() {
+        User user = threadLocal.get();
+        return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatement(1, user, false))
+                : CommonReturnType.ok().add("reports", auditService.getStatement(1, user, true));
     }
 
-    @ApiOperation(value = "获取当前用户本周已审核列表")
+    @ApiOperation(value = "获取当前用户本周已审核/填报列表")
     @GetMapping("alreadyAuditInWeek")
     @GetUser
-    public CommonReturnType alreadyAuditInWeek() {
-        return CommonReturnType.ok().add("reports", auditService.getStatement(2, threadLocal.get()));
+    public CommonReturnType alreadyAuditOrFillInWeek() {
+        User user = threadLocal.get();
+        return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatement(2, user, false))
+                : CommonReturnType.ok().add("reports", auditService.getStatement(2, user, true));
     }
 
-    @ApiOperation(value = "获取当前用户本月已审核列表")
+    @ApiOperation(value = "获取当前用户本月已审核/填报列表")
     @GetMapping("alreadyAuditInMonth")
     @GetUser
-    public CommonReturnType alreadyAuditInMonth() {
-        return CommonReturnType.ok().add("reports", auditService.getStatement(3, threadLocal.get()));
+    public CommonReturnType alreadyAuditOrFillInMonth() {
+        User user = threadLocal.get();
+        return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatement(3, user, false))
+                : CommonReturnType.ok().add("reports", auditService.getStatement(3, user, true));
     }
 
-    @ApiOperation(value = "获取当前用户累计列表")
+    @ApiOperation(value = "获取当前用户累计审核/填报列表")
     @GetMapping("alreadyAuditTotal")
     @GetUser
-    public CommonReturnType alreadyAuditTotal() {
-        return CommonReturnType.ok().add("reports", auditService.getStatement(4, threadLocal.get()));
+    public CommonReturnType alreadyAuditOrFillTotal() {
+        User user = threadLocal.get();
+        return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatement(4, user, false))
+                : CommonReturnType.ok().add("reports", auditService.getStatement(4, user, true));
+    }
+
+    public Boolean checkUser(User user) {
+        List<Integer> userRoleIds = userRoleService.selectRoleIdByUserId(user.getId());
+        for (Integer userRoleId : userRoleIds) {
+            if (userRoleId < 3)
+                return true;
+        }
+        return false;
     }
 }

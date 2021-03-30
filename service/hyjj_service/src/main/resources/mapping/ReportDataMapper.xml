@@ -481,7 +481,7 @@
         FROM report_data rd
         inner join process on rd.`process_id` = process.`id`
         <where>
-            rd.`user_id` = #{userId}
+            1 = 1
             <if test="week != null">
                 and week(process.`update_time`) = #{week}
             </if>
@@ -490,6 +490,9 @@
             </if>
             <if test="audit != null">
                 and rd.`pro_status` like #{audit}
+            </if>
+            <if test="userId != null">
+                and rd.`user_id` = #{userId}
             </if>
         </where>
     </select>

@@ -46,20 +46,35 @@ public class AuditServiceImpl implements AuditService {
     }
 
     @Override
-    public List<ReportData> getStatement(Integer select, User user) {
+    public List<ReportData> getStatement(Integer select, User user, Boolean isManager) {
         GregorianCalendar g = new GregorianCalendar();
         g.setTime(new Date());
-        switch (select) {
-            case 1:         //获取待审核列表
-                return reportDataMapper.getStatement(null, null, "审核", user.getId());
-            case 2:         //获取本周已审核列表
-                return reportDataMapper.getStatement(g.get(Calendar.WEEK_OF_YEAR) - 1, null, "审核%", user.getId());
-            case 3:         //获取本周已审核列表
-                return reportDataMapper.getStatement(null, g.get(Calendar.MONTH) + 1, "审核%", user.getId());
-            case 4:         //获取累计审核
-                return reportDataMapper.getStatement(null, null, "审核%", user.getId());
-            default:
-                return null;
+        if (isManager) {                //如果是管理员
+            switch (select) {
+                case 1:                //获取待审核列表
+                    return reportDataMapper.getStatement(null, null, "审核", null);
+                case 2:                //获取本周已审核列表
+                    return reportDataMapper.getStatement(g.get(Calendar.WEEK_OF_YEAR) - 1, null, "审核%", null);
+                case 3:                //获取本周已审核列表
+                    return reportDataMapper.getStatement(null, g.get(Calendar.MONTH) + 1, "审核%", null);
+                case 4:                //获取累计审核
+                    return reportDataMapper.getStatement(null, null, "审核%", null);
+                default:
+                    return null;
+            }
+        } else {                        //非管理员
+            switch (select) {
+                case 1:         //获取待填报列表
+                    return reportDataMapper.getStatement(null, null, "填报数据", user.getId());
+                case 2:         //获取本周已填报列表
+                    return reportDataMapper.getStatement(g.get(Calendar.WEEK_OF_YEAR) - 1, null, "审核%", user.getId());
+                case 3:         //获取本周已填报列表
+                    return reportDataMapper.getStatement(null, g.get(Calendar.MONTH) + 1, "审核%", user.getId());
+                case 4:         //获取累计填报
+                    return reportDataMapper.getStatement(null, null, "审核%", user.getId());
+                default:
+                    return null;
+            }
         }
     }
 
