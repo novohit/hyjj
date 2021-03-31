@@ -496,4 +496,8 @@
             </if>
         </where>
     </select>
+
+    <select id="getRowAndColByTemplateId" resultType="com.hyjj.hyjjservice.dataobject.ReportTemplate">
+        select `row`,col from report_template rt join report_data rd on rt.id = rd.report_template_id where rd.id = #{reportId}
+    </select>
 </mapper>

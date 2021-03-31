@@ -5,6 +5,7 @@ import com.hyjj.hyjjservice.dao.ReportDataMapper;
 import com.hyjj.hyjjservice.dataobject.Process;
 import com.hyjj.hyjjservice.dataobject.ReportDataHtml;
 import com.hyjj.hyjjservice.dataobject.ReportDataList;
+import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.service.fill.FillService;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,10 @@ public class FillServiceImpl implements FillService {
     @Override
     public int clearReportData(Integer reportId){
         return reportDataMapper.clearReportDataByReportId(reportId);
+    }
+
+    @Override
+    public ReportTemplate getRowAndColByTemplateId(Integer reportId) {
+        return reportDataMapper.getRowAndColByTemplateId(reportId);
     }
 }

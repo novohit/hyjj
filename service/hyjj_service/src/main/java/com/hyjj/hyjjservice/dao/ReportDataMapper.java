@@ -3,6 +3,7 @@ package com.hyjj.hyjjservice.dao;
 import com.hyjj.hyjjservice.dataobject.ReportData;
 import com.hyjj.hyjjservice.dataobject.ReportDataHtml;
 import com.hyjj.hyjjservice.dataobject.ReportDataList;
+import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -94,6 +95,9 @@ public interface ReportDataMapper {
     int saveReportDataHtml(ReportDataHtml reportDataHtml);
 
     int submitReportDataHtml(ReportDataHtml reportDataHtml);
+
+    ReportTemplate getRowAndColByTemplateId(Integer reportId);
+
 
     int clearReportDataByReportId(Integer reportId);
 

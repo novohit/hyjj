@@ -2,9 +2,9 @@ package com.hyjj.hyjjservice.controller.fill;
 
 import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
-import com.hyjj.hyjjservice.controller.fill.vo.FileVo;
 import com.hyjj.hyjjservice.dataobject.ReportDataHtml;
 import com.hyjj.hyjjservice.dataobject.ReportDataList;
+import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.fill.FillService;
 import com.hyjj.util.responce.CommonReturnType;
@@ -12,19 +12,20 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
+import java.io.*;
 import java.util.List;
 
 @RestController
 @Api(tags = "填报数据相关")
 @RequestMapping("report")
-public class FillController {
+public class FillController{
 
     @Autowired
     private FillService fillService;
@@ -74,20 +75,15 @@ public class FillController {
 
     @PostMapping("upload")
     @ResponseBody
-    public CommonReturnType upload(@RequestParam("file") MultipartFile file) {
+    public CommonReturnType upload(MultipartFile file,Integer reportId) throws IOException {
         if (file.isEmpty()) {
             return CommonReturnType.error().setErrMsg("文件为空");
         }
-        String fileName = file.getOriginalFilename();
-        String filePath = "/Users/ray/uploadtest";
-        File dest = new File(filePath + "/" + fileName);
-        try {
-            file.transferTo(dest);
-            return CommonReturnType.ok();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return CommonReturnType.error().setErrMsg("上传失败");
+        byte[] bytes = file.getBytes();
+        InputStream is = new ByteArrayInputStream(bytes);
+        ReportTemplate reportTemplate = fillService.getRowAndColByTemplateId(reportId);
+        List<Object> cellList = fileUtil.getCellList(reportTemplate, is);
+        return CommonReturnType.ok().add("value",cellList);
     }
 
     @DeleteMapping("clear")
@@ -104,4 +100,5 @@ public class FillController {
     public void download(String filename, HttpServletResponse response){
         fileUtil.download(filename, response);
     }
+
 }
