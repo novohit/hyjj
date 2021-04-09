@@ -1,6 +1,10 @@
 package com.hyjj.hyjjservice.dao;
 
+import com.hyjj.hyjjservice.controller.statistic.viewObject.StatisticVo;
 import com.hyjj.hyjjservice.dataobject.TargetKeyValue;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface TargetKeyValueMapper {
     /**
@@ -50,4 +54,14 @@ public interface TargetKeyValueMapper {
      * @mbg.generated Wed Dec 16 22:56:19 CST 2020
      */
     int updateByPrimaryKey(TargetKeyValue record);
+
+
+
+    List<StatisticVo> getStatisticInfoById(@Param("years") List<Integer> years,
+                                       @Param("areaName") String areaName,
+                                       @Param("targetId") Long targetId);
+
+    List<StatisticVo> getStatisticInfoByIds(@Param("years") List<Integer> years,
+                                           @Param("areaName") String areaName,
+                                           @Param("targetIds") List<Long> targetIds);
 }
