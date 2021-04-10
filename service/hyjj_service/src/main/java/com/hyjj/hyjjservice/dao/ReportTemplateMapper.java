@@ -55,5 +55,5 @@ public interface ReportTemplateMapper {
      */
     int updateByPrimaryKey(ReportTemplate record);
 
-
+    String getReportNumber(@Param("reportTemplateId") Long reportTemplateId);
 }

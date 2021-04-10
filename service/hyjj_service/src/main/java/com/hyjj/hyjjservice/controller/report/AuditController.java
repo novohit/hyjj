@@ -1,6 +1,5 @@
 package com.hyjj.hyjjservice.controller.report;
 
-
 import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditVO;
 import com.hyjj.hyjjservice.dataobject.User;
@@ -40,7 +39,6 @@ public class AuditController {
     public CommonReturnType getIndustry() {
         return CommonReturnType.ok().add("industry", auditService.getIndustry());
     }
-
 
     @GetMapping("statement")
     @ApiOperation("查看需要审核的报表")
@@ -93,10 +91,9 @@ public class AuditController {
     public Boolean checkUser(User user) {
         //如果用户不是管理员则返回错误代码
         List<Integer> userRoleIds = userRoleService.selectRoleIdByUserId(user.getId());
-        for (Integer userRoleId : userRoleIds) {
+        for (Integer userRoleId : userRoleIds)
             if (userRoleId < 3)
                 return true;
-        }
         return false;
     }
 }
