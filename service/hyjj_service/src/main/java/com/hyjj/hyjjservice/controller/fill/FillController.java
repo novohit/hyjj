@@ -2,8 +2,8 @@ package com.hyjj.hyjjservice.controller.fill;
 
 import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
-import com.hyjj.hyjjservice.dataobject.ReportDataHtml;
-import com.hyjj.hyjjservice.dataobject.ReportDataList;
+import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
+import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.fill.FillService;
