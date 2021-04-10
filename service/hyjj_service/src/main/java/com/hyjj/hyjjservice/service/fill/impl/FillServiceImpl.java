@@ -3,11 +3,10 @@ package com.hyjj.hyjjservice.service.fill.impl;
 import com.hyjj.hyjjservice.dao.ProcessMapper;
 import com.hyjj.hyjjservice.dao.ReportDataMapper;
 import com.hyjj.hyjjservice.dataobject.Process;
-import com.hyjj.hyjjservice.dataobject.ReportDataHtml;
-import com.hyjj.hyjjservice.dataobject.ReportDataList;
+import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
+import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.service.fill.FillService;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

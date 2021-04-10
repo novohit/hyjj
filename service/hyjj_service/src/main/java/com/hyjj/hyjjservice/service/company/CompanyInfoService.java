@@ -1,6 +1,6 @@
 package com.hyjj.hyjjservice.service.company;
 
-import com.hyjj.hyjjservice.controller.company.viewobject.CompanyInfoPo;
+import com.hyjj.hyjjservice.controller.company.viewObject.CompanyInfoPo;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
 
 import java.util.List;

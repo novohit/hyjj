@@ -1,10 +1,9 @@
 package com.hyjj.hyjjservice.service.company;
 
-import com.hyjj.hyjjservice.controller.company.viewobject.CompanyVO;
+import com.hyjj.hyjjservice.controller.company.viewObject.CompanyVO;
 import com.hyjj.hyjjservice.service.company.model.CompanyAnalyseModel;
 import com.hyjj.hyjjservice.service.company.model.DeatailComInfoModel;
 import com.hyjj.util.error.BusinessException;
-import org.springframework.http.HttpRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

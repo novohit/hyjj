@@ -1,6 +1,5 @@
 package com.hyjj.hyjjservice.dao;
 
-import com.hyjj.hyjjservice.controller.company.viewobject.CompanyInfoPo;
 import com.hyjj.hyjjservice.dao.param.ComInfoQueryPo;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
 import com.hyjj.hyjjservice.service.company.model.CompanyAnalyseModel;

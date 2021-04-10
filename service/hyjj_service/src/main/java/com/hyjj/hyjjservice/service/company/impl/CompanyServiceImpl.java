@@ -1,8 +1,7 @@
 package com.hyjj.hyjjservice.service.company.impl;
 
 
-import com.hyjj.hyjjservice.config.CorsConfig;
-import com.hyjj.hyjjservice.controller.company.viewobject.CompanyVO;
+import com.hyjj.hyjjservice.controller.company.viewObject.CompanyVO;
 import com.hyjj.hyjjservice.dao.BusinessMapper;
 import com.hyjj.hyjjservice.dao.ComInfoAppendixMapper;
 import com.hyjj.hyjjservice.dao.ComInfoMapper;

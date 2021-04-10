@@ -1,43 +1,33 @@
-package com.hyjj.hyjjservice.controller.company.viewobject;
+package com.hyjj.hyjjservice.controller.company.viewObject;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 import java.util.List;
 
-@ApiModel
-public class CompanyVO {
 
+public class DetailComInfoVO {
 
     @ApiModelProperty("企业ID，新增的时候为空，添加的时候要传给我")
     private Long id;
 
     @ApiModelProperty("企业名称")
-    @NotBlank(message = "企业名字不能为空")
     private String comName;
 
     @ApiModelProperty("组织机构代码")
-
     private String comCode;
 
     @ApiModelProperty("法定负责人")
     private String comDelegate;
 
     @ApiModelProperty("单位类型")
-    @NotBlank(message = "单位类型不能为空")
     private String comComtype;
 
     @ApiModelProperty("机构类型")
     private String comOrgtype;
 
     @ApiModelProperty("企业形象图片")
-    private MultipartFile image;
-
     private String comImgurl;
 
     @ApiModelProperty("所属行业")
@@ -209,7 +199,6 @@ public class CompanyVO {
     private String comAddressDi;
 
     @ApiModelProperty("单位所在地地址（县）")
-    @NotBlank(message = "注册地区县")
     private String comAddressXian;
 
     @ApiModelProperty("单位所在地地址乡")
@@ -275,12 +264,12 @@ public class CompanyVO {
         this.comOrgtype = comOrgtype;
     }
 
-    public MultipartFile getImage() {
-        return image;
+    public String getComImgurl() {
+        return comImgurl;
     }
 
-    public void setImage(MultipartFile image) {
-        this.image = image;
+    public void setComImgurl(String comImgurl) {
+        this.comImgurl = comImgurl;
     }
 
     public Integer getIndustryId() {
@@ -785,13 +774,5 @@ public class CompanyVO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getComImgurl() {
-        return comImgurl;
-    }
-
-    public void setComImgurl(String comImgurl) {
-        this.comImgurl = comImgurl;
     }
 }

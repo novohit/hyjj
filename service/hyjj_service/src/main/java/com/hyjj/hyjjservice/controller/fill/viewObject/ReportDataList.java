@@ -1,4 +1,4 @@
-package com.hyjj.hyjjservice.dataobject;
+package com.hyjj.hyjjservice.controller.fill.viewObject;
 
 public class ReportDataList {
     private Long id;

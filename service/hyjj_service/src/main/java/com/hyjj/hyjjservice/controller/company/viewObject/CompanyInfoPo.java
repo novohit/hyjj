@@ -1,11 +1,7 @@
-package com.hyjj.hyjjservice.controller.company.viewobject;
+package com.hyjj.hyjjservice.controller.company.viewObject;
 
 
-import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 
 public class CompanyInfoPo {

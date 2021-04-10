@@ -1,12 +1,6 @@
 package com.hyjj.hyjjservice.controller.company;
 
-import com.hyjj.hyjjservice.controller.company.viewobject.CompanyInfoPo;
-import com.hyjj.hyjjservice.controller.company.viewobject.CompanyInfoVo;
-import com.hyjj.hyjjservice.controller.company.viewobject.CompanyVO;
-import com.hyjj.hyjjservice.controller.statistic.StatisticController;
-import com.hyjj.hyjjservice.dataobject.StatisticsTargetKey;
-import com.hyjj.hyjjservice.service.statistic.StatisticService;
-import com.hyjj.hyjjservice.service.statistic.impl.StatisticServiceImpl;
+import com.hyjj.hyjjservice.controller.company.viewObject.CompanyInfoPo;
 import com.hyjj.util.responce.CommonReturnType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.*;

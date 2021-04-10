@@ -1,12 +1,11 @@
 package com.hyjj.hyjjservice.dao;
 
 import com.hyjj.hyjjservice.dataobject.ReportData;
-import com.hyjj.hyjjservice.dataobject.ReportDataHtml;
-import com.hyjj.hyjjservice.dataobject.ReportDataList;
+import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
+import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.List;
 
 public interface ReportDataMapper {

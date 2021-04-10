@@ -190,4 +190,23 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="getFormulaList" resultMap="BaseResultMap">
+    select * from formula
+  </select>
+
+  <select id="getFormulaByFormName" resultMap="BaseResultMap">
+    select * from formula ff join report_template rt on ff.report_template_id = rt.id where rt.number = #{formName}
+  </select>
+
+  <insert id="addFormula" parameterType="com.hyjj.hyjjservice.dataobject.Formula">
+    insert into formula(id, formula_type, target_key_id,
+    operator, `expression`, remark,error_tip, gmt_create)
+
+    values (#{formula.id}, #{formula.formulaType}, #{formula.targetKeyId},
+            #{formula.operator}, #{formula.expression},
+            #{formula.remark}, #{formula.errorTip},
+
+            #{formula.gmtCreate})
+  </insert>
 </mapper>

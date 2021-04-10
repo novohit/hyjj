@@ -1,9 +1,7 @@
-package com.hyjj.hyjjservice.controller.company.viewobject;
+package com.hyjj.hyjjservice.controller.company.viewObject;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
-import java.util.Date;
 
 @ApiModel("行业对象")
 public class IndustryVO {

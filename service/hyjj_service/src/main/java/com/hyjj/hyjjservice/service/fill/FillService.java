@@ -1,7 +1,7 @@
 package com.hyjj.hyjjservice.service.fill;
 
-import com.hyjj.hyjjservice.dataobject.ReportDataHtml;
-import com.hyjj.hyjjservice.dataobject.ReportDataList;
+import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
+import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 
 import java.util.List;

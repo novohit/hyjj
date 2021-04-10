@@ -3,6 +3,7 @@ package com.hyjj.hyjjservice.controller.fill.util;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -15,8 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -54,6 +57,7 @@ public class FileUtil {
         XSSFSheet sheet = xssfWorkbook.getSheetAt(0);
         XSSFRow row = sheet.getRow(rowNum);
         XSSFCell cell = row.getCell(cellNum);
+
         return cell;
 
     }
@@ -63,16 +67,24 @@ public class FileUtil {
         double cellNum = 0;
         // 以下是判断数据的类型
         switch (cell.getCellType()) {
-            case Cell.CELL_TYPE_NUMERIC: // 数字
-                cellNum = cell.getNumericCellValue();
-                return cellNum;
-            case Cell.CELL_TYPE_STRING: // 字符串
+            case NUMERIC: // 数字
+                if (DateUtil.isCellDateFormatted(cell)){  //日期
+                    Date date = cell.getDateCellValue();
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    cellValue = df.format(date);
+                    break;
+                }else{
+                    cellNum = cell.getNumericCellValue(); //数字
+                    return cellNum;
+                }
+
+            case STRING:// 字符串
                 cellValue = cell.getStringCellValue();
                 break;
-            case Cell.CELL_TYPE_BLANK: // 空值
+            case BLANK: // 空值
                 cellValue = "";
                 break;
-            case Cell.CELL_TYPE_ERROR: // 故障
+            case ERROR: // 故障
                 cellValue = "非法字符";
                 break;
 
@@ -103,7 +115,6 @@ public class FileUtil {
             Cell excelValue = getExcelValue(xssfWorkbook,rowArray[j], colArray[j], is);
             cells.add(getCellValue(excelValue));
         }
-        System.out.println(cells);
         return cells;
     }
 

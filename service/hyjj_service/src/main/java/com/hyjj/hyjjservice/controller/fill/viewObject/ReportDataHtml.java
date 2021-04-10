@@ -1,4 +1,4 @@
-package com.hyjj.hyjjservice.dataobject;
+package com.hyjj.hyjjservice.controller.fill.viewObject;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

@@ -1,7 +1,6 @@
 package com.hyjj.hyjjservice.service.company.impl;
 
-import com.hyjj.hyjjservice.controller.company.viewobject.CompanyInfoPo;
-import com.hyjj.hyjjservice.controller.company.viewobject.CompanyInfoVo;
+import com.hyjj.hyjjservice.controller.company.viewObject.CompanyInfoPo;
 import com.hyjj.hyjjservice.dao.ComInfoMapper;
 import com.hyjj.hyjjservice.dao.param.ComInfoQueryPo;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
@@ -9,12 +8,10 @@ import com.hyjj.hyjjservice.service.company.CompanyInfoService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class CompanyInfoServiceImpl implements CompanyInfoService {

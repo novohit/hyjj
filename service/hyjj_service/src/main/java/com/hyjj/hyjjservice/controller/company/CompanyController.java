@@ -1,7 +1,7 @@
 package com.hyjj.hyjjservice.controller.company;
 
 
-import com.hyjj.hyjjservice.controller.company.viewobject.*;
+import com.hyjj.hyjjservice.controller.company.viewObject.*;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
 import com.hyjj.hyjjservice.dataobject.Industry;
 import com.hyjj.hyjjservice.dataobject.myEnum.ComBusinessStatus;
@@ -25,17 +25,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @RestController

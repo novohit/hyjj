@@ -2,17 +2,17 @@ package com.hyjj.hyjjservice.controller.fill;
 
 import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
-import com.hyjj.hyjjservice.dataobject.ReportDataHtml;
-import com.hyjj.hyjjservice.dataobject.ReportDataList;
+import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
+import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.fill.FillService;
 import com.hyjj.util.responce.CommonReturnType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -60,6 +60,11 @@ public class FillController{
 
     @PutMapping("save")
     @ApiOperation("填报界面点击保存按钮")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "head_html",value = "头部html", required = true),
+            @ApiImplicitParam(name = "body_html",value = "html body",required = true),
+            @ApiImplicitParam(name = "tail_html",value = "尾部html",required = true)
+    })
     public CommonReturnType saveReportDataHtml(ReportDataHtml reportDataHtml) {
         Integer i = fillService.saveReportDataHtml(reportDataHtml);
         return i.equals(1) ? CommonReturnType.ok() : CommonReturnType.error().setErrMsg("保存失败");
@@ -68,13 +73,22 @@ public class FillController{
 
     @PutMapping("submit")
     @ApiOperation("填报界面提交按钮")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "head_html",value = "头部html", required = true),
+            @ApiImplicitParam(name = "body_html",value = "html body",required = true),
+            @ApiImplicitParam(name = "tail_html",value = "尾部html",required = true)
+    })
     public CommonReturnType submitReport(ReportDataHtml reportDataHtml) {
         Integer j = fillService.submitReportData(reportDataHtml);
         return j.equals(1) ? CommonReturnType.ok() : CommonReturnType.error();
     }
 
     @PostMapping("upload")
-    @ResponseBody
+    @ApiOperation("填报界面的导出模块")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "file", value = "multipartfile类型", required = true, dataTypeClass = MultipartFile.class),
+            @ApiImplicitParam(name = "reportId", value = "报表id", required = true, dataTypeClass = Integer.class)
+    })
     public CommonReturnType upload(MultipartFile file,Integer reportId) throws IOException {
         if (file.isEmpty()) {
             return CommonReturnType.error().setErrMsg("文件为空");
@@ -100,5 +114,6 @@ public class FillController{
     public void download(String filename, HttpServletResponse response){
         fileUtil.download(filename, response);
     }
+
 
 }

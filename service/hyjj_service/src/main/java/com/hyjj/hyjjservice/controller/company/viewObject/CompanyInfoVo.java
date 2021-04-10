@@ -1,4 +1,4 @@
-package com.hyjj.hyjjservice.controller.company.viewobject;
+package com.hyjj.hyjjservice.controller.company.viewObject;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

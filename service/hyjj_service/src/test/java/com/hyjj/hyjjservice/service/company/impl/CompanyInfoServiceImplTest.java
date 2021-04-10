@@ -1,7 +1,7 @@
 package com.hyjj.hyjjservice.service.company.impl;
 
 import com.hyjj.hyjjservice.HyjjApplication;
-import com.hyjj.hyjjservice.controller.company.viewobject.CompanyInfoPo;
+import com.hyjj.hyjjservice.controller.company.viewObject.CompanyInfoPo;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
 import com.hyjj.hyjjservice.service.company.CompanyInfoService;
 import org.junit.Before;
