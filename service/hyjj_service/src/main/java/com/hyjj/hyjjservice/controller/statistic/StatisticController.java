@@ -42,13 +42,13 @@ public class StatisticController {
 
     @ApiOperation(value = "获取统计信息", notes = "如果要查看合计的话直接传二级指标的id过来就可以，前提是这个二级指标所对应的三级指标的单位一定要相同")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "years", value = "年份的集合", required = true, dataTypeClass = List.class),
+            @ApiImplicitParam(name = "years", value = "年份的集合", required = true, example = "[\"2020\",\"2021\"]"),
             @ApiImplicitParam(name = "areaName", value = "地区的名称", required = true, dataTypeClass = String.class),
             @ApiImplicitParam(name = "targetId", value = "指标的id", required = true, dataTypeClass = Long.class),
             @ApiImplicitParam(name = "count", value = "为提升效率，还需要传一个boolean类型来判断是否统计合计", required = true, dataTypeClass = Boolean.class)
     })
     @GetMapping("getStatisticInfo")
-    public CommonReturnType getStatisticInfo(List<Integer> years, String areaName, Long targetId, Boolean count) {
+    public CommonReturnType getStatisticInfo(@RequestBody List<Integer> years, String areaName, Long targetId, Boolean count) {
         return CommonReturnType.ok().add("info", statisticService.getStatisticInfo(years, areaName, targetId, count));
     }
 }

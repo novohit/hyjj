@@ -39,7 +39,6 @@ public class FileUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public String getPathName() {
@@ -55,7 +54,6 @@ public class FileUtil {
         XSSFRow row = sheet.getRow(rowNum);
         XSSFCell cell = row.getCell(cellNum);
         return cell;
-
     }
 
     public static Object getCellValue(Cell cell) {
@@ -75,7 +73,6 @@ public class FileUtil {
             case Cell.CELL_TYPE_ERROR: // 故障
                 cellValue = "非法字符";
                 break;
-
         }
         return cellValue;
     }
@@ -106,6 +103,4 @@ public class FileUtil {
         System.out.println(cells);
         return cells;
     }
-
-
 }
