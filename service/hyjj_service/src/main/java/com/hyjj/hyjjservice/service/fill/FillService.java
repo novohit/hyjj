@@ -18,4 +18,6 @@ public interface FillService {
      int clearReportData(Integer reportId);
 
      ReportTemplate getRowAndColByTemplateId(Integer reportId);
+
+     String getReportNumber(Long reportId);
 }

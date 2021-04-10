@@ -12,11 +12,11 @@
         <result column="target_key_id" jdbcType="BIGINT" property="targetKeyId"/>
         <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
-        <result column="report_data_id" javaType="BIGINT" property="reportDataId"/>
+        <result column="report_data_id" jdbcType="BIGINT" property="reportDataId"/>
     </resultMap>
 
     <resultMap id="targetInfo" type="com.hyjj.hyjjservice.controller.statistic.viewObject.StatisticVo">
-        <result column="year" jdbcType="INT" property="year" />
+        <result column="year" jdbcType="INTEGER" property="year" />
         <result column="target_value" jdbcType="DOUBLE" property="targetValue"/>
     </resultMap>
 

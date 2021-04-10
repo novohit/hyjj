@@ -2,6 +2,7 @@ package com.hyjj.hyjjservice.service.fill.impl;
 
 import com.hyjj.hyjjservice.dao.ProcessMapper;
 import com.hyjj.hyjjservice.dao.ReportDataMapper;
+import com.hyjj.hyjjservice.dao.ReportTemplateMapper;
 import com.hyjj.hyjjservice.dataobject.Process;
 import com.hyjj.hyjjservice.dataobject.ReportDataHtml;
 import com.hyjj.hyjjservice.dataobject.ReportDataList;
@@ -22,6 +23,9 @@ public class FillServiceImpl implements FillService {
 
     @Autowired
     private ProcessMapper processMapper;
+
+    @Autowired
+    private ReportTemplateMapper reportTemplateMapper;
 
     @Override
     public List<ReportDataList> getReportListByUserId(Long userId) {
@@ -61,5 +65,10 @@ public class FillServiceImpl implements FillService {
     @Override
     public ReportTemplate getRowAndColByTemplateId(Integer reportId) {
         return reportDataMapper.getRowAndColByTemplateId(reportId);
+    }
+
+    @Override
+    public String getReportNumber(Long reportTemplateId) {
+        return reportTemplateMapper.getReportNumber(reportTemplateId);
     }
 }
