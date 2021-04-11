@@ -4,6 +4,7 @@ import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
+import com.hyjj.hyjjservice.dataobject.ReportData;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.fill.FillService;
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Api(tags = "填报数据相关")
@@ -58,19 +61,29 @@ public class FillController{
         return CommonReturnType.ok().add("data", reportDataHtml);
     }
 
-    @PutMapping("save")
+    @PostMapping("save")
     @ApiOperation("填报界面点击保存按钮")
-    public CommonReturnType saveReportDataHtml(ReportDataHtml reportDataHtml) {
+    public CommonReturnType saveReportDataHtml(@RequestBody Map<String, Object> mapParam){
+        ReportDataHtml reportDataHtml = new ReportDataHtml();
+        reportDataHtml.setHeadHtml(mapParam.get("headHtml").toString());
+        reportDataHtml.setBodyHtml(mapParam.get("bodyHtml").toString());
+        reportDataHtml.setTailHtml(mapParam.get("tailHtml").toString());
+        reportDataHtml.setId((Integer)mapParam.get("id"));
         Integer i = fillService.saveReportDataHtml(reportDataHtml);
-        return i.equals(1) ? CommonReturnType.ok() : CommonReturnType.error().setErrMsg("保存失败");
+        return i.equals(1) ? CommonReturnType.ok() : CommonReturnType.error();
     }
 
 
     @PutMapping("submit")
     @ApiOperation("填报界面提交按钮")
-    public CommonReturnType submitReport(ReportDataHtml reportDataHtml) {
-        Integer j = fillService.submitReportData(reportDataHtml);
-        return j.equals(1) ? CommonReturnType.ok() : CommonReturnType.error();
+    public CommonReturnType submitReport(@RequestBody Map<String, Object> mapParam) {
+        ReportDataHtml reportDataHtml = new ReportDataHtml();
+        reportDataHtml.setHeadHtml(mapParam.get("headHtml").toString());
+        reportDataHtml.setBodyHtml(mapParam.get("bodyHtml").toString());
+        reportDataHtml.setTailHtml(mapParam.get("tailHtml").toString());
+        reportDataHtml.setId((Integer)mapParam.get("id"));
+        Integer i = fillService.submitReportData(reportDataHtml);
+        return i.equals(1) ? CommonReturnType.ok() : CommonReturnType.error();
     }
 
     @PostMapping("upload")
