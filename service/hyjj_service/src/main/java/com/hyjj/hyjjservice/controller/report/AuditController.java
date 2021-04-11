@@ -12,13 +12,11 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("audit")
@@ -75,17 +73,27 @@ public class AuditController {
         return CommonReturnType.ok().add("company", auditService.selectAllCompany());
     }
 
-    @GetMapping("urge")
+    @GetMapping("getUrge")
     @ApiOperation("获取催办名单")
     @GetUser
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "year", value = "年份", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "year", value = "年份", required = true, dataTypeClass = Integer.class),
             @ApiImplicitParam(name = "company", value = "要催办的公司的名称", required = true, dataTypeClass = String.class)
     })
-    public CommonReturnType getUrge(String year, String company) {
+    public CommonReturnType getUrge(Integer year, String company) {
         User user = threadLocal.get();
         return checkUser(user) ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
                 : CommonReturnType.ok().add("result", auditService.getUrge(year, company));
+    }
+
+    @PostMapping("urge")
+    @ApiOperation("催办业务")
+    @GetUser
+    public CommonReturnType urge(@RequestBody List<String> company) {
+        User user = threadLocal.get();
+        System.out.println(user);
+        return checkUser(user) ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
+                : CommonReturnType.ok().add("status", auditService.urge(user, company));
     }
 
     public Boolean checkUser(User user) {

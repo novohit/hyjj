@@ -67,7 +67,7 @@ public class FillServiceImpl implements FillService {
     }
 
     @Override
-    public String getReportNumber(Long reportTemplateId) {
+    public List<String> getReportNumber(List<Long> reportTemplateId) {
         return reportTemplateMapper.getReportNumber(reportTemplateId);
     }
 }

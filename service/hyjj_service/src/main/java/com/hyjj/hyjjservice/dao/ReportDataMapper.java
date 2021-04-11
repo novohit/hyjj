@@ -1,5 +1,7 @@
 package com.hyjj.hyjjservice.dao;
 
+import com.hyjj.hyjjservice.controller.report.viewobject.AuditReportVO;
+import com.hyjj.hyjjservice.controller.report.viewobject.UrgeReportVO;
 import com.hyjj.hyjjservice.dataobject.ReportData;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
@@ -63,17 +65,17 @@ public interface ReportDataMapper {
      * @param industriesIds
      * @return
      */
-    List<ReportData> selectReportDataByIndustryId(@Param("industriesIds") List<Integer> industriesIds,
-                                                  @Param("type") Integer type,
-                                                  @Param("statue") String statue,
-                                                  @Param("year") String year,
-                                                  @Param("nextYear") String nextYear);
+    List<AuditReportVO> selectReportDataByIndustryId(@Param("industriesIds") List<Integer> industriesIds,
+                                                     @Param("type") Integer type,
+                                                     @Param("statue") String statue,
+                                                     @Param("year") String year,
+                                                     @Param("nextYear") String nextYear);
 
     /**
      * 行业全选的情况
      * @return
      */
-    List<ReportData> selectAllIndustryReportData(@Param("type") Integer type,
+    List<AuditReportVO> selectAllIndustryReportData(@Param("type") Integer type,
                                                  @Param("statue") String statue,
                                                  @Param("year") String year,
                                                  @Param("nextYear") String nextYear);
@@ -111,4 +113,7 @@ public interface ReportDataMapper {
                                   @Param("month") Integer month,
                                   @Param("audit") String audit,
                                   @Param("userId") Long userId);
+
+    List<UrgeReportVO> selectByYearAndCompany(@Param("year") Integer years,
+                                              @Param("company") String company);
 }

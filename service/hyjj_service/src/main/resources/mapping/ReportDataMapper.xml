@@ -403,15 +403,16 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <select id="selectReportDataByIndustryId" resultMap="BaseResultMap">
+    <select id="selectReportDataByIndustryId" resultType="com.hyjj.hyjjservice.controller.report.viewobject.AuditReportVO">
         SELECT
-        rd.`id`,rd.`fill_person`,rd.`fill_unit`,rd.`add_date`,rd.`area_name`,rd.`report_template_id`,rd.`area_code`,rd.`begin_date`,
-        rd.`end_date`,rd.`submit_date`,rd.`pro_status`,rd.`pro_status_name`,rd.`process_id`,rd.`statistics_principal`,
-        rd.`unit_principal`,rd.`org_code`,rd.`expire_date`,rd.`audit_id`,rd.`enterprise_name`,rd.`data_from`,
-        rd.`enterprise`,rd.`gmt_create`,rd.`gmt_modified`,rd.`report_date`,rd.`fill_date`,rd.`number`,rd.`title`
+        rd.`id`,rd.`fill_person`,rd.`report_template_id`,rd.`begin_date`,
+        rd.`submit_date`,rd.`pro_status`,
+        rd.`enterprise_name`,rd.`report_date`,rd.`number`,rd.`title`,i.`name`
         FROM report_data rd
         INNER JOIN report_template rt
         ON rd.`report_template_id` = rt.`id`
+        INNER JOIN industry i
+        ON rt.`type` = i.`id`
         <where>
             rt.type IN
             <foreach collection="industriesIds" item="industriesId" open="(" close=")" separator=",">
@@ -425,15 +426,16 @@
         </where>
     </select>
 
-    <select id="selectAllIndustryReportData" resultMap="BaseResultMap">
+    <select id="selectAllIndustryReportData" resultType="com.hyjj.hyjjservice.controller.report.viewobject.AuditReportVO">
         SELECT
-        rd.`id`,rd.`fill_person`,rd.`fill_unit`,rd.`add_date`,rd.`area_name`,rd.`report_template_id`,rd.`area_code`,rd.`begin_date`,
-        rd.`end_date`,rd.`submit_date`,rd.`pro_status`,rd.`pro_status_name`,rd.`process_id`,rd.`statistics_principal`,
-        rd.`unit_principal`,rd.`org_code`,rd.`expire_date`,rd.`audit_id`,rd.`enterprise_name`,rd.`data_from`,
-        rd.`enterprise`,rd.`report_date`,rd.`fill_date`,rd.`number`,rd.`title`
+        rd.`id`,rd.`fill_person`,rd.`report_template_id`,rd.`begin_date`,
+        rd.`submit_date`,rd.`pro_status`,
+        rd.`enterprise_name`,rd.`report_date`,rd.`number`,rd.`title`,i.`name`
         FROM report_data rd
         INNER JOIN report_template rt
         ON rd.`report_template_id` = rt.`id`
+        INNER JOIN industry i
+        ON rt.`type` = i.`id`
         <where>
             and rt.`rep_class` = #{type}
             and rd.`submit_date` between #{year} and #{nextYear}
@@ -499,5 +501,17 @@
 
     <select id="getRowAndColByTemplateId" resultType="com.hyjj.hyjjservice.dataobject.ReportTemplate">
         select `row`,col from report_template rt join report_data rd on rt.id = rd.report_template_id where rd.id = #{reportId}
+    </select>
+
+    <select id="selectByYearAndCompany" resultType="com.hyjj.hyjjservice.controller.report.viewobject.UrgeReportVO">
+        SELECT rd.`id`, rd.`fill_person`, rd.`begin_date`, rd.`end_date`, rd.`number`
+        FROM report_data rd
+        <where>
+            YEAR(rd.`begin_date`) = #{year}
+            AND rd.`pro_status` = '填报数据'
+            <if test="company != null">
+                and rd.`fill_unit` = #{company}
+            </if>
+        </where>
     </select>
 </mapper>

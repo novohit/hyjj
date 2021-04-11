@@ -117,7 +117,7 @@ public class FillController{
     @ApiOperation("传个模板表的id，返回表号过来")
     @ApiImplicitParam(name = "reportTemplateId", value = "模板表的id", required = true, dataTypeClass = Long.class)
     @GetMapping("getReportNumber")
-    public CommonReturnType getReportNumber(Long reportTemplateId){
+    public CommonReturnType getReportNumber(@RequestBody List<Long> reportTemplateId){
         return CommonReturnType.ok().add("reportNumber", fillService.getReportNumber(reportTemplateId));
     }
 }

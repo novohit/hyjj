@@ -313,6 +313,9 @@
   <select id="getReportNumber" resultType="java.lang.String">
     SELECT report_template.`number`
     FROM report_template
-    WHERE id = #{reportTemplateId}
+    WHERE id IN
+    <foreach collection="reportTemplateIds" item="reportTemplateId" open="(" close=")" separator=",">
+      #{reportTemplateId}
+    </foreach>
   </select>
 </mapper>

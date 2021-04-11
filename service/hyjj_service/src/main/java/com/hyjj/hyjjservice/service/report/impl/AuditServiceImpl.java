@@ -1,6 +1,8 @@
 package com.hyjj.hyjjservice.service.report.impl;
 
+import com.hyjj.hyjjservice.controller.report.viewobject.AuditReportVO;
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditVO;
+import com.hyjj.hyjjservice.controller.report.viewobject.UrgeReportVO;
 import com.hyjj.hyjjservice.dao.*;
 import com.hyjj.hyjjservice.dataobject.*;
 import com.hyjj.hyjjservice.dataobject.Process;
@@ -79,7 +81,7 @@ public class AuditServiceImpl implements AuditService {
     }
 
     @Override
-    public List<ReportData> getStatement(AuditVO auditVO, User user) throws BusinessException {
+    public List<AuditReportVO> getStatement(AuditVO auditVO, User user) throws BusinessException {
         //指定搜索某一年
         String year = auditVO.getYear() + "-01-01 00:00:00";
         String nextYear = (Integer.parseInt(auditVO.getYear()) + 1) + "-01-01 00:00:00";
@@ -109,7 +111,7 @@ public class AuditServiceImpl implements AuditService {
                 }
             }
         }
-        return reportDataMapper.selectReportDataByIndustryId(industriesId, auditVO.getType(), status, year, nextYear);
+        return industriesId.size() == 0 ? null : reportDataMapper.selectReportDataByIndustryId(industriesId, auditVO.getType(), status, year, nextYear);
     }
 
     @Override
@@ -171,37 +173,35 @@ public class AuditServiceImpl implements AuditService {
      * 这个是增加催办名单，并不是获取催办名单= -
      *
      * @param user
-     * @param year
      * @param company
      * @return
      */
     @Override
-    public String urge(User user, String year, String company) {
-        //指定搜索某一年
-        String preYear = year + "-01-01 00:00:00";
-        String nextYear = (Integer.parseInt(year) + 1) + "-01-01 00:00:00";
+    public String urge(User user, List<String> company) {
         Date date = new Date();
 
-        UrgeData urgeData = new UrgeData();
-        urgeData.setSendUser(user.getName());
-        //根据用户id查询公司名称
-        urgeData.setSendGroup(comInfoMapper.selectCompanyNameByUserId(user.getId()));
-        urgeData.setAcceptGroup(company);
-        urgeData.setCreateDate(date);
-        urgeData.setIsRead((byte) 0);
-        urgeData.setReatDate(date);
-        urgeData.setGmtCreate(date);
-        urgeData.setGmtModified(date);
+        for (String s : company) {
+            UrgeData urgeData = new UrgeData();
+            urgeData.setSendUser(user.getName());
+            //根据用户id查询公司名称
+            urgeData.setSendGroup(comInfoMapper.selectCompanyNameByUserId(user.getId()));
+            urgeData.setAcceptGroup(s);
+            urgeData.setCreateDate(date);
+            urgeData.setIsRead((byte) 0);
+            urgeData.setReatDate(date);
+            urgeData.setGmtCreate(date);
+            urgeData.setGmtModified(date);
 
-        urgeDataMapper.insert(urgeData);
+            urgeDataMapper.insert(urgeData);
+        }
+
         return "urge success";
     }
 
     @Override
-    public UrgeData getUrge(String year, String company) {
-        //指定搜索某一年
-        String preYear = year + "-01-01 00:00:00";
-        String nextYear = (Integer.parseInt(year) + 1) + "-01-01 00:00:00";
-        return urgeDataMapper.selectUrgeDataByYearAndCompanyName(preYear, nextYear, company);
+    public List<UrgeReportVO> getUrge(Integer year, String company) {
+        if (company.equals("全部"))
+            company = null;
+        return reportDataMapper.selectByYearAndCompany(year, company);
     }
 }

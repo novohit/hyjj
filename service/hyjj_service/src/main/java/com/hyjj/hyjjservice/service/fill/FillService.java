@@ -19,5 +19,5 @@ public interface FillService {
 
      ReportTemplate getRowAndColByTemplateId(Integer reportId);
 
-     String getReportNumber(Long reportId);
+     List<String> getReportNumber(List<Long> reportId);
 }
