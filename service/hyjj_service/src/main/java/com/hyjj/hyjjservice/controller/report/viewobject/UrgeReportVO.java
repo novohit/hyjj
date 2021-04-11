@@ -8,6 +8,33 @@ public class UrgeReportVO {
     Date beginDate;
     Date endDate;
     String fillPerson;
+    String beginDateToString;
+    String endDateToString;
+    String reportDateToString;
+
+    public String getReportDateToString() {
+        return reportDateToString;
+    }
+
+    public void setReportDateToString(String reportDateToString) {
+        this.reportDateToString = reportDateToString;
+    }
+
+    public String getBeginDateToString() {
+        return beginDateToString;
+    }
+
+    public void setBeginDateToString(String beginDateToString) {
+        this.beginDateToString = beginDateToString;
+    }
+
+    public String getEndDateToString() {
+        return endDateToString;
+    }
+
+    public void setEndDateToString(String endDateToString) {
+        this.endDateToString = endDateToString;
+    }
 
     public Long getId() {
         return id;

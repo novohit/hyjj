@@ -14,6 +14,24 @@ public class AuditReportVO {
     String enterpriseName;
     Date reportDate;
     String name;
+    String reportDateString;
+    String submitDateString;
+
+    public String getReportDateString() {
+        return reportDateString;
+    }
+
+    public void setReportDateString(String reportDateString) {
+        this.reportDateString = reportDateString;
+    }
+
+    public String getSubmitDateString() {
+        return submitDateString;
+    }
+
+    public void setSubmitDateString(String submitDateString) {
+        this.submitDateString = submitDateString;
+    }
 
     public String getName() {
         return name;

@@ -7,6 +7,7 @@ import com.hyjj.hyjjservice.dao.*;
 import com.hyjj.hyjjservice.dataobject.*;
 import com.hyjj.hyjjservice.dataobject.Process;
 import com.hyjj.hyjjservice.service.report.AuditService;
+import com.hyjj.util.Date.DateUtil;
 import com.hyjj.util.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -98,7 +99,12 @@ public class AuditServiceImpl implements AuditService {
         List<Integer> industriesId = new ArrayList<>();
         if (industry.charAt(0) == '1') {
             //全选的情况
-            return reportDataMapper.selectAllIndustryReportData(auditVO.getType(), status, year, nextYear);
+            List<AuditReportVO> auditReportVOS = reportDataMapper.selectAllIndustryReportData(auditVO.getType(), status, year, nextYear);
+            for (AuditReportVO auditReportVO : auditReportVOS) {
+                auditReportVO.setReportDateString(DateUtil.changeDateToStringWithMonth(auditReportVO.getReportDate()));
+                auditReportVO.setSubmitDateString(DateUtil.changeDateToStringWithDate(auditReportVO.getSubmitDate()));
+            }
+            return auditReportVOS;
         } else {
             for (int i = 1; i < 14; i++) {
                 if (industry.charAt(i) == '1') {
@@ -111,7 +117,14 @@ public class AuditServiceImpl implements AuditService {
                 }
             }
         }
-        return industriesId.size() == 0 ? null : reportDataMapper.selectReportDataByIndustryId(industriesId, auditVO.getType(), status, year, nextYear);
+        if (industriesId.size() == 0)
+            return null;
+        List<AuditReportVO> auditReportVOS = reportDataMapper.selectReportDataByIndustryId(industriesId, auditVO.getType(), status, year, nextYear);
+        for (AuditReportVO auditReportVO : auditReportVOS) {
+            auditReportVO.setReportDateString(DateUtil.changeDateToStringWithMonth(auditReportVO.getReportDate()));
+            auditReportVO.setSubmitDateString(DateUtil.changeDateToStringWithDate(auditReportVO.getSubmitDate()));
+        }
+        return auditReportVOS;
     }
 
     @Override
@@ -202,6 +215,12 @@ public class AuditServiceImpl implements AuditService {
     public List<UrgeReportVO> getUrge(Integer year, String company) {
         if (company.equals("全部"))
             company = null;
-        return reportDataMapper.selectByYearAndCompany(year, company);
+        List<UrgeReportVO> urgeReportVOS = reportDataMapper.selectByYearAndCompany(year, company);
+        for (UrgeReportVO urgeReportVO : urgeReportVOS) {
+            urgeReportVO.setReportDateToString(DateUtil.changeDateToStringWithMonth(urgeReportVO.getBeginDate()));
+            urgeReportVO.setBeginDateToString(DateUtil.changeDateToStringWithDate(urgeReportVO.getBeginDate()));
+            urgeReportVO.setEndDateToString(DateUtil.changeDateToStringWithDate(urgeReportVO.getEndDate()));
+        }
+        return urgeReportVOS;
     }
 }
