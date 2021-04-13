@@ -5,6 +5,7 @@ import java.util.Date;
 public class AuditReportVO {
     Long id;
     String fillPerson;
+    String fillUnit;
     Long reportTemplateId;
     String title;
     String number;
@@ -17,6 +18,14 @@ public class AuditReportVO {
 
     String reportDateString;
     String submitDateString;
+
+    public String getFillUnit() {
+        return fillUnit;
+    }
+
+    public void setFillUnit(String fillUnit) {
+        this.fillUnit = fillUnit;
+    }
 
     public Long getId() {
         return id;

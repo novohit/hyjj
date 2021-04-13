@@ -405,7 +405,7 @@
 
     <select id="selectReportDataByIndustryId" resultType="com.hyjj.hyjjservice.controller.report.viewobject.AuditReportVO">
         SELECT
-        rd.`id`,rd.`fill_person`,rd.`report_template_id`,rd.`begin_date`,
+        rd.`id`,rd.`fill_person`,rd.`fill_unit`,rd.`report_template_id`,rd.`begin_date`,
         rd.`submit_date`,rd.`pro_status`,
         rd.`enterprise_name`,rd.`report_date`,rd.`number`,rd.`title`,i.`name`
         FROM report_data rd
@@ -428,7 +428,7 @@
 
     <select id="selectAllIndustryReportData" resultType="com.hyjj.hyjjservice.controller.report.viewobject.AuditReportVO">
         SELECT
-        rd.`id`,rd.`fill_person`,rd.`report_template_id`,rd.`begin_date`,
+        rd.`id`,rd.`fill_person`,rd.`fill_unit`,rd.`report_template_id`,rd.`begin_date`,
         rd.`submit_date`,rd.`pro_status`,
         rd.`enterprise_name`,rd.`report_date`,rd.`number`,rd.`title`,i.`name`
         FROM report_data rd
@@ -504,7 +504,7 @@
     </select>
 
     <select id="selectByYearAndCompany" resultType="com.hyjj.hyjjservice.controller.report.viewobject.UrgeReportVO">
-        SELECT rd.`id`, rd.`fill_person`, rd.`begin_date`, rd.`end_date`, rd.`number`
+        SELECT rd.`id`, rd.`fill_person`, rd.`fill_unit`, rd.`begin_date`, rd.`end_date`, rd.`number`
         FROM report_data rd
         <where>
             YEAR(rd.`begin_date`) = #{year}

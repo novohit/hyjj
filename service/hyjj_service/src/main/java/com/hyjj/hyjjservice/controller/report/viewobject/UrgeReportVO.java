@@ -9,11 +9,21 @@ public class UrgeReportVO {
     Date beginDate;
     Date endDate;
 
+    String fillUnit;
     String fillPerson;
 
     String beginDateToString;
     String endDateToString;
     String reportDate;
+
+
+    public String getFillUnit() {
+        return fillUnit;
+    }
+
+    public void setFillUnit(String fillUnit) {
+        this.fillUnit = fillUnit;
+    }
 
     public Long getId() {
         return id;
