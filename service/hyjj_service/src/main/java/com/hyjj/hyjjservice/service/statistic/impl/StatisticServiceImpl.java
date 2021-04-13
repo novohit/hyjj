@@ -61,11 +61,34 @@ public class StatisticServiceImpl implements StatisticService {
         if (count) {
             List<StatisticsTargetKey> targetKeys = statisticsTargetKeyMapper.selectStatisticsTargetKeyByParentId(targetId);
             List<Long> targetIds = new ArrayList<>();
+            List<StatisticVo> result = new ArrayList<>();
+            double[] counts = new double[101];    //只统计2000年至2100年的数据，需要时可调整
 
             for (StatisticsTargetKey targetKey : targetKeys)
                 targetIds.add(targetKey.getId());
+            /**
+             *      2021:1
+             *      2021:2
+             *      2021:3
+             *      2020:4
+             *      2020:5
+             * -----合并成----->
+             *      2021:6
+             *      2020:9
+             */
+            List<StatisticVo> statisticInfoByIds = targetKeyValueMapper.getStatisticInfoByIds(years, areaName, targetIds);
+            for (StatisticVo statisticInfoById : statisticInfoByIds)
+                counts[statisticInfoById.getYear() - 2000] += statisticInfoById.getTargetValue();
 
-            return targetKeyValueMapper.getStatisticInfoByIds(years, areaName, targetIds);
+            for (int i = 0; i < counts.length; i++) {
+                if (counts[i] != 0) {
+                    StatisticVo statisticVo = new StatisticVo();
+                    statisticVo.setYear(2000 + i);
+                    statisticVo.setTargetValue(counts[i]);
+                    result.add(statisticVo);
+                }
+            }
+            return result;
         }
         return targetKeyValueMapper.getStatisticInfoById(years, areaName, targetId);
     }

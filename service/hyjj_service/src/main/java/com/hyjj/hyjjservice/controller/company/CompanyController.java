@@ -171,11 +171,8 @@ public class CompanyController {
             if(commonReturnType.getCode() == 10003){
                 return commonReturnType;
             }
-
-        }
-        else{
+        } else{
             log.error(e.getMessage());
-
         }
         return CommonReturnType.error(EmBusinessError.PARAMETER_VALIDATION_ERROR);
     }

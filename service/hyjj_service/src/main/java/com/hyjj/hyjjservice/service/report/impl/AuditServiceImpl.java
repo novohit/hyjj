@@ -101,6 +101,7 @@ public class AuditServiceImpl implements AuditService {
             //全选的情况
             List<AuditReportVO> auditReportVOS = reportDataMapper.selectAllIndustryReportData(auditVO.getType(), status, year, nextYear);
             for (AuditReportVO auditReportVO : auditReportVOS) {
+                auditReportVO.setBeginDate(DateUtil.changeDateToStringWithDate(auditReportVO.getReportDate()));
                 auditReportVO.setReportDateString(DateUtil.changeDateToStringWithMonth(auditReportVO.getReportDate()));
                 auditReportVO.setSubmitDateString(DateUtil.changeDateToStringWithDate(auditReportVO.getSubmitDate()));
             }
@@ -121,6 +122,7 @@ public class AuditServiceImpl implements AuditService {
             return null;
         List<AuditReportVO> auditReportVOS = reportDataMapper.selectReportDataByIndustryId(industriesId, auditVO.getType(), status, year, nextYear);
         for (AuditReportVO auditReportVO : auditReportVOS) {
+            auditReportVO.setBeginDate(DateUtil.changeDateToStringWithDate(auditReportVO.getReportDate()));
             auditReportVO.setReportDateString(DateUtil.changeDateToStringWithMonth(auditReportVO.getReportDate()));
             auditReportVO.setSubmitDateString(DateUtil.changeDateToStringWithDate(auditReportVO.getSubmitDate()));
         }
@@ -217,7 +219,7 @@ public class AuditServiceImpl implements AuditService {
             company = null;
         List<UrgeReportVO> urgeReportVOS = reportDataMapper.selectByYearAndCompany(year, company);
         for (UrgeReportVO urgeReportVO : urgeReportVOS) {
-            urgeReportVO.setReportDateToString(DateUtil.changeDateToStringWithMonth(urgeReportVO.getBeginDate()));
+            urgeReportVO.setReportDate(DateUtil.changeDateToStringWithMonth(urgeReportVO.getBeginDate()));
             urgeReportVO.setBeginDateToString(DateUtil.changeDateToStringWithDate(urgeReportVO.getBeginDate()));
             urgeReportVO.setEndDateToString(DateUtil.changeDateToStringWithDate(urgeReportVO.getEndDate()));
         }

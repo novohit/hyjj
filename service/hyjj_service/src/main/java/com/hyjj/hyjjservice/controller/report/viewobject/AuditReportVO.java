@@ -9,37 +9,14 @@ public class AuditReportVO {
     String title;
     String number;
     Date submitDate;
-    Date beginDate;
+    String beginDate;
     String proStatus;
     String enterpriseName;
     Date reportDate;
     String name;
+
     String reportDateString;
     String submitDateString;
-
-    public String getReportDateString() {
-        return reportDateString;
-    }
-
-    public void setReportDateString(String reportDateString) {
-        this.reportDateString = reportDateString;
-    }
-
-    public String getSubmitDateString() {
-        return submitDateString;
-    }
-
-    public void setSubmitDateString(String submitDateString) {
-        this.submitDateString = submitDateString;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Long getId() {
         return id;
@@ -89,11 +66,11 @@ public class AuditReportVO {
         this.submitDate = submitDate;
     }
 
-    public Date getBeginDate() {
+    public String getBeginDate() {
         return beginDate;
     }
 
-    public void setBeginDate(Date beginDate) {
+    public void setBeginDate(String beginDate) {
         this.beginDate = beginDate;
     }
 
@@ -119,5 +96,29 @@ public class AuditReportVO {
 
     public void setReportDate(Date reportDate) {
         this.reportDate = reportDate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getReportDateString() {
+        return reportDateString;
+    }
+
+    public void setReportDateString(String reportDateString) {
+        this.reportDateString = reportDateString;
+    }
+
+    public String getSubmitDateString() {
+        return submitDateString;
+    }
+
+    public void setSubmitDateString(String submitDateString) {
+        this.submitDateString = submitDateString;
     }
 }
