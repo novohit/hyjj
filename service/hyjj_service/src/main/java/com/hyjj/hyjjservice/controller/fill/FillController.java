@@ -4,6 +4,8 @@ import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
+import com.hyjj.hyjjservice.controller.fill.viewObject.ReportVO;
+import com.hyjj.hyjjservice.controller.fill.viewObject.UploadVO;
 import com.hyjj.hyjjservice.dataobject.ReportData;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.dataobject.User;
@@ -88,13 +90,13 @@ public class FillController{
 
     @PostMapping("upload")
     @ResponseBody
-    public CommonReturnType upload(MultipartFile file,Integer reportId) throws IOException {
-        if (file.isEmpty()) {
+    public CommonReturnType upload(UploadVO uploadVO) throws IOException {
+        if (uploadVO.getFile().isEmpty()) {
             return CommonReturnType.error().setErrMsg("文件为空");
         }
-        byte[] bytes = file.getBytes();
+        byte[] bytes = uploadVO.getFile().getBytes();
         InputStream is = new ByteArrayInputStream(bytes);
-        ReportTemplate reportTemplate = fillService.getRowAndColByTemplateId(reportId);
+        ReportTemplate reportTemplate = fillService.getRowAndColByTemplateId(Integer.parseInt(uploadVO.getReportId()));
         List<Object> cellList = fileUtil.getCellList(reportTemplate, is);
         return CommonReturnType.ok().add("value",cellList);
     }
@@ -119,5 +121,13 @@ public class FillController{
     @GetMapping("getReportNumber")
     public CommonReturnType getReportNumber(@RequestBody List<Long> reportTemplateId){
         return CommonReturnType.ok().add("reportNumber", fillService.getReportNumber(reportTemplateId));
+    }
+
+    @GetMapping("statement")
+    @GetUser
+    public CommonReturnType getStatement(ReportVO reportVO){
+        User user = threadLocal.get();
+        return CommonReturnType.ok().add("statement",fillService.getStatement(reportVO,user));
+
     }
 }

@@ -116,4 +116,16 @@ public interface ReportDataMapper {
 
     List<UrgeReportVO> selectByYearAndCompany(@Param("year") Integer years,
                                               @Param("company") String company);
+    List<ReportDataList> reportSelectAllIndustryReportData(@Param("type") Integer type,
+                                                    @Param("statue") String statue,
+                                                    @Param("year") String year,
+                                                    @Param("nextYear") String nextYear,
+                                                    @Param("userId")Long userId);
+
+    List<ReportDataList> reportSelectReportDataByIndustryId(@Param("industriesIds") List<Integer> industriesIds,
+                                                     @Param("type") Integer type,
+                                                     @Param("statue") String statue,
+                                                     @Param("year") String year,
+                                                     @Param("nextYear") String nextYear,
+                                                            @Param("uesrId")Long userId);
 }

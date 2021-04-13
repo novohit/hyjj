@@ -514,4 +514,43 @@
             </if>
         </where>
     </select>
+    <select id="reportSelectAllIndustryReportData" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList">
+        SELECT
+        rd.id,rd.`number`,rd.title,rd.report_date,rd.fill_unit,rd.submit_date,rd.pro_status_name,i.name
+        FROM report_data rd
+        INNER JOIN report_template rt
+        ON rd.`report_template_id` = rt.`id`
+        INNER JOIN industry i
+        ON rt.`type` = i.`id`
+        <where>
+            and rt.`rep_class` = #{type}
+            and rd.`submit_date` between #{year} and #{nextYear}
+            and rd.`user_id` = #{userId}
+            <if test="statue != null">
+                and rd.`pro_status` = #{statue}
+            </if>
+        </where>
+    </select>
+
+    <select id="reportSelectReportDataByIndustryId" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList">
+        SELECT
+        rd.id,rd.`number`,rd.title,rd.report_date,rd.fill_unit,rd.submit_date,rd.pro_status_name,i.anme
+        FROM report_data rd
+        INNER JOIN report_template rt
+        ON rd.`report_template_id` = rt.`id`
+        INNER JOIN industry i
+        ON rt.`type` = i.`id`
+        <where>
+            rt.type IN
+            <foreach collection="industriesIds" item="industriesId" open="(" close=")" separator=",">
+                #{industriesId}
+            </foreach>
+            and rt.`rep_class` = #{type}
+            and rd.`submit_date` between #{year} and #{nextYear}
+            and rd.`user_id` = #{userId}
+            <if test="statue != null">
+                and rd.`pro_status` = #{statue}
+            </if>
+        </where>
+    </select>
 </mapper>

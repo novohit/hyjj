@@ -1,16 +1,21 @@
 package com.hyjj.hyjjservice.service.fill.impl;
 
+import com.hyjj.hyjjservice.controller.fill.viewObject.ReportVO;
+import com.hyjj.hyjjservice.controller.report.viewobject.AuditVO;
+import com.hyjj.hyjjservice.dao.IndustryMapper;
 import com.hyjj.hyjjservice.dao.ProcessMapper;
 import com.hyjj.hyjjservice.dao.ReportDataMapper;
 import com.hyjj.hyjjservice.dao.ReportTemplateMapper;
-import com.hyjj.hyjjservice.dataobject.Process;
+import com.hyjj.hyjjservice.dataobject.*;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
-import com.hyjj.hyjjservice.dataobject.ReportTemplate;
+import com.hyjj.hyjjservice.dataobject.Process;
 import com.hyjj.hyjjservice.service.fill.FillService;
+import com.hyjj.util.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +27,9 @@ public class FillServiceImpl implements FillService {
 
     @Autowired
     private ProcessMapper processMapper;
+
+    @Autowired
+    private IndustryMapper industryMapper;
 
     @Autowired
     private ReportTemplateMapper reportTemplateMapper;
@@ -69,5 +77,45 @@ public class FillServiceImpl implements FillService {
     @Override
     public List<String> getReportNumber(List<Long> reportTemplateId) {
         return reportTemplateMapper.getReportNumber(reportTemplateId);
+    }
+
+
+    @Override
+    public List<ReportDataList> getStatement(ReportVO reportVO, User user) {
+        //指定搜索某一年
+        Long userId = user.getId();;
+        String year = reportVO.getYear() + "-01-01 00:00:00";
+        String nextYear = (Integer.parseInt(reportVO.getYear()) + 1) + "-01-01 00:00:00";
+
+        String status = null;
+        if (reportVO.getStatus() == 1) {
+            status = "填报数据";
+        } else if (reportVO.getStatus() == 2) {
+            status = "审核";
+        } else if(reportVO.getStatus() == 3){
+            status = "审核通过";
+        } else if(reportVO.getStatus() == 4){
+            status = "审核不通过";
+        }
+        //先查询出所有已选行业
+        String industry = reportVO.getIndustry();
+        //需要查询的行业id的集合
+        List<Integer> industriesId = new ArrayList<>();
+        if (industry.charAt(0) == '1') {
+            //全选的情况
+            return reportDataMapper.reportSelectAllIndustryReportData(reportVO.getType(), status, year, nextYear,userId);
+        } else {
+            for (int i = 1; i < 14; i++) {
+                if (industry.charAt(i) == '1') {
+                    industriesId.add(i);
+                }
+            }
+            if (industry.charAt(14) == '1') {  //勾选了其他选项
+                for (int i = 14; i < 35; i++) {
+                    industriesId.add(i);
+                }
+            }
+        }
+        return reportDataMapper.reportSelectReportDataByIndustryId(industriesId, reportVO.getType(), status, year, nextYear, userId);
     }
 }

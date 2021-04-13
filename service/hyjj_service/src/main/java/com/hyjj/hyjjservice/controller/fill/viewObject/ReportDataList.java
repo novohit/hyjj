@@ -8,6 +8,15 @@ public class ReportDataList {
     private String fillUnit;
     private String submitDate;
     private String proStatusName;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Long getId() {
         return id;

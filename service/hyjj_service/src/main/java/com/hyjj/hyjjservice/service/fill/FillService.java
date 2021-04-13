@@ -2,7 +2,9 @@ package com.hyjj.hyjjservice.service.fill;
 
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
+import com.hyjj.hyjjservice.controller.fill.viewObject.ReportVO;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
+import com.hyjj.hyjjservice.dataobject.User;
 
 import java.util.List;
 
@@ -20,4 +22,6 @@ public interface FillService {
      ReportTemplate getRowAndColByTemplateId(Integer reportId);
 
      List<String> getReportNumber(List<Long> reportId);
+
+     List<ReportDataList> getStatement(ReportVO reportVO,User user);
 }
