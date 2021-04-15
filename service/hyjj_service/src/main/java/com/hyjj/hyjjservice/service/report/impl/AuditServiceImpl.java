@@ -8,6 +8,8 @@ import com.hyjj.hyjjservice.dao.*;
 import com.hyjj.hyjjservice.dataobject.*;
 import com.hyjj.hyjjservice.dataobject.Process;
 import com.hyjj.hyjjservice.service.report.AuditService;
+import com.hyjj.hyjjservice.service.report.impl.factory.StrategyFactory;
+import com.hyjj.hyjjservice.service.report.impl.strategy.GetStatementStrategy;
 import com.hyjj.util.Date.DateUtil;
 import com.hyjj.util.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ import java.util.*;
 
 @Service
 public class AuditServiceImpl implements AuditService {
+
+    @Autowired
+    private StrategyFactory strategyFactory;
 
     @Autowired
     private IndustryMapper industryMapper;
@@ -58,7 +63,10 @@ public class AuditServiceImpl implements AuditService {
             audit = "审核";
             userId = null;
         }
-        switch (select) {
+
+        GetStatementStrategy statementStrategy = strategyFactory.getStatementStrategy(select);
+        return statementStrategy.getStatement(audit, userId);
+        /*switch (select) {
             case 1:                //获取待审核/填报列表
                 return reportDataMapper.getStatement(null, null, audit, userId);
             case 2:                //获取本周已审核/填报列表
@@ -69,7 +77,7 @@ public class AuditServiceImpl implements AuditService {
                 return reportDataMapper.getStatement(null, null, "审核%", userId);
             default:
                 return null;
-        }
+        }*/
     }
 
     @Override

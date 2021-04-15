@@ -47,7 +47,7 @@ public class AuditController {
                 @RequestParam(required = false, defaultValue = "10") int pageSize) throws Exception {
         User user = threadLocal.get();
         return checkUser(user) ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
-                : CommonReturnType.ok().add("reportData", auditService.getStatement(auditVO, user));
+                : CommonReturnType.ok().add("reportData", auditService.getStatement(auditVO, user, pageNum, pageSize));
     }
 
     @GetMapping("detailReport")
