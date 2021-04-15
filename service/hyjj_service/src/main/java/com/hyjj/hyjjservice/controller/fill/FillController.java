@@ -46,7 +46,6 @@ public class FillController{
     @ApiOperation("获取待填报的报表")
     public CommonReturnType getReportList() {
         User user = threadLocal.get();
-        System.out.println(user);
         Long userId = user.getId();
         List<ReportDataList> reportDataList = fillService.getReportListByUserId(userId);
         return CommonReturnType.ok().add("data", reportDataList);
@@ -76,7 +75,7 @@ public class FillController{
     }
 
 
-    @PutMapping("submit")
+    @PostMapping("submit")
     @ApiOperation("填报界面提交按钮")
     public CommonReturnType submitReport(@RequestBody Map<String, Object> mapParam) {
         ReportDataHtml reportDataHtml = new ReportDataHtml();
@@ -89,7 +88,6 @@ public class FillController{
     }
 
     @PostMapping("upload")
-    @ResponseBody
     public CommonReturnType upload(UploadVO uploadVO) throws IOException {
         if (uploadVO.getFile().isEmpty()) {
             return CommonReturnType.error().setErrMsg("文件为空");

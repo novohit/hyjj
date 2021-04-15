@@ -137,4 +137,8 @@
         from publish
         order by gmt_create desc
     </select>
+
+  <select id="selectNewsTrends" resultMap="BaseResultMap">
+    select * from publish
+  </select>
 </mapper>

@@ -455,7 +455,7 @@
     </update>
 
     <select id="getReportDataListByUserId" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList">
-        select id,`number`,title,report_date,fill_unit,submit_date,pro_status_name from report_data where user_id = #{userId}
+        select id,`number`,title,report_date,fill_unit,submit_date,pro_status_name from report_data where user_id = #{userId} and pro_status = "填报数据"
     </select>
 
     <select id="getReportDataHtml" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml">
@@ -534,7 +534,7 @@
 
     <select id="reportSelectReportDataByIndustryId" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList">
         SELECT
-        rd.id,rd.`number`,rd.title,rd.report_date,rd.fill_unit,rd.submit_date,rd.pro_status_name,i.anme
+        rd.id,rd.`number`,rd.title,rd.report_date,rd.fill_unit,rd.submit_date,rd.pro_status_name,i.name
         FROM report_data rd
         INNER JOIN report_template rt
         ON rd.`report_template_id` = rt.`id`

@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @Api(tags = "设置中的报表管理")
 @RequestMapping("/settings/report")
-@PreAuthorize("hasRole('ROLE_')")
+//@PreAuthorize("hasRole('ROLE_')")
 public class ReportManageController {
 
     @Autowired

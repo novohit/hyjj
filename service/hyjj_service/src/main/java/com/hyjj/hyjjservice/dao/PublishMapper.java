@@ -54,4 +54,6 @@ public interface PublishMapper {
     int updateByPrimaryKey(Publish record);
 
     List<Publish>  selectPublishOrderByGmtCreate();
+
+    List<Publish> selectNewsTrends();
 }
