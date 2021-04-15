@@ -1,4 +1,4 @@
-package com.hyjj.hyjjservice.controller.report.viewobject;
+package com.hyjj.hyjjservice.controller.urge.viewobject;
 
 import java.util.Date;
 

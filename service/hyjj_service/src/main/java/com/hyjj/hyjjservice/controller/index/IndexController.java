@@ -11,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.hyjj.hyjjservice.service.menu.*;
 
@@ -49,37 +50,45 @@ public class IndexController {
     @ApiOperation(value = "获取当前用户待审核/填报列表")
     @GetMapping("waitToAudit")
     @GetUser
-    public CommonReturnType checkPendingOrFill() {
+    public CommonReturnType checkPendingOrFill(
+            @RequestParam(required = false, defaultValue = "1") int pageNum,
+            @RequestParam(required = false, defaultValue = "10") int pageSize) {
         User user = threadLocal.get();
-        return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatement(1, user, false))
-                : CommonReturnType.ok().add("reports", auditService.getStatement(1, user, true));
+        return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatement(1, user, false, pageNum, pageSize))
+                : CommonReturnType.ok().add("reports", auditService.getStatement(1, user, true, pageNum, pageSize));
     }
 
     @ApiOperation(value = "获取当前用户本周已审核/填报列表")
     @GetMapping("alreadyAuditInWeek")
     @GetUser
-    public CommonReturnType alreadyAuditOrFillInWeek() {
+    public CommonReturnType alreadyAuditOrFillInWeek(
+            @RequestParam(required = false, defaultValue = "1") int pageNum,
+            @RequestParam(required = false, defaultValue = "10") int pageSize) {
         User user = threadLocal.get();
-        return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatement(2, user, false))
-                : CommonReturnType.ok().add("reports", auditService.getStatement(2, user, true));
+        return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatement(2, user, false, pageNum, pageSize))
+                : CommonReturnType.ok().add("reports", auditService.getStatement(2, user, true, pageNum, pageSize));
     }
 
     @ApiOperation(value = "获取当前用户本月已审核/填报列表")
     @GetMapping("alreadyAuditInMonth")
     @GetUser
-    public CommonReturnType alreadyAuditOrFillInMonth() {
+    public CommonReturnType alreadyAuditOrFillInMonth(
+            @RequestParam(required = false, defaultValue = "1") int pageNum,
+            @RequestParam(required = false, defaultValue = "10") int pageSize) {
         User user = threadLocal.get();
-        return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatement(3, user, false))
-                : CommonReturnType.ok().add("reports", auditService.getStatement(3, user, true));
+        return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatement(3, user, false, pageNum, pageSize))
+                : CommonReturnType.ok().add("reports", auditService.getStatement(3, user, true, pageNum, pageSize));
     }
 
     @ApiOperation(value = "获取当前用户累计审核/填报列表")
     @GetMapping("alreadyAuditTotal")
     @GetUser
-    public CommonReturnType alreadyAuditOrFillTotal() {
+    public CommonReturnType alreadyAuditOrFillTotal(
+            @RequestParam(required = false, defaultValue = "1") int pageNum,
+            @RequestParam(required = false, defaultValue = "10") int pageSize) {
         User user = threadLocal.get();
-        return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatement(4, user, false))
-                : CommonReturnType.ok().add("reports", auditService.getStatement(4, user, true));
+        return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatement(4, user, false, pageNum, pageSize))
+                : CommonReturnType.ok().add("reports", auditService.getStatement(4, user, true, pageNum, pageSize));
     }
 
     public Boolean checkUser(User user) {

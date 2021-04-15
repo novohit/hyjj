@@ -1,7 +1,7 @@
 package com.hyjj.hyjjservice.dao;
 
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditReportVO;
-import com.hyjj.hyjjservice.controller.report.viewobject.UrgeReportVO;
+import com.hyjj.hyjjservice.controller.urge.viewobject.UrgeReportVO;
 import com.hyjj.hyjjservice.dataobject.ReportData;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;

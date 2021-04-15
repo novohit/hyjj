@@ -1,8 +1,9 @@
 package com.hyjj.hyjjservice.service.report.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditReportVO;
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditVO;
-import com.hyjj.hyjjservice.controller.report.viewobject.UrgeReportVO;
 import com.hyjj.hyjjservice.dao.*;
 import com.hyjj.hyjjservice.dataobject.*;
 import com.hyjj.hyjjservice.dataobject.Process;
@@ -33,9 +34,6 @@ public class AuditServiceImpl implements AuditService {
     @Autowired
     private ProcessMapper processMapper;
 
-    @Autowired
-    private UrgeDataMapper urgeDataMapper;
-
 
     @Override
     public List<Industry> getIndustry() {
@@ -49,40 +47,34 @@ public class AuditServiceImpl implements AuditService {
     }
 
     @Override
-    public List<ReportData> getStatement(Integer select, User user, Boolean isManager) {
+    public List<ReportData> getStatement(Integer select, User user, Boolean isManager, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+
         GregorianCalendar g = new GregorianCalendar();
         g.setTime(new Date());
-        if (isManager) {                //如果是管理员
-            switch (select) {
-                case 1:                //获取待审核列表
-                    return reportDataMapper.getStatement(null, null, "审核", null);
-                case 2:                //获取本周已审核列表
-                    return reportDataMapper.getStatement(g.get(Calendar.WEEK_OF_YEAR) - 1, null, "审核%", null);
-                case 3:                //获取本周已审核列表
-                    return reportDataMapper.getStatement(null, g.get(Calendar.MONTH) + 1, "审核%", null);
-                case 4:                //获取累计审核
-                    return reportDataMapper.getStatement(null, null, "审核%", null);
-                default:
-                    return null;
-            }
-        } else {                        //非管理员
-            switch (select) {
-                case 1:         //获取待填报列表
-                    return reportDataMapper.getStatement(null, null, "填报数据", user.getId());
-                case 2:         //获取本周已填报列表
-                    return reportDataMapper.getStatement(g.get(Calendar.WEEK_OF_YEAR) - 1, null, "审核%", user.getId());
-                case 3:         //获取本周已填报列表
-                    return reportDataMapper.getStatement(null, g.get(Calendar.MONTH) + 1, "审核%", user.getId());
-                case 4:         //获取累计填报
-                    return reportDataMapper.getStatement(null, null, "审核%", user.getId());
-                default:
-                    return null;
-            }
+        String audit = "填报数据";
+        Long userId = user.getId();
+        if (isManager) {
+            audit = "审核";
+            userId = null;
+        }
+        switch (select) {
+            case 1:                //获取待审核/填报列表
+                return reportDataMapper.getStatement(null, null, audit, userId);
+            case 2:                //获取本周已审核/填报列表
+                return reportDataMapper.getStatement(g.get(Calendar.WEEK_OF_YEAR) - 1, null, "审核%", userId);
+            case 3:                //获取本周已审核/填报列表
+                return reportDataMapper.getStatement(null, g.get(Calendar.MONTH) + 1, "审核%", userId);
+            case 4:                //获取累计审核/填报
+                return reportDataMapper.getStatement(null, null, "审核%", userId);
+            default:
+                return null;
         }
     }
 
     @Override
-    public List<AuditReportVO> getStatement(AuditVO auditVO, User user) throws BusinessException {
+    public List<AuditReportVO> getStatement(AuditVO auditVO, User user, int pageNum, int pageSize) throws BusinessException {
+        PageHelper.startPage(pageNum, pageSize);
         //指定搜索某一年
         String year = auditVO.getYear() + "-01-01 00:00:00";
         String nextYear = (Integer.parseInt(auditVO.getYear()) + 1) + "-01-01 00:00:00";
@@ -182,47 +174,5 @@ public class AuditServiceImpl implements AuditService {
     @Override
     public List<ComInfo> selectAllCompany() {
         return comInfoMapper.selectAllCompany();
-    }
-
-    /**
-     * 这个是增加催办名单，并不是获取催办名单= -
-     *
-     * @param user
-     * @param company
-     * @return
-     */
-    @Override
-    public String urge(User user, List<String> company) {
-        Date date = new Date();
-
-        for (String s : company) {
-            UrgeData urgeData = new UrgeData();
-            urgeData.setSendUser(user.getName());
-            //根据用户id查询公司名称
-            urgeData.setSendGroup(comInfoMapper.selectCompanyNameByUserId(user.getId()));
-            urgeData.setAcceptGroup(s);
-            urgeData.setCreateDate(date);
-            urgeData.setIsRead((byte) 0);
-            urgeData.setReatDate(date);
-            urgeData.setGmtCreate(date);
-            urgeData.setGmtModified(date);
-
-            urgeDataMapper.insert(urgeData);
-        }
-
-        return "urge success";
-    }
-
-    @Override
-    public List<UrgeReportVO> getUrge(Integer year, String company) {
-        if (company.equals("全部"))
-            company = null;
-        List<UrgeReportVO> urgeReportVOS = reportDataMapper.selectByYearAndCompany(year, company);
-        for (UrgeReportVO urgeReportVO : urgeReportVOS) {
-            urgeReportVO.setReportDate(DateUtil.changeDateToStringWithMonth(urgeReportVO.getBeginDate()));
-            urgeReportVO.setBeginDateToString(DateUtil.changeDateToStringWithDate(urgeReportVO.getBeginDate()));
-            urgeReportVO.setEndDateToString(DateUtil.changeDateToStringWithDate(urgeReportVO.getEndDate()));
-        }
-        return urgeReportVOS;
     }
 }

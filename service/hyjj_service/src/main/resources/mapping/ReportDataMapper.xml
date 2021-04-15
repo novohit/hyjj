@@ -503,7 +503,7 @@
         select `row`,col from report_template rt join report_data rd on rt.id = rd.report_template_id where rd.id = #{reportId}
     </select>
 
-    <select id="selectByYearAndCompany" resultType="com.hyjj.hyjjservice.controller.report.viewobject.UrgeReportVO">
+    <select id="selectByYearAndCompany" resultType="com.hyjj.hyjjservice.controller.urge.viewobject.UrgeReportVO">
         SELECT rd.`id`, rd.`fill_person`, rd.`fill_unit`, rd.`begin_date`, rd.`end_date`, rd.`number`
         FROM report_data rd
         <where>

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +42,9 @@ public class AuditController {
     @GetMapping("statement")
     @ApiOperation("查看需要审核的报表")
     @GetUser
-    public CommonReturnType getStatement(AuditVO auditVO) throws Exception {
+    public CommonReturnType getStatement(AuditVO auditVO,
+                @RequestParam(required = false, defaultValue = "1") int pageNum,
+                @RequestParam(required = false, defaultValue = "10") int pageSize) throws Exception {
         User user = threadLocal.get();
         return checkUser(user) ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
                 : CommonReturnType.ok().add("reportData", auditService.getStatement(auditVO, user));
@@ -71,29 +74,6 @@ public class AuditController {
     @ApiOperation("获取单位信息")
     public CommonReturnType getCompany() {
         return CommonReturnType.ok().add("company", auditService.selectAllCompany());
-    }
-
-    @GetMapping("getUrge")
-    @ApiOperation("获取催办名单")
-    @GetUser
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "year", value = "年份", required = true, dataTypeClass = Integer.class),
-            @ApiImplicitParam(name = "company", value = "要催办的公司的名称", required = true, dataTypeClass = String.class)
-    })
-    public CommonReturnType getUrge(Integer year, String company) {
-        User user = threadLocal.get();
-        return checkUser(user) ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
-                : CommonReturnType.ok().add("result", auditService.getUrge(year, company));
-    }
-
-    @PostMapping("urge")
-    @ApiOperation("催办业务")
-    @GetUser
-    public CommonReturnType urge(@RequestBody List<String> company) {
-        User user = threadLocal.get();
-        System.out.println(user);
-        return checkUser(user) ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
-                : CommonReturnType.ok().add("status", auditService.urge(user, company));
     }
 
     public Boolean checkUser(User user) {
