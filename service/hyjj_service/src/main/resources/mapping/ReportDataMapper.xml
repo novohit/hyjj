@@ -526,12 +526,15 @@
             and rt.`rep_class` = #{type}
             and rd.`submit_date` between #{year} and #{nextYear}
             and rd.`user_id` = #{userId}
-            <if test="statue != null and statue != '未提交'">
+            <if test="statue != null and statue != '未提交' and statue != '填报数据'">
                 and rd.`pro_status` = #{statue}
             </if>
             <if test="statue == '未提交' ">
                 and rd.`pro_status` = "填报数据"
                 and rd.is_save = 1
+            </if>
+            <if test="statue == '填报数据'">
+                and rd.pro_status != "审核通过"
             </if>
         </where>
     </select>
