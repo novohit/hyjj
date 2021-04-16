@@ -463,7 +463,7 @@
     </select>
 
     <update id="saveReportDataHtml" parameterType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml">
-        update report_data set head_html = #{headHtml},body_html = #{bodyHtml},tail_html = #{tailHtml} where id = #{id}
+        update report_data set head_html = #{headHtml},body_html = #{bodyHtml},tail_html = #{tailHtml},is_save = 1 where id = #{id}
     </update>
 
     <update id="submitReportData" parameterType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml">
@@ -526,8 +526,12 @@
             and rt.`rep_class` = #{type}
             and rd.`submit_date` between #{year} and #{nextYear}
             and rd.`user_id` = #{userId}
-            <if test="statue != null">
+            <if test="statue != null and statue != '未提交'">
                 and rd.`pro_status` = #{statue}
+            </if>
+            <if test="statue == '未提交' ">
+                and rd.`pro_status` = "填报数据"
+                and rd.is_save = 1
             </if>
         </where>
     </select>
@@ -548,9 +552,13 @@
             and rt.`rep_class` = #{type}
             and rd.`submit_date` between #{year} and #{nextYear}
             and rd.`user_id` = #{userId}
-            <if test="statue != null">
+            <if test="statue != null and statue != '未提交'">
                 and rd.`pro_status` = #{statue}
+            </if>
+            <if test="statue == '未提交' ">
+                and rd.is_save = 1
             </if>
         </where>
     </select>
+
 </mapper>
