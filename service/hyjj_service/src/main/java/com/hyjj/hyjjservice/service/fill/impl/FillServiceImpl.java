@@ -93,7 +93,7 @@ public class FillServiceImpl implements FillService {
         } else if (reportVO.getStatus() == 2) {
             status = "未提交";
         } else if(reportVO.getStatus() == 3){
-            status = "审核通过";
+            status = "已入库";
         }
         //先查询出所有已选行业
         String industry = reportVO.getIndustry();
