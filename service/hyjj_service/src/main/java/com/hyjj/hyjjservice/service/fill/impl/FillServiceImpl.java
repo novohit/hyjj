@@ -60,7 +60,8 @@ public class FillServiceImpl implements FillService {
         process.setProcessName("审核");
         process.setProsessDescription("审核");
         process.setUpdateTime(date);
-        int i = processMapper.updateProcessByReportId(reportDataHtml.getId(), process);
+        int i = reportDataMapper.submitReportData(reportDataHtml);
+        processMapper.updateProcessByReportId(reportDataHtml.getId(), process);
         return i;
     }
 
@@ -89,7 +90,7 @@ public class FillServiceImpl implements FillService {
 
         String status = null;
         if (reportVO.getStatus() == 1) {
-            status = "填报数据";
+            status = "未填报";
         } else if (reportVO.getStatus() == 2) {
             status = "未提交";
         } else if(reportVO.getStatus() == 3){

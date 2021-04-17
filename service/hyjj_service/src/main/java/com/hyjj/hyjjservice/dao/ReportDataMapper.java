@@ -95,7 +95,7 @@ public interface ReportDataMapper {
 
     int saveReportDataHtml(ReportDataHtml reportDataHtml);
 
-    int submitReportDataHtml(ReportDataHtml reportDataHtml);
+    int submitReportData(ReportDataHtml reportDataHtml);
 
     ReportTemplate getRowAndColByTemplateId(Integer reportId);
 
