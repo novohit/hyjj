@@ -9,9 +9,11 @@ import com.hyjj.hyjjservice.dataobject.*;
 import com.hyjj.hyjjservice.dataobject.Process;
 import com.hyjj.hyjjservice.service.report.AuditService;
 import com.hyjj.hyjjservice.service.report.impl.factory.StrategyFactory;
+import com.hyjj.hyjjservice.service.report.impl.status.StatusUtil;
 import com.hyjj.hyjjservice.service.report.impl.strategy.GetStatementStrategy;
 import com.hyjj.util.Date.DateUtil;
 import com.hyjj.util.error.BusinessException;
+import com.hyjj.util.responce.CommonReturnType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,18 +56,15 @@ public class AuditServiceImpl implements AuditService {
     @Override
     public List<ReportData> getStatement(Integer select, User user, Boolean isManager, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-
-        GregorianCalendar g = new GregorianCalendar();
-        g.setTime(new Date());
         String audit = "填报数据";
         Long userId = user.getId();
         if (isManager) {
             audit = "审核";
             userId = null;
         }
-
-        GetStatementStrategy statementStrategy = strategyFactory.getStatementStrategy(select);
-        return statementStrategy.getStatement(audit, userId);
+        List<ReportData> statements = strategyFactory.getStatementStrategy(select).getStatement(audit, userId);
+        StatusUtil.setStatus(statements);
+        return statements;
         /*switch (select) {
             case 1:                //获取待审核/填报列表
                 return reportDataMapper.getStatement(null, null, audit, userId);
@@ -87,7 +86,7 @@ public class AuditServiceImpl implements AuditService {
         String year = auditVO.getYear() + "-01-01 00:00:00";
         String nextYear = (Integer.parseInt(auditVO.getYear()) + 1) + "-01-01 00:00:00";
 
-        String status = null;
+        String status = "审核%";
         if (auditVO.getStatus() == 1) {
             status = "审核";
         } else if (auditVO.getStatus() == 2) {
@@ -173,6 +172,12 @@ public class AuditServiceImpl implements AuditService {
             processMapper.insertSelective(process);
         else
             processMapper.updateByPrimaryKeySelective(process);
+
+        ReportData reportData = reportDataMapper.selectByPrimaryKey(reportId);
+        StatusUtil.setStatus(reportData);
+        Integer audit = reportData.audit();
+        if (audit == -1)
+            return "audit error";
 
         reportDataMapper.updateProcessByReportId(reportId, process.getId(), process.getProcessName(), process.getProcessName());
 

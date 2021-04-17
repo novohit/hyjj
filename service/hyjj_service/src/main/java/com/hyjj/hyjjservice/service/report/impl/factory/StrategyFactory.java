@@ -17,6 +17,7 @@ public class StrategyFactory {
     private final Map<Integer, GetStatementStrategy> map = new HashMap<>();
 
     public StrategyFactory(ReportDataMapper reportDataMapper){
+        map.put(0,new GetNull());
         map.put(1, new SelectID1(reportDataMapper));
         map.put(2, new SelectID2(reportDataMapper));
         map.put(3, new SelectID3(reportDataMapper));
@@ -24,8 +25,8 @@ public class StrategyFactory {
     }
 
     public GetStatementStrategy getStatementStrategy(Integer select){
-        if (select == null)
-            return map.get(1);
+        if (select == null || select >= map.size())
+            return map.get(0);
         return map.get(select);
     }
 }

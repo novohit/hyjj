@@ -7,6 +7,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+/**
+ * 获取本周已审核/填报列表
+ */
 public class SelectID3 implements GetStatementStrategy{
 
     private ReportDataMapper reportDataMapper;

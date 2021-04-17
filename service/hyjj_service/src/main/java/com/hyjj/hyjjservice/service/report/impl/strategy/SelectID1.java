@@ -5,6 +5,9 @@ import com.hyjj.hyjjservice.dataobject.ReportData;
 
 import java.util.List;
 
+/**
+ * 获取待审核/填报列表
+ */
 public class SelectID1 implements GetStatementStrategy{
 
     private ReportDataMapper reportDataMapper;
