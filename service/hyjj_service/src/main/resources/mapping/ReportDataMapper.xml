@@ -421,7 +421,7 @@
             and rt.`rep_class` = #{type}
             and rd.`submit_date` between #{year} and #{nextYear}
             <if test="statue != null">
-                and rd.`pro_status` like #{statue}
+                and rd.`pro_status` = #{statue}
             </if>
         </where>
     </select>
@@ -440,7 +440,7 @@
             and rt.`rep_class` = #{type}
             and rd.`submit_date` between #{year} and #{nextYear}
             <if test="statue != null">
-                and rd.`pro_status` like #{statue}
+                and rd.`pro_status` = #{statue}
             </if>
         </where>
     </select>
@@ -451,6 +451,9 @@
         pro_status = #{proStatus,jdbcType=VARCHAR},
         pro_status_name = #{proStatusName,jdbcType=VARCHAR},
         process_id = #{processId,jdbcType=BIGINT}
+        <if test="proStatus = '审核不通过'">
+            ,is_save = 0;
+        </if>
         where id = #{reportId}
     </update>
 
@@ -467,11 +470,11 @@
     </update>
 
     <update id="submitReportData" parameterType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml">
-        update report_data set head_html = #{headHtml},body_html = #{bodyHtml},tail_html = #{tailHtml},pro_status_name = '审核',pro_status = '审核' where id = #{id}
+        update report_data set head_html = #{headHtml},body_html = #{bodyHtml},tail_html = #{tailHtml},pro_status_name = "审核数据",pro_status = "审核数据",is_save = 1 where id = #{id}
     </update>
 
     <update id="clearReportDataByReportId">
-        update report_data rd join report_template rt on rd.report_template_id = rt.`id` set rd.body_html = rt.body_html where rd.id = #{reportId}
+        update report_data rd join report_template rt on rd.report_template_id = rt.`id` set rd.body_html = rt.body_html,is_save = 0 where rd.id = #{reportId}
     </update>
 
     <select id="getStatement" resultMap="BaseResultMap">
@@ -533,9 +536,11 @@
                 and rd.`pro_status` = "填报数据"
                 and rd.is_save = 1
             </if>
-            <if test="statue == '填报数据'">
-                and rd.pro_status != "审核通过"
-                and rd.is_save = 0
+            <if test="statue == '未填报'">
+                and (rd.pro_status = "审核不通过" or rd.pro_status = "填报数据") and rd.is_save = 0
+            </if>
+            <if test="statue == null">
+                and rd.pro_status != "审核数据"
             </if>
         </where>
     </select>
@@ -556,11 +561,19 @@
             and rt.`rep_class` = #{type}
             and rd.`submit_date` between #{year} and #{nextYear}
             and rd.`user_id` = #{userId}
-            <if test="statue != null and statue != '未提交'">
-                and rd.`pro_status` = #{statue}
+            <if test="statue == '已入库'">
+                and rd.`pro_status` = "审核通过"
             </if>
             <if test="statue == '未提交' ">
+                and (rd.`pro_status` = "填报数据" or rd.pro_status = "审核不通过")
                 and rd.is_save = 1
+            </if>
+            <if test="statue == '未填报'">
+                and (rd.pro_status = "审核不通过" or rd.pro_status = "填报数据")
+                and rd.is_save = 0
+            </if>
+            <if test="statue == null">
+                and rd.pro_status != "审核数据"
             </if>
         </where>
     </select>

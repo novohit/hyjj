@@ -100,7 +100,7 @@ public class FillServiceImpl implements FillService {
 
         String status = null;
         if (reportVO.getStatus() == 1) {
-            status = "填报数据";
+            status = "未填报";
         } else if (reportVO.getStatus() == 2) {
             status = "审核";
         } else if (reportVO.getStatus() == 3) {
