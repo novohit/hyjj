@@ -94,7 +94,7 @@ public class FillServiceImpl implements FillService {
     public List<ReportDataList> getStatement(ReportVO reportVO, User user) {
         //指定搜索某一年
         Long userId = user.getId();
-        ;
+
         String year = reportVO.getYear() + "-01-01 00:00:00";
         String nextYear = (Integer.parseInt(reportVO.getYear()) + 1) + "-01-01 00:00:00";
 

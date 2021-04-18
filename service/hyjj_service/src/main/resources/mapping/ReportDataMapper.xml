@@ -420,9 +420,7 @@
             </foreach>
             and rt.`rep_class` = #{type}
             and rd.`submit_date` between #{year} and #{nextYear}
-            <if test="statue != null">
-                and rd.`pro_status` = #{statue}
-            </if>
+            and rd.`pro_status` like #{statue}
         </where>
     </select>
 
@@ -439,9 +437,7 @@
         <where>
             and rt.`rep_class` = #{type}
             and rd.`submit_date` between #{year} and #{nextYear}
-            <if test="statue != null">
-                and rd.`pro_status` = #{statue}
-            </if>
+            and rd.`pro_status` like #{statue}
         </where>
     </select>
 
@@ -451,9 +447,6 @@
         pro_status = #{proStatus,jdbcType=VARCHAR},
         pro_status_name = #{proStatusName,jdbcType=VARCHAR},
         process_id = #{processId,jdbcType=BIGINT}
-        <if test="proStatus = '审核不通过'">
-            ,is_save = 0;
-        </if>
         where id = #{reportId}
     </update>
 
