@@ -59,7 +59,7 @@ public class AuditServiceImpl implements AuditService {
         String audit = "填报数据";
         Long userId = user.getId();
         if (isManager) {
-            audit = "审核";
+            audit = "审核数据";
             userId = null;
         }
         List<ReportData> statements = strategyFactory.getStatementStrategy(select).getStatement(audit, userId);
