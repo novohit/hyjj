@@ -1,23 +1,25 @@
 package com.hyjj.hyjjservice.service.statistic.impl;
 
 import com.hyjj.hyjjservice.controller.statistic.viewObject.StatisticVo;
+import com.hyjj.hyjjservice.dao.ReportDataMapper;
 import com.hyjj.hyjjservice.dao.StatisticsTargetKeyMapper;
 import com.hyjj.hyjjservice.dao.TargetKeyValueMapper;
 import com.hyjj.hyjjservice.dao.TargetValueMapper;
 import com.hyjj.hyjjservice.dataobject.StatisticsTargetKey;
-import com.hyjj.hyjjservice.dataobject.TargetKeyValue;
-import com.hyjj.hyjjservice.dataobject.TargetValue;
 import com.hyjj.hyjjservice.service.statistic.StatisticService;
+import com.hyjj.hyjjservice.service.statistic.impl.factory.AddTargetStrategyFactory;
+import com.hyjj.hyjjservice.service.statistic.impl.template.AddTargetTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class StatisticServiceImpl implements StatisticService {
+
+    @Autowired
+    private AddTargetStrategyFactory addTargetStrategyFactory;
 
     @Autowired
     private StatisticsTargetKeyMapper statisticsTargetKeyMapper;
@@ -28,32 +30,21 @@ public class StatisticServiceImpl implements StatisticService {
     @Autowired
     private TargetKeyValueMapper targetKeyValueMapper;
 
+    @Autowired
+    private ReportDataMapper reportDataMapper;
+
     @Override
     public List<StatisticsTargetKey> getStatisticTargetKey(Long parentId) {
         return statisticsTargetKeyMapper.selectStatisticsTargetKeyByParentId(parentId);
     }
 
     @Override
-    public Integer addTargetKeyValue(Long reportDataId, Map<Long, Double> json) {
-        Date date = new Date();
-        Integer result = 0;
-
-        for (Long targetKeyId : json.keySet()) {
-            TargetValue targetValue = new TargetValue();
-            targetValue.setTargetValue(json.get(targetKeyId));
-            targetValue.setGmtCreate(date);
-            targetValue.setGmtModified(date);
-            targetValueMapper.insertSelective(targetValue);
-
-            TargetKeyValue targetKeyValue = new TargetKeyValue();
-            targetKeyValue.setTargetKeyId(targetKeyId);
-            targetKeyValue.setValueId(targetValue.getId());
-            targetKeyValue.setGmtCreate(date);
-            targetKeyValue.setGmtModified(date);
-            targetKeyValue.setReportDataId(reportDataId);
-            result += targetKeyValueMapper.insertSelective(targetKeyValue);
-        }
-        return result;
+    public Integer addTargetKeyValue(Long reportDataId, List<Double> data) {
+        //先根据报表查询出对应模板表
+        Long reportTemplateId = reportDataMapper.selectReportTemplateByReportId(reportDataId);
+        AddTargetTemplate addTargetValueStatus = addTargetStrategyFactory.getAddTargetValueStatus(reportTemplateId);
+        System.out.println(reportTemplateId);
+        return addTargetValueStatus.add(reportDataId,data);
     }
 
     @Override

@@ -571,4 +571,7 @@
         </where>
     </select>
 
+    <select id="selectReportTemplateByReportId" resultType="java.lang.Long">
+        SELECT report_template_id FROM report_data WHERE id = #{reportId}
+    </select>
 </mapper>

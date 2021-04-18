@@ -9,7 +9,7 @@ import java.util.Map;
 public interface StatisticService {
     List<StatisticsTargetKey> getStatisticTargetKey(Long parentId);
 
-    Integer addTargetKeyValue(Long reportDataId, Map<Long, Double> json);
+    Integer addTargetKeyValue(Long reportDataId, List<Double> data);
 
     List<StatisticVo> getStatisticInfo(List<Integer> years, String areaName, Long targetId, Boolean count);
 

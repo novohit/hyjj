@@ -128,4 +128,6 @@ public interface ReportDataMapper {
                                                      @Param("year") String year,
                                                      @Param("nextYear") String nextYear,
                                                             @Param("userId")Long userId);
+
+    Long selectReportTemplateByReportId(@Param("reportId") Long reportId);
 }

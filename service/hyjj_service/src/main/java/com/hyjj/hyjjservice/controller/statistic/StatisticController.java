@@ -35,9 +35,9 @@ public class StatisticController {
             @ApiImplicitParam(name = "json", value = "需要统计的指标，以json字符串的形式发给我", required = true, example = "{\"1\":\"100\"}")
     })
     @PostMapping("addTargetKeyValue")
-    public CommonReturnType addTargetKeyValue(Long reportDataId, @RequestBody Map<Long, Double> json) {
-        return statisticService.addTargetKeyValue(reportDataId, json) > 0 ? CommonReturnType.ok().add("result", "add success")
-                : CommonReturnType.error().add("result", "add fail");
+    public CommonReturnType addTargetKeyValue(Long reportDataId, @RequestBody List<Double> data) {
+        statisticService.addTargetKeyValue(reportDataId,data);
+        return CommonReturnType.ok().add("result","success");
     }
 
     @ApiOperation(value = "获取统计信息", notes = "如果要查看合计的话直接传二级指标的id过来就可以，前提是这个二级指标所对应的三级指标的单位一定要相同")
