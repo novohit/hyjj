@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * 模板id为9的报表的模板（海洋船舶工业生产情况）
+ * 模板id为23的报表的模板（临港石化产业生产情况）
  */
 @Component
-public class TemplateId9 extends AddTargetTemplate {
+public class TemplateId23 extends AddTargetTemplate {
     @Autowired
     private TargetKeyValueMapper targetKeyValueMapper;
 
@@ -24,7 +24,7 @@ public class TemplateId9 extends AddTargetTemplate {
     private StatisticService statisticService;
 
     public Integer changeValue(Long reportDataId, List<Double> data) {
-        List<StatisticsTargetKey> statisticTargetKey = statisticService.getStatisticTargetKey(142l);
+        List<StatisticsTargetKey> statisticTargetKey = statisticService.getStatisticTargetKey(149l);
         return addTargetValue(targetValueMapper, targetKeyValueMapper, reportDataId, data, statisticTargetKey);
     }
 }

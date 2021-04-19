@@ -9,6 +9,9 @@ import com.hyjj.hyjjservice.dataobject.TargetValue;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 后续优化就是可以加一个方法查询出模板表对应的指标id，目前先写死
+ */
 public abstract class AddTargetTemplate {
 
     public Integer add(Long reportDataId, List<Double> data){

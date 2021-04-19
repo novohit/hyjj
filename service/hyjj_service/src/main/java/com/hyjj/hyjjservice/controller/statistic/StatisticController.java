@@ -48,7 +48,7 @@ public class StatisticController {
             @ApiImplicitParam(name = "count", value = "为提升效率，还需要传一个boolean类型来判断是否统计合计", required = true, dataTypeClass = Boolean.class)
     })
     @GetMapping("getStatisticInfo")
-    public CommonReturnType getStatisticInfo(@RequestBody List<Integer> years, String areaName, Long targetId, Boolean count) {
-        return CommonReturnType.ok().add("info", statisticService.getStatisticInfo(years, areaName, targetId, count));
+    public CommonReturnType getStatisticInfo(@RequestBody List<Integer> years, String areaName, Long targetId) {
+        return CommonReturnType.ok().add("info", statisticService.getStatisticInfo(years, areaName, targetId));
     }
 }

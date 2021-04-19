@@ -11,6 +11,6 @@ public interface StatisticService {
 
     Integer addTargetKeyValue(Long reportDataId, List<Double> data);
 
-    List<StatisticVo> getStatisticInfo(List<Integer> years, String areaName, Long targetId, Boolean count);
+    List<StatisticVo> getStatisticInfo(List<Integer> years, String areaName, Long targetId);
 
 }

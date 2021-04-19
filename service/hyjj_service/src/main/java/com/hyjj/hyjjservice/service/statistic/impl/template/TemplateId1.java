@@ -15,13 +15,13 @@ import java.util.List;
 @Component
 public class TemplateId1 extends AddTargetTemplate {
     @Autowired
-    protected TargetKeyValueMapper targetKeyValueMapper;
+    private TargetKeyValueMapper targetKeyValueMapper;
 
     @Autowired
-    protected TargetValueMapper targetValueMapper;
+    private TargetValueMapper targetValueMapper;
 
     @Autowired
-    protected StatisticService statisticService;
+    private StatisticService statisticService;
 
     public Integer changeValue(Long reportDataId, List<Double> data) {
         data.remove(4);
