@@ -24,9 +24,38 @@ public class TemplateId16 extends AddTargetTemplate {
     private StatisticService statisticService;
 
     public Integer changeValue(Long reportDataId, List<Double> data) {
-        List<Double> data1 = data.subList(0, 2);
-        List<Double> data2 = data.subList(23, 26);
-        List<Double> data3 = data.subList(27, 28);
+        data.remove(1);
+        data.remove(2);
+        data.remove(3);
+        data.remove(4);
+        data.remove(5);
+        data.remove(6);
+        data.remove(7);
+        data.remove(8);
+        data.remove(9);
+        data.remove(10);
+        data.remove(11);
+        data.remove(12);
+        data.remove(13);
+        data.remove(14);
+        data.remove(15);
+        data.remove(16);
+        data.remove(17);
+        data.remove(18);
+        data.remove(19);
+        data.remove(20);
+        data.remove(21);
+        data.remove(22);
+        data.remove(23);
+        data.remove(24);
+        data.remove(25);
+        data.remove(26);
+        data.remove(27);
+        data.remove(28);
+        data.remove(29);
+        List<Double> data1 = data.subList(0, 3);
+        List<Double> data2 = data.subList(23, 27);
+        List<Double> data3 = data.subList(27, 29);
         int result = 0;
         List<StatisticsTargetKey> statisticTargetKey1 = statisticService.getStatisticTargetKey(164l);
         result += addTargetValue(targetValueMapper, targetKeyValueMapper, reportDataId, data1, statisticTargetKey1);
@@ -34,7 +63,7 @@ public class TemplateId16 extends AddTargetTemplate {
         List<StatisticsTargetKey> statisticTargetKey2 = statisticService.getStatisticTargetKey(165l);
         result += addTargetValue(targetValueMapper, targetKeyValueMapper, reportDataId, data2, statisticTargetKey2);
 
-        List<StatisticsTargetKey> statisticTargetKey3 = statisticService.getStatisticTargetKey(165l);
+        List<StatisticsTargetKey> statisticTargetKey3 = statisticService.getStatisticTargetKey(166l);
         result += addTargetValue(targetValueMapper, targetKeyValueMapper, reportDataId, data3, statisticTargetKey3);
 
         return result;
