@@ -65,18 +65,6 @@ public class AuditServiceImpl implements AuditService {
         List<ReportData> statements = strategyFactory.getStatementStrategy(select).getStatement(audit, userId);
         StatusUtil.setStatus(statements);
         return statements;
-        /*switch (select) {
-            case 1:                //获取待审核/填报列表
-                return reportDataMapper.getStatement(null, null, audit, userId);
-            case 2:                //获取本周已审核/填报列表
-                return reportDataMapper.getStatement(g.get(Calendar.WEEK_OF_YEAR) - 1, null, "审核%", userId);
-            case 3:                //获取本周已审核/填报列表
-                return reportDataMapper.getStatement(null, g.get(Calendar.MONTH) + 1, "审核%", userId);
-            case 4:                //获取累计审核/填报
-                return reportDataMapper.getStatement(null, null, "审核%", userId);
-            default:
-                return null;
-        }*/
     }
 
     @Override
@@ -145,6 +133,7 @@ public class AuditServiceImpl implements AuditService {
     @Override
     public String auditReport(Long reportId, Integer judge, User user) {
         Date date = new Date();     //获取当前时间
+        Integer isSave = null;
         //根据报表id查询流程
         Process process = processMapper.selectByReportId(reportId);
         if (process == null) {
@@ -162,6 +151,7 @@ public class AuditServiceImpl implements AuditService {
         process.setGmtModified(date);
 
         if (judge == 0) {    //审核不通过
+            isSave = 0;
             process.setProcessName("审核不通过");
             process.setProsessDescription("审核不通过");
         } else {             //审核通过
@@ -179,7 +169,8 @@ public class AuditServiceImpl implements AuditService {
         if (audit == -1)
             return "audit error";
 
-        reportDataMapper.updateProcessByReportId(reportId, process.getId(), process.getProcessName(), process.getProcessName());
+
+        reportDataMapper.updateProcessByReportId(reportId, process.getId(), process.getProcessName(), process.getProcessName(),isSave);
 
         return "audit success";
     }

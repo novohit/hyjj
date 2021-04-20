@@ -73,12 +73,13 @@ public interface ReportDataMapper {
 
     /**
      * 行业全选的情况
+     *
      * @return
      */
     List<AuditReportVO> selectAllIndustryReportData(@Param("type") Integer type,
-                                                 @Param("statue") String statue,
-                                                 @Param("year") String year,
-                                                 @Param("nextYear") String nextYear);
+                                                    @Param("statue") String statue,
+                                                    @Param("year") String year,
+                                                    @Param("nextYear") String nextYear);
 
     /**
      * 审核指定id的报表
@@ -86,12 +87,13 @@ public interface ReportDataMapper {
     void updateProcessByReportId(@Param("reportId") Long reportId,
                                  @Param("processId") Long processId,
                                  @Param("proStatus") String proStatus,
-                                 @Param("proStatusName") String proStatusName);
+                                 @Param("proStatusName") String proStatusName,
+                                 @Param("isSave") Integer isSave);
 
 
     List<ReportDataList> getReportDataListByUserId(Long userId);
 
-    ReportDataHtml getReportDataHtml(int id,Long userId);
+    ReportDataHtml getReportDataHtml(int id, Long userId);
 
     int saveReportDataHtml(ReportDataHtml reportDataHtml);
 
@@ -104,6 +106,7 @@ public interface ReportDataMapper {
 
     /**
      * 首页那几个功能
+     *
      * @param week
      * @param month
      * @param audit
@@ -116,18 +119,19 @@ public interface ReportDataMapper {
 
     List<UrgeReportVO> selectByYearAndCompany(@Param("year") Integer years,
                                               @Param("company") String company);
+
     List<ReportDataList> reportSelectAllIndustryReportData(@Param("type") Integer type,
-                                                    @Param("statue") String statue,
-                                                    @Param("year") String year,
-                                                    @Param("nextYear") String nextYear,
-                                                    @Param("userId")Long userId);
+                                                           @Param("statue") String statue,
+                                                           @Param("year") String year,
+                                                           @Param("nextYear") String nextYear,
+                                                           @Param("userId") Long userId);
 
     List<ReportDataList> reportSelectReportDataByIndustryId(@Param("industriesIds") List<Integer> industriesIds,
-                                                     @Param("type") Integer type,
-                                                     @Param("statue") String statue,
-                                                     @Param("year") String year,
-                                                     @Param("nextYear") String nextYear,
-                                                            @Param("userId")Long userId);
+                                                            @Param("type") Integer type,
+                                                            @Param("statue") String statue,
+                                                            @Param("year") String year,
+                                                            @Param("nextYear") String nextYear,
+                                                            @Param("userId") Long userId);
 
     Long selectReportTemplateByReportId(@Param("reportId") Long reportId);
 }
