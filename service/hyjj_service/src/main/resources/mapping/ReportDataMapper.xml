@@ -445,7 +445,7 @@
         update report_data
         <set>
             <if test="isSave != null">
-                is_save = #{isSave}
+                is_save = #{isSave},
             </if>
             pro_status = #{proStatus,jdbcType=VARCHAR},
             pro_status_name = #{proStatusName,jdbcType=VARCHAR},
