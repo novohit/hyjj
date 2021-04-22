@@ -530,7 +530,8 @@
                 and rd.is_save = 1
             </if>
             <if test="statue == '未填报'">
-                and (rd.pro_status = "审核不通过" or rd.pro_status = "填报数据") and rd.is_save = 0
+                and (rd.pro_status = "审核不通过" or rd.pro_status = "填报数据")
+                and rd.is_save = 0
             </if>
             <if test="statue == null">
                 and rd.pro_status != "审核数据"

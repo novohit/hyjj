@@ -52,14 +52,12 @@ public class FillServiceImpl implements FillService {
 
     @Override
     public int submitReportData(ReportDataHtml reportDataHtml) {
-
         ReportData reportData = reportDataMapper.selectByPrimaryKey(reportDataHtml.getId().longValue());
         StatusUtil.setStatus(reportData);
         Integer summit = reportData.summit();
         if (summit.equals(-1)) {
             return -1;
         }
-
         Integer j = reportDataMapper.saveReportDataHtml(reportDataHtml);
         if (!j.equals(1)) {
             return 0;
@@ -102,11 +100,9 @@ public class FillServiceImpl implements FillService {
         if (reportVO.getStatus() == 1) {
             status = "未填报";
         } else if (reportVO.getStatus() == 2) {
-            status = "审核";
+            status = "未提交";
         } else if (reportVO.getStatus() == 3) {
-            status = "审核通过";
-        } else if (reportVO.getStatus() == 4) {
-            status = "审核不通过";
+            status = "已入库";
         }
         //先查询出所有已选行业
         String industry = reportVO.getIndustry();
