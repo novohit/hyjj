@@ -443,10 +443,14 @@
 
     <update id="updateProcessByReportId">
         update report_data
-        set
-        pro_status = #{proStatus,jdbcType=VARCHAR},
-        pro_status_name = #{proStatusName,jdbcType=VARCHAR},
-        process_id = #{processId,jdbcType=BIGINT}
+        <set>
+            <if test="isSave != null">
+                is_save = #{isSave},
+            </if>
+            pro_status = #{proStatus,jdbcType=VARCHAR},
+            pro_status_name = #{proStatusName,jdbcType=VARCHAR},
+            process_id = #{processId,jdbcType=BIGINT}
+        </set>
         where id = #{reportId}
     </update>
 

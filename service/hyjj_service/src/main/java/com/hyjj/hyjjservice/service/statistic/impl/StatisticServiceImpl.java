@@ -43,7 +43,6 @@ public class StatisticServiceImpl implements StatisticService {
         //先根据报表查询出对应模板表
         Long reportTemplateId = reportDataMapper.selectReportTemplateByReportId(reportDataId);
         AddTargetTemplate addTargetValueStatus = addTargetStrategyFactory.getAddTargetValueStatus(reportTemplateId);
-        System.out.println(reportTemplateId);
         return addTargetValueStatus.add(reportDataId, data);
     }
 
