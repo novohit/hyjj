@@ -58,7 +58,7 @@ public interface ProcessMapper {
      * 根据报表id查询流程
      * @return
      */
-    Process selectByReportId(@Param("reportIds") Long reportId);
+    Process selectByReportId(@Param("reportId") Long reportId);
 
     int updateProcessByReportId(@Param("reportId") Integer reportId,@Param("process")Process process);
 }

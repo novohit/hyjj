@@ -119,8 +119,9 @@ public class AuditServiceImpl implements AuditService {
 
     @Override
     public String batchAuditReport(Map<Long, Integer> map, User user) {
-        for (Long reportId : map.keySet())
+        for (Long reportId : map.keySet()) {
             auditReport(reportId, map.get(reportId), user);
+        }
 
         return "audit success";
     }
@@ -167,6 +168,8 @@ public class AuditServiceImpl implements AuditService {
         else
             processMapper.updateByPrimaryKeySelective(process);
 
+
+        System.out.println("fsafsfafasfasfasf");
         reportDataMapper.updateProcessByReportId(reportId, process.getId(), process.getProcessName(), process.getProcessName(), isSave);
 
         return "audit success";
