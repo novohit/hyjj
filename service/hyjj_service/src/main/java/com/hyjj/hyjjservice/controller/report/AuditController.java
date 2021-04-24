@@ -73,7 +73,7 @@ public class AuditController {
     @PutMapping("batchReport")
     @ApiOperation("批量审核报表")
     @GetUser
-    public CommonReturnType auditReport(Map<Long,Integer> map) {
+    public CommonReturnType auditReport(@RequestBody Map<Long,Integer> map) {
         User user = threadLocal.get();
         return checkUser(user) ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
                 : CommonReturnType.ok().add("result", auditService.batchAuditReport(map, user));
