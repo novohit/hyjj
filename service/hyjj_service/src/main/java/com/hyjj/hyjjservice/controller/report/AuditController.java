@@ -70,6 +70,15 @@ public class AuditController {
                 : CommonReturnType.ok().add("result", auditService.auditReport(reportId, judge, user));
     }
 
+    @PutMapping("batchReport")
+    @ApiOperation("批量审核报表")
+    @GetUser
+    public CommonReturnType auditReport(Map<Long,Integer> map) {
+        User user = threadLocal.get();
+        return checkUser(user) ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
+                : CommonReturnType.ok().add("result", auditService.batchAuditReport(map, user));
+    }
+
     @GetMapping("company")
     @ApiOperation("获取单位信息")
     public CommonReturnType getCompany() {

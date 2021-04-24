@@ -11,8 +11,6 @@ import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
 import com.hyjj.hyjjservice.dataobject.Process;
 import com.hyjj.hyjjservice.service.fill.FillService;
-import com.hyjj.hyjjservice.service.report.impl.status.StatusUtil;
-import com.hyjj.util.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,12 +50,6 @@ public class FillServiceImpl implements FillService {
 
     @Override
     public int submitReportData(ReportDataHtml reportDataHtml) {
-        ReportData reportData = reportDataMapper.selectByPrimaryKey(reportDataHtml.getId().longValue());
-        StatusUtil.setStatus(reportData);
-        Integer summit = reportData.summit();
-        if (summit.equals(-1)) {
-            return -1;
-        }
         Integer j = reportDataMapper.saveReportDataHtml(reportDataHtml);
         if (!j.equals(1)) {
             return 0;

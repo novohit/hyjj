@@ -9,11 +9,8 @@ import com.hyjj.hyjjservice.dataobject.*;
 import com.hyjj.hyjjservice.dataobject.Process;
 import com.hyjj.hyjjservice.service.report.AuditService;
 import com.hyjj.hyjjservice.service.report.impl.factory.StrategyFactory;
-import com.hyjj.hyjjservice.service.report.impl.status.StatusUtil;
-import com.hyjj.hyjjservice.service.report.impl.strategy.GetStatementStrategy;
 import com.hyjj.util.Date.DateUtil;
 import com.hyjj.util.error.BusinessException;
-import com.hyjj.util.responce.CommonReturnType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +60,6 @@ public class AuditServiceImpl implements AuditService {
             userId = null;
         }
         List<ReportData> statements = strategyFactory.getStatementStrategy(select).getStatement(audit, userId);
-        StatusUtil.setStatus(statements);
         return statements;
     }
 
@@ -76,7 +72,7 @@ public class AuditServiceImpl implements AuditService {
 
         String status = "审核%";
         if (auditVO.getStatus() == 1) {
-            status = "审核";
+            status = "审核数据";
         } else if (auditVO.getStatus() == 2) {
             status = "审核通过";
         }
@@ -95,14 +91,13 @@ public class AuditServiceImpl implements AuditService {
             return auditReportVOS;
         } else {
             for (int i = 1; i < 14; i++) {
-                if (industry.charAt(i) == '1') {
+                if (industry.charAt(i) == '1')
                     industriesId.add(i);
-                }
+
             }
             if (industry.charAt(14) == '1') {  //勾选了其他选项
-                for (int i = 14; i < 35; i++) {
+                for (int i = 14; i < 35; i++)
                     industriesId.add(i);
-                }
             }
         }
         if (industriesId.size() == 0)
@@ -119,6 +114,15 @@ public class AuditServiceImpl implements AuditService {
     @Override
     public ReportData getDetailReport(Long reportId) {
         return reportDataMapper.selectByPrimaryKey(reportId);
+    }
+
+
+    @Override
+    public String batchAuditReport(Map<Long, Integer> map, User user) {
+        for (Long reportId : map.keySet())
+            auditReport(reportId, map.get(reportId), user);
+
+        return "audit success";
     }
 
     /**
@@ -163,14 +167,7 @@ public class AuditServiceImpl implements AuditService {
         else
             processMapper.updateByPrimaryKeySelective(process);
 
-        ReportData reportData = reportDataMapper.selectByPrimaryKey(reportId);
-        StatusUtil.setStatus(reportData);
-        Integer audit = reportData.audit();
-        if (audit == -1)
-            return "audit error";
-
-
-        reportDataMapper.updateProcessByReportId(reportId, process.getId(), process.getProcessName(), process.getProcessName(),isSave);
+        reportDataMapper.updateProcessByReportId(reportId, process.getId(), process.getProcessName(), process.getProcessName(), isSave);
 
         return "audit success";
     }

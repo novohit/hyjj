@@ -6,6 +6,7 @@ import com.hyjj.hyjjservice.dataobject.*;
 import com.hyjj.util.error.BusinessException;
 
 import java.util.List;
+import java.util.Map;
 
 public interface AuditService {
     List<Industry> getIndustry();
@@ -19,4 +20,6 @@ public interface AuditService {
     List<ComInfo> selectAllCompany();
 
     List<ReportData> getStatement(Integer select, User user, Boolean isManager, int pageNum, int pageSize);
+
+    String batchAuditReport(Map<Long, Integer> map, User user);
 }
