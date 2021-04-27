@@ -5,16 +5,15 @@ import com.hyjj.hyjjservice.controller.settings.viewObject.ReportTemplateInfoVO;
 import com.hyjj.hyjjservice.controller.settings.viewObject.ReportTemplateVO;
 import com.hyjj.hyjjservice.controller.settings.viewObject.UnitFillReportVO;
 import com.hyjj.hyjjservice.controller.settings.viewObject.FormulaListVO;
-import com.hyjj.hyjjservice.dao.ComFillReportMapper;
-import com.hyjj.hyjjservice.dao.ComInfoMapper;
-import com.hyjj.hyjjservice.dao.FormulaMapper;
-import com.hyjj.hyjjservice.dao.ReportTemplateMapper;
+import com.hyjj.hyjjservice.dao.*;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
 import com.hyjj.hyjjservice.dataobject.Formula;
+import com.hyjj.hyjjservice.dataobject.Gdp;
 import com.hyjj.hyjjservice.service.settings.ReportManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,10 +33,13 @@ public class ReportManageServiceImpl implements ReportManageService {
     @Autowired
     private ComFillReportMapper comFillReportMapper;
 
+    @Autowired
+    private GdpMapper gdpMapper;
+
     @Override
-    public List<FormulaListVO> getFormulaList(Integer id,Integer pageNum,Integer pageSize) {
+    public List<FormulaListVO> getFormulaList(Integer pageNum,Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize==null?10:pageSize);
-        List<FormulaListVO> formulaList = formulaMapper.getFormulaList(id);
+        List<FormulaListVO> formulaList = formulaMapper.getFormulaList();
         return formulaList;
     }
 
@@ -121,5 +123,49 @@ public class ReportManageServiceImpl implements ReportManageService {
         ReportTemplateInfoVO reportTemplateInfo = reportTemplateMapper.getReportTemplateInfo(id);
         System.out.println(reportTemplateInfo);
         return reportTemplateInfo;
+    }
+
+    @Override
+    public List<Gdp> getCurrentYearData(Integer pageNum,Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize==0?10:pageSize);
+        List<Gdp> gdps = gdpMapper.selectCurrentYearData();
+        return gdps;
+    }
+
+    @Override
+    public int updateGdpData(Gdp gdpObj) {
+        Date date = new Date();
+        gdpObj.setGmtModified(date);
+        return gdpMapper.updateGdpData(gdpObj);
+    }
+
+    @Override
+    public int deleteGdpDataById(Integer id) {
+        return gdpMapper.deleteGdpDataById(id);
+    }
+
+    @Override
+    public int insertGdpDataById(Gdp gdpObj) {
+        Date date = new Date();
+        gdpObj.setGmtCreate(date);
+        return gdpMapper.insertGdpData(gdpObj);
+    }
+
+    @Override
+    public List<Gdp> searchGdpData(String district, String year,Integer pageNum,Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize==0?10:pageSize);
+        return gdpMapper.searchGdpData(district, year);
+    }
+
+    @Override
+    public List<Gdp> getPassYearData(Integer pageNum,Integer pageSize){
+        PageHelper.startPage(pageNum,pageSize==0?10:pageSize);
+        List<Gdp> gdps = gdpMapper.selectPassYearData();
+        return gdps;
+    }
+
+    @Override
+    public Gdp getGdpDataById(Integer id) {
+        return gdpMapper.selectGdpDataById(id);
     }
 }

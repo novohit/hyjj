@@ -193,9 +193,9 @@
 
   <select id="getFormulaList" resultType="com.hyjj.hyjjservice.controller.settings.viewObject.FormulaListVO">
     select f.id,f.target_key_id,f.operator,f.expression,f.error_tip,f.remark,f.formula_type,rt.number from formula f join report_template rt on f.report_template_id = rt.id
-    <if test="id != null">
-      where f.id = #{id}
-    </if>
+<!--    <if test="id != null">-->
+<!--      where f.id = #{id}-->
+<!--    </if>-->
   </select>
 
   <select id="getFormulaByFormName" resultType="com.hyjj.hyjjservice.controller.settings.viewObject.FormulaListVO">

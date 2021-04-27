@@ -3,6 +3,7 @@ package com.hyjj.hyjjservice.controller.settings;
 import com.hyjj.hyjjservice.controller.settings.viewObject.ReportTemplateVO;
 import com.hyjj.hyjjservice.controller.settings.viewObject.FormulaListVO;
 import com.hyjj.hyjjservice.dataobject.Formula;
+import com.hyjj.hyjjservice.dataobject.Gdp;
 import com.hyjj.hyjjservice.service.settings.ReportManageService;
 import com.hyjj.util.responce.CommonReturnType;
 import io.swagger.annotations.Api;
@@ -27,7 +28,7 @@ public class ReportManageController {
     @GetMapping("formulaList")
     @ApiOperation("获取公式列表")
     public CommonReturnType formulaList(Integer id,Integer pageNum,Integer pageSize){
-        List<FormulaListVO> formulaList = reportManageService.getFormulaList(id,pageNum,pageSize);
+        List<FormulaListVO> formulaList = reportManageService.getFormulaList(pageNum,pageSize);
         return CommonReturnType.ok().add("list",formulaList);
     }
 
@@ -68,6 +69,41 @@ public class ReportManageController {
     @GetMapping("getReportTemplateInfo")
     public CommonReturnType getReportTemplateInfo(Integer id){
         return CommonReturnType.ok().add("info",reportManageService.getReportTemplateInfo(id));
+    }
+
+    @GetMapping("getCurrentYearData")
+    public CommonReturnType getCurrentYearData(Integer pageNum,Integer pageSize){
+        return CommonReturnType.ok().add("GdpData",reportManageService.getCurrentYearData(pageNum,pageSize));
+    }
+
+    @GetMapping("getPassYearData")
+    public CommonReturnType getPassYearData(Integer pageNum,Integer pageSize){
+        return CommonReturnType.ok().add("GdpData",reportManageService.getPassYearData(pageNum,pageSize));
+    }
+
+    @GetMapping("searchGdpData")
+    public CommonReturnType searchGdpData(String district,String year,Integer pageNum,Integer pageSize){
+        return CommonReturnType.ok().add("GdpData",reportManageService.searchGdpData(district, year,pageNum,pageSize));
+    }
+
+    @PostMapping("updateGdpData")
+    public CommonReturnType updateGdpData(@RequestBody Gdp gdpObj){
+        return CommonReturnType.ok().add("success",reportManageService.updateGdpData(gdpObj));
+    }
+
+    @GetMapping("getGdpDataById")
+    public CommonReturnType getGdpDataById(Integer id){
+        return CommonReturnType.ok().add("gdpData",reportManageService.getGdpDataById(id));
+    }
+
+    @DeleteMapping("deleteGdpData")
+    public CommonReturnType deleteGdpData(Integer id){
+        return CommonReturnType.ok().add("success",reportManageService.deleteGdpDataById(id));
+    }
+
+    @PostMapping("addGdpData")
+    public CommonReturnType addGdpData(@RequestBody Gdp gdpObj){
+        return CommonReturnType.ok().add("success",reportManageService.insertGdpDataById(gdpObj));
     }
 
 //    @GetMapping("manualCreateReport")

@@ -54,7 +54,7 @@ public interface FormulaMapper {
      */
     int updateByPrimaryKey(Formula record);
 
-    List<FormulaListVO> getFormulaList(Integer id);
+    List<FormulaListVO> getFormulaList();
 
     List<FormulaListVO> getFormulaByFormName(String formName);
 
