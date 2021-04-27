@@ -1,6 +1,14 @@
 package com.hyjj.hyjjservice.dao;
 
+import com.hyjj.hyjjservice.controller.settings.viewObject.UnitFillReportVO;
 import com.hyjj.hyjjservice.dataobject.ComFillReport;
+import com.hyjj.hyjjservice.dataobject.ComInfo;
+import io.swagger.models.auth.In;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
+
+import java.util.Date;
+import java.util.List;
 
 public interface ComFillReportMapper {
     /**
@@ -18,4 +26,11 @@ public interface ComFillReportMapper {
      * @mbg.generated Sun Mar 07 15:29:26 CST 2021
      */
     int insertSelective(ComFillReport record);
+
+    List<UnitFillReportVO> selectFillReport(Long id);
+    List<UnitFillReportVO> selectNotFillReport(Long id);
+    int insertFillReport(Long comInfoId,Integer reportId,Date date);
+    List<Integer> selectReportTemplateId(Long id);
+    int deleteFillReport(Long comInfoId, Integer reportId);
+    int deleteAllFillReport(Long comInfoId);
 }

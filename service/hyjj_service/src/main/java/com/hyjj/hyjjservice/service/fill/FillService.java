@@ -9,7 +9,7 @@ import com.hyjj.hyjjservice.dataobject.User;
 import java.util.List;
 
 public interface FillService {
-     List<ReportDataList> getReportListByUserId(Long userid);
+     List<ReportDataList> getReportListByUserId(Long userid,Integer pageNum,Integer pageSize);
 
      ReportDataHtml getReportDataHtml(Integer id,Long userId);
 
@@ -23,5 +23,5 @@ public interface FillService {
 
      List<String> getReportNumber(List<Long> reportId);
 
-     List<ReportDataList> getStatement(ReportVO reportVO,User user);
+     List<ReportDataList> getStatement(ReportVO reportVO,User user,Integer pageNum,Integer pageSize);
 }

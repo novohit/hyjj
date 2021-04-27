@@ -1,5 +1,6 @@
 package com.hyjj.hyjjservice.dao;
 
+import com.hyjj.hyjjservice.controller.settings.viewObject.FormulaListVO;
 import com.hyjj.hyjjservice.dataobject.Formula;
 
 import java.util.List;
@@ -53,9 +54,9 @@ public interface FormulaMapper {
      */
     int updateByPrimaryKey(Formula record);
 
-    List<Formula> getFormulaList();
+    List<FormulaListVO> getFormulaList(Integer id);
 
-    List<Formula> getFormulaByFormName(String formName);
+    List<FormulaListVO> getFormulaByFormName(String formName);
 
-    int addFormula(Formula formula, String formName);
+
 }

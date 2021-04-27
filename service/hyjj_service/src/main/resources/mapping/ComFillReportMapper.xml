@@ -66,4 +66,26 @@
       </if>
     </trim>
   </insert>
+
+  <select id="selectFillReport" resultType="com.hyjj.hyjjservice.controller.settings.viewObject.UnitFillReportVO">
+    select rt.number,rt.id from report_template rt inner join com_fill_report cfr on cfr.report_template_id = rt.id where cfr.cominfo_id = #{id}
+  </select>
+  <select id="selectNotFillReport" resultType="com.hyjj.hyjjservice.controller.settings.viewObject.UnitFillReportVO">
+    select rt.number,rt.id from report_template rt
+    where rt.id not in (select report_template_id from com_fill_report where cominfo_id = #{id})
+
+  </select>
+  <select id="selectReportTemplateId" resultType="java.lang.Integer">
+    select report_template_id from com_fill_report where cominfo_id = #{comInfoId}
+  </select>
+  <insert id="insertFillReport">
+    insert into com_fill_report(report_template_id,cominfo_id,gmt_create,gmt_modified) values
+        (#{reportId},#{comInfoId},#{date},#{date})
+  </insert>
+  <delete id="deleteFillReport">
+    delete from com_fill_report where report_template_id = #{reportId} and cominfo_id = #{comInfoId}
+  </delete>
+  <delete id="deleteAllFillReport">
+    delete from com_fill_report where cominfo_id = #{comInfoId}
+  </delete>
 </mapper>
