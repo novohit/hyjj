@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,10 +23,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("audit")
 @Api(tags = "审核相关的接口")
+@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
 public class AuditController {
-
-    @Autowired
-    private UserRoleService userRoleService;
 
     @Autowired
     private AuditService auditService;
@@ -46,8 +45,7 @@ public class AuditController {
                 @RequestParam(required = false, defaultValue = "1") int pageNum,
                 @RequestParam(required = false, defaultValue = "10") int pageSize) throws Exception {
         User user = threadLocal.get();
-        return checkUser(user) ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
-                : CommonReturnType.ok().add("reportData", auditService.getStatement(auditVO, user, pageNum, pageSize));
+        return CommonReturnType.ok().add("reportData", auditService.getStatement(auditVO, user, pageNum, pageSize));
     }
 
     @GetMapping("detailReport")
@@ -66,8 +64,7 @@ public class AuditController {
     })
     public CommonReturnType auditReport(Long reportId, Integer judge) {
         User user = threadLocal.get();
-        return checkUser(user) ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
-                : CommonReturnType.ok().add("result", auditService.auditReport(reportId, judge, user));
+        return CommonReturnType.ok().add("result", auditService.auditReport(reportId, judge, user));
     }
 
     @PutMapping("batchReport")
@@ -76,22 +73,12 @@ public class AuditController {
     public CommonReturnType auditReport(@RequestBody Map<Long,Integer> map) {
         System.out.println(map);
         User user = threadLocal.get();
-        return checkUser(user) ? CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION)
-                : CommonReturnType.ok().add("result", auditService.batchAuditReport(map, user));
+        return CommonReturnType.ok().add("result", auditService.batchAuditReport(map, user));
     }
 
     @GetMapping("company")
     @ApiOperation("获取单位信息")
     public CommonReturnType getCompany() {
         return CommonReturnType.ok().add("company", auditService.selectAllCompany());
-    }
-
-    public Boolean checkUser(User user) {
-        //如果用户不是管理员则返回错误代码
-        List<Integer> userRoleIds = userRoleService.selectRoleIdByUserId(user.getId());
-        for (Integer userRoleId : userRoleIds)
-            if (userRoleId < 3)
-                return true;
-        return false;
     }
 }

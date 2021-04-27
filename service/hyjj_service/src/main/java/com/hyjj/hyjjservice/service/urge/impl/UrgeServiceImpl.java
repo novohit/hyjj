@@ -10,6 +10,7 @@ import com.hyjj.hyjjservice.service.urge.UrgeService;
 import com.hyjj.util.Date.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,8 +28,10 @@ public class UrgeServiceImpl implements UrgeService {
     private UrgeDataMapper urgeDataMapper;
 
     @Override
+    @Transactional
     public String urge(User user, List<String> company) {
         Date date = new Date();
+        int result = 0;
 
         for (String s : company) {
             UrgeData urgeData = new UrgeData();
@@ -42,10 +45,10 @@ public class UrgeServiceImpl implements UrgeService {
             urgeData.setGmtCreate(date);
             urgeData.setGmtModified(date);
 
-            urgeDataMapper.insert(urgeData);
+            result += urgeDataMapper.insert(urgeData);
         }
 
-        return "urge success";
+        return result > 0 ? "urge success" : "urge fail";
     }
 
     @Override

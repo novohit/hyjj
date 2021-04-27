@@ -1,5 +1,6 @@
 package com.hyjj.hyjjservice.controller.statistic;
 
+import com.hyjj.hyjjservice.controller.statistic.datatransferobject.GetStatisticInfoDTO;
 import com.hyjj.hyjjservice.service.statistic.StatisticService;
 import com.hyjj.util.responce.CommonReturnType;
 import io.swagger.annotations.Api;
@@ -40,13 +41,9 @@ public class StatisticController {
     }
 
     @ApiOperation(value = "获取统计信息", notes = "根据指标id查询对应指标的值")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "years", value = "年份的集合", required = true),
-            @ApiImplicitParam(name = "areaName", value = "地区的名称", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "targetId", value = "指标的id", required = true, dataTypeClass = Long.class)
-    })
     @GetMapping("getStatisticInfo")
-    public CommonReturnType getStatisticInfo(@RequestBody List<Integer> years, String areaName, Long targetId) {
-        return CommonReturnType.ok().add("info", statisticService.getStatisticInfo(years, areaName, targetId));
+    public CommonReturnType getStatisticInfo(GetStatisticInfoDTO getStatisticInfoDTO) {
+        return CommonReturnType.ok().add("info", statisticService.getStatisticInfo(
+                getStatisticInfoDTO.getYears(), getStatisticInfoDTO.getAreaName(), getStatisticInfoDTO.getTargetId()));
     }
 }

@@ -13,6 +13,7 @@ import com.hyjj.util.Date.DateUtil;
 import com.hyjj.util.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -118,6 +119,7 @@ public class AuditServiceImpl implements AuditService {
 
 
     @Override
+    @Transactional
     public String batchAuditReport(Map<Long, Integer> map, User user) {
         for (Long reportId : map.keySet()) {
             auditReport(reportId, map.get(reportId), user);
@@ -136,6 +138,7 @@ public class AuditServiceImpl implements AuditService {
      * @return
      */
     @Override
+    @Transactional
     public String auditReport(Long reportId, Integer judge, User user) {
         Date date = new Date();     //获取当前时间
         Integer isSave = null;
