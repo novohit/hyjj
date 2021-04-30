@@ -1,6 +1,5 @@
 package com.hyjj.security.filter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hyjj.util.error.EmBusinessError;
 import com.hyjj.util.responce.CommonReturnType;
 import com.hyjj.util.tool.RedisUtil;

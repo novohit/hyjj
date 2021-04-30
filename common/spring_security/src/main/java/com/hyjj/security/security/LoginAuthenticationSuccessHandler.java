@@ -2,16 +2,12 @@ package com.hyjj.security.security;
 
 import com.hyjj.security.entity.SecurityUser;
 import com.hyjj.util.responce.CommonReturnType;
-import com.hyjj.util.tool.R;
 import com.hyjj.util.tool.ResponseUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -2,7 +2,6 @@ package com.hyjj.security.security;
 
 
 import com.hyjj.util.responce.CommonReturnType;
-import com.hyjj.util.tool.R;
 import com.hyjj.util.tool.ResponseUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
