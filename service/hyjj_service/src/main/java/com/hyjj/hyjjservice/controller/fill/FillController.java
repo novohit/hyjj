@@ -44,10 +44,10 @@ public class FillController{
     @GetUser
     @GetMapping("list")
     @ApiOperation("获取待填报的报表")
-    public CommonReturnType getReportList() {
+    public CommonReturnType getReportList(Integer pageNum,Integer pageSize) {
         User user = threadLocal.get();
         Long userId = user.getId();
-        List<ReportDataList> reportDataList = fillService.getReportListByUserId(userId);
+        List<ReportDataList> reportDataList = fillService.getReportListByUserId(userId,pageNum,pageSize);
         return CommonReturnType.ok().add("data", reportDataList);
     }
 
@@ -125,7 +125,7 @@ public class FillController{
     @GetUser
     public CommonReturnType getStatement(ReportVO reportVO){
         User user = threadLocal.get();
-        return CommonReturnType.ok().add("statement",fillService.getStatement(reportVO,user));
+        return CommonReturnType.ok().add("statement",fillService.getStatement(reportVO,user,reportVO.getPageNum(),reportVO.getPageSize()));
 
     }
 }

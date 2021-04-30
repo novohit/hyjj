@@ -318,4 +318,41 @@
       #{reportTemplateId}
     </foreach>
   </select>
+  <select id="getReportTemplateList" resultType="com.hyjj.hyjjservice.controller.settings.viewObject.ReportTemplateVO" parameterType="com.hyjj.hyjjservice.controller.settings.viewObject.ReportTemplateVO">
+    select rt.id,i.name,rt.rep_class,rt.title,rt.made_rep_org,rt.auditing_org,rt.auditing_code,rt.gmt_create from report_template rt inner join industry i on rt.type = i.id
+    <where>
+      1 = 1
+      <if test="reportTemplateVO.title != null">
+        and rt.title = #{reportTemplateVO.title}
+      </if>
+      <if test="reportTemplateVO.name != null">
+        and i.name = #{reportTemplateVO.name}
+      </if>
+      <if test="reportTemplateVO.madeRepOrg != null">
+        and rt.made_rep_org = #{reportTemplateVO.madeRepOrg}
+      </if>
+      <if test="reportTemplateVO.auditingOrg != null">
+        and rt.auditing_org = #{reportTemplateVO.auditingOrg}
+      </if>
+      <if test="reportTemplateVO.auditingCode != null">
+        and rt.auditing_code = #{reportTemplateVO.auditingCode}
+      </if>
+      <if test="reportTemplateVO.timeFrom != null and reportTemplateVO.timeTo != null">
+        and rt.gmt_create between #{reportTemplateVO.timeFrom} and #{reportTemplateVO.timeTo}
+      </if>
+      <if test="reportTemplateVO.timeFrom != null and reportTemplateVO.timeTo == null">
+        and rt.gmt_create &gt;= #{reportTemplateVO.timeFrom}
+      </if>
+      <if test="reportTemplateVO.timeFrom == null and reportTemplateVO.timeTo != null">
+        and rt.gmt_create &lt;= #{reportTemplateVO.timeTo}
+      </if>
+    </where>
+  </select>
+  <select id="getReportTemplateInfo" resultType="com.hyjj.hyjjservice.controller.settings.viewObject.ReportTemplateInfoVO">
+    select i.name,rt.rep_class,rt.number,rt.made_rep_org,rt.auditing_org,rt.auditing_code,rt.expire_date,ci.com_name,rt.head_html,rt.body_html,rt.tail_html,rt.remark
+    from (((report_template rt inner join industry i on rt.type = i.id)
+    inner join com_fill_report cfr on rt.id = cfr.report_template_id)
+    inner join cominfo ci on cfr.cominfo_id = ci.id)
+    where rt.id = #{id}
+  </select>
 </mapper>

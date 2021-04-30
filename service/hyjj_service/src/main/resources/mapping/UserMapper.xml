@@ -24,6 +24,13 @@
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
+  <resultMap id="userInfo" type="com.hyjj.hyjjservice.controller.settings.viewObject.UserInfoVO">
+    <result column="account" jdbcType="VARCHAR" property="accountName"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="com_name" jdbcType="VARCHAR" property="comName"/>
+    <result column="roleName" jdbcType="VARCHAR" property="roleName"/>
+    <result column="statue" jdbcType="VARCHAR" property="statue"/>
+  </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
@@ -274,4 +281,10 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectUserInfoList" resultMap="userInfo">
+    select u.account,u.name,u.statue,ci.com_name,r.name "roleName" from
+    ((user u inner join cominfo ci on u.cominfo_id = ci.id)inner join user_role ur on u.cominfo_id = ur.id)
+    inner join role r on ur.role_id = r.id
+  </select>
 </mapper>

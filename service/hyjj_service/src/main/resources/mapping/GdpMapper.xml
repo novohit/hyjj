@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hyjj.hyjjservice.dao.GdpMapper">
+    <resultMap id="BaseResultMap" type="com.hyjj.hyjjservice.dataobject.Gdp">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="district" property="district" jdbcType="VARCHAR"/>
+        <result column="year" property="year" jdbcType="VARCHAR"/>
+        <result column="gdp" property="gdp" jdbcType="INTEGER"/>
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <select id="selectCurrentYearData" resultMap="BaseResultMap">
+        select * from gdp where `year` = year(now())
+    </select>
+
+    <select id="selectPassYearData" resultMap="BaseResultMap">
+        select * from gdp where `year` &lt; year(now())
+    </select>
+
+    <update id="updateGdpData">
+        update gdp
+        set
+            <if test="gdpObj.district!=null">
+                district = #{gdpObj.district},
+            </if>
+            <if test="gdpObj.year!=null">
+                `year` = #{gdpObj.year},
+            </if>
+            <if test="gdpObj.gdp!=null">
+                gdp = #{gdpObj.gdp},
+            </if>
+            gmt_modified = #{gdpObj.gmtModified}
+        where id = #{gdpObj.id}
+    </update>
+
+    <select id="searchGdpData" resultMap="BaseResultMap">
+        select * from gdp
+        <where>
+            1=1
+            <if test="city!=null">
+                and district = #{district}
+            </if>
+            <if test="year!=null">
+                and `year` = #{year}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="selectGdpDataById" resultMap="BaseResultMap">
+        select * from gdp where id = #{id}
+    </select>
+
+    <delete id="deleteGdpDataById">
+        delete * from gdp where id = #{id}
+    </delete>
+
+    <insert id="insertGdpData">
+        insert into gdp(district,`year`,gdp,gmt_create)
+        values(#{gdpObj.district},#{gdpObj.year},#{gdpObj.gdp},#{gdpObj.gmtCreate})
+    </insert>
+
+</mapper>

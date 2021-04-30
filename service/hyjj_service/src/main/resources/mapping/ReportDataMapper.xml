@@ -455,7 +455,7 @@
     </update>
 
     <select id="getReportDataListByUserId" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList">
-        select id,`number`,title,report_date,fill_unit,submit_date,pro_status_name from report_data where user_id = #{userId} and pro_status = "填报数据"
+        select id,`number`,title,report_date,fill_unit,submit_date,pro_status_name from report_data where user_id = #{userId}
     </select>
 
     <select id="getReportDataHtml" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml">
@@ -563,11 +563,14 @@
                 and rd.`pro_status` = "审核通过"
             </if>
             <if test="statue == '未提交' ">
-                and (rd.`pro_status` = "填报数据" or rd.pro_status = "审核不通过")
+                and (rd.`pro_status` = "填报数据" or rd.`pro_status` = "审核不通过")
                 and rd.is_save = 1
             </if>
+            <if test="statue == '审核不通过'">
+                and rd.`pro_status` = "审核不通过"
+            </if>
             <if test="statue == '未填报'">
-                and (rd.pro_status = "审核不通过" or rd.pro_status = "填报数据")
+                and rd.pro_status = "填报数据"
                 and rd.is_save = 0
             </if>
             <if test="statue == null">
@@ -579,4 +582,7 @@
     <select id="selectReportTemplateByReportId" resultType="java.lang.Long">
         SELECT report_template_id FROM report_data WHERE id = #{reportId}
     </select>
+    <insert id="manualCreateReport">
+        insert into
+    </insert>
 </mapper>

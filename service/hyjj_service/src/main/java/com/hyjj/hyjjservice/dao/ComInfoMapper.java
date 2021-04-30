@@ -80,4 +80,6 @@ public interface ComInfoMapper {
      * @return
      */
     String selectCompanyNameByUserId(@Param("userId") Long userId);
+
+    List<ComInfo> getCompanyNameList();
 }

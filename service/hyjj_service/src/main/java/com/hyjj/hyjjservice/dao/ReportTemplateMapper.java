@@ -1,5 +1,8 @@
 package com.hyjj.hyjjservice.dao;
 
+import com.hyjj.hyjjservice.controller.settings.viewObject.ReportTemplateInfoVO;
+import com.hyjj.hyjjservice.controller.settings.viewObject.ReportTemplateVO;
+import com.hyjj.hyjjservice.controller.settings.viewObject.SearchReportTemplateVO;
 import com.hyjj.hyjjservice.dataobject.ReportData;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import org.apache.ibatis.annotations.Param;
@@ -56,4 +59,9 @@ public interface ReportTemplateMapper {
     int updateByPrimaryKey(ReportTemplate record);
 
     List<String> getReportNumber(@Param("reportTemplateIds") List<Long> reportTemplateIds);
+
+    List<ReportTemplateVO> getReportTemplateList(@Param("reportTemplateVO") ReportTemplateVO reportTemplateVO);
+
+    ReportTemplateInfoVO getReportTemplateInfo(Integer id);
+
 }

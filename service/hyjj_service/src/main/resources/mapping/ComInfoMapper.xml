@@ -307,5 +307,7 @@
     ON user.`cominfo_id` = cominfo.`id`
     WHERE user.`id` = #{userId};
   </select>
-
+  <select id="getCompanyNameList" resultMap="BaseResultMap">
+    select id, com_name from cominfo
+  </select>
 </mapper>
