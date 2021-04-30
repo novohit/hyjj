@@ -65,7 +65,9 @@
     select
     <include refid="Base_Column_List" />
     from user
+    JOIN user_role ON user.`id` = user_role.`user_id`
     where account = #{userName,jdbcType=BIGINT}
+    and user_role.`is_used` = 0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     <!--

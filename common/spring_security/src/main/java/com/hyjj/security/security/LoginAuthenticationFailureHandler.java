@@ -2,9 +2,7 @@ package com.hyjj.security.security;
 
 import com.hyjj.util.error.EmBusinessError;
 import com.hyjj.util.responce.CommonReturnType;
-import com.hyjj.util.tool.R;
 import com.hyjj.util.tool.ResponseUtil;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
