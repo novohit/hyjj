@@ -9,13 +9,14 @@ import com.hyjj.hyjjservice.dataobject.Formula;
 import com.hyjj.hyjjservice.dataobject.Gdp;
 import io.swagger.models.auth.In;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ReportManageService {
     List<FormulaListVO> getFormulaList(Integer pageNum,Integer pageSize);
     List<FormulaListVO> getFormulaByFormName(String formName,Integer pageNum,Integer pageSize);
     List<ReportTemplateVO> getReportTemplateList(ReportTemplateVO reportTemplateVO);
-    List<ComInfo> getComInfoList(Integer pageNum, Integer pageSize);
+    List<ComInfo> getComInfoList(String name,Integer pageNum, Integer pageSize);
     List<UnitFillReportVO> getNeededFillList(Long id);
     List<UnitFillReportVO> getNotNeededFillList(Long id);
     Boolean setFillReportList(Long comInfoId,String reportIds);
@@ -27,4 +28,5 @@ public interface ReportManageService {
     Gdp getGdpDataById(Integer id);
     int deleteGdpDataById(Integer id);
     int insertGdpDataById(Gdp gdpObj);
+    boolean manualCreateReport(String endDate,Long id,Integer reportId) throws Exception;
 }

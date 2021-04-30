@@ -37,7 +37,7 @@
         select * from gdp
         <where>
             1=1
-            <if test="city!=null">
+            <if test="district!=null">
                 and district = #{district}
             </if>
             <if test="year!=null">
@@ -52,7 +52,7 @@
     </select>
 
     <delete id="deleteGdpDataById">
-        delete * from gdp where id = #{id}
+        delete from gdp where id = #{id}
     </delete>
 
     <insert id="insertGdpData">

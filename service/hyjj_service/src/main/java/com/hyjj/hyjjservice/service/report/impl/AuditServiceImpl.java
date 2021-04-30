@@ -172,7 +172,6 @@ public class AuditServiceImpl implements AuditService {
             processMapper.updateByPrimaryKeySelective(process);
 
 
-        System.out.println("fsafsfafasfasfasf");
         reportDataMapper.updateProcessByReportId(reportId, process.getId(), process.getProcessName(), process.getProcessName(), isSave);
 
         return "audit success";

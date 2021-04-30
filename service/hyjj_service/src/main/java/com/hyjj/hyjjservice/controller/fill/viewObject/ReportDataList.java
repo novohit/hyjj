@@ -4,9 +4,9 @@ public class ReportDataList {
     private Long id;
     private String number;
     private String title;
-    private String reportDate;
+    private String endDate;
     private String fillUnit;
-    private String submitDate;
+    private String beginDate;
     private String proStatusName;
     private String name;
 
@@ -42,12 +42,20 @@ public class ReportDataList {
         this.title = title;
     }
 
-    public String getReportDate() {
-        return reportDate;
+    public String getEndDate() {
+        return endDate;
     }
 
-    public void setReportDate(String reportDate) {
-        this.reportDate = reportDate;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(String beginDate) {
+        this.beginDate = beginDate;
     }
 
     public String getFillUnit() {
@@ -58,13 +66,7 @@ public class ReportDataList {
         this.fillUnit = fillUnit;
     }
 
-    public String getSubmitDate() {
-        return submitDate;
-    }
 
-    public void setSubmitDate(String submitDate) {
-        this.submitDate = submitDate;
-    }
 
     public String getProStatusName() {
         return proStatusName;

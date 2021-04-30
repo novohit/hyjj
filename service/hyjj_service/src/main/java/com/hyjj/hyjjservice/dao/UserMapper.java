@@ -2,6 +2,7 @@ package com.hyjj.hyjjservice.dao;
 
 import com.hyjj.hyjjservice.controller.settings.viewObject.UserInfoVO;
 import com.hyjj.hyjjservice.dataobject.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -56,5 +57,11 @@ public interface UserMapper {
 
     User selectByUserName(String userName);
 
-    List<UserInfoVO> selectUserInfoList();
+    List<UserInfoVO> selectUserInfoList(@Param("obj") UserInfoVO userInfoVO);
+    User selectByComInfoId(Long comId);
+    int deleteUser(Long id);
+    int checkUserName(String name);
+    int enableUser(Long id);
+    int disableUser(Long id);
+
 }

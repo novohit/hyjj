@@ -71,7 +71,6 @@ public class AuditController {
     @ApiOperation("批量审核报表")
     @GetUser
     public CommonReturnType auditReport(@RequestBody Map<Long,Integer> map) {
-        System.out.println(map);
         User user = threadLocal.get();
         return CommonReturnType.ok().add("result", auditService.batchAuditReport(map, user));
     }

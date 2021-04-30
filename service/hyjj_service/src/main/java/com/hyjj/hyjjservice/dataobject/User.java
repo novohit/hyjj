@@ -10,6 +10,16 @@ public class User {
      *
      * @mbg.generated Sat Mar 06 22:10:39 CST 2021
      */
+    private String comName;
+
+    public String getComName() {
+        return comName;
+    }
+
+    public void setComName(String comName) {
+        this.comName = comName;
+    }
+
     private Long id;
 
     /**
