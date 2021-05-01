@@ -1,9 +1,11 @@
 package com.hyjj.hyjjservice.controller.settings;
 
+import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.settings.viewObject.ReportTemplateVO;
 import com.hyjj.hyjjservice.controller.settings.viewObject.FormulaListVO;
 import com.hyjj.hyjjservice.dataobject.Formula;
 import com.hyjj.hyjjservice.dataobject.Gdp;
+import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.settings.ReportManageService;
 import com.hyjj.util.responce.CommonReturnType;
 import io.swagger.annotations.Api;
@@ -13,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +25,7 @@ import java.util.Map;
 @RequestMapping("/settings/report")
 @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
 public class ReportManageController {
+
 
     @Autowired
     private ReportManageService reportManageService;
@@ -44,13 +49,13 @@ public class ReportManageController {
     @GetMapping("reportTemplateList")
     @ApiOperation("报表列表")
     public CommonReturnType reportTemplateList(ReportTemplateVO reportTemplateVO){
-        System.out.println(reportTemplateVO);
         return CommonReturnType.ok().add("list",reportManageService.getReportTemplateList(reportTemplateVO));
     }
 
     @GetMapping("getComInfoList")
-    public CommonReturnType getComInfoList(Integer pageNum,Integer pageSize){
-        return CommonReturnType.ok().add("list",reportManageService.getComInfoList(pageNum,pageSize));
+    public CommonReturnType getComInfoList(String name,Integer pageNum,Integer pageSize){
+        System.out.println(name);
+        return CommonReturnType.ok().add("list",reportManageService.getComInfoList(name,pageNum,pageSize));
     }
 
     @GetMapping("getFillReport")
@@ -103,11 +108,18 @@ public class ReportManageController {
 
     @PostMapping("addGdpData")
     public CommonReturnType addGdpData(@RequestBody Gdp gdpObj){
+        System.out.println(gdpObj.getDistrict());
         return CommonReturnType.ok().add("success",reportManageService.insertGdpDataById(gdpObj));
     }
 
-//    @GetMapping("manualCreateReport")
-//    public CommonReturnType manualCreateReport(){
-//
-//    }
+    @GetMapping("manualCreateReport")
+    public CommonReturnType manualCreateReport(String endDate,Long[] ids,Integer reportId) throws Exception{
+        boolean flag = true;
+        for (Long id : ids) {
+            if(!reportManageService.manualCreateReport(endDate,id,reportId)){
+                flag = false;
+            }
+        }
+        return CommonReturnType.ok().add("success",flag);
+    }
 }

@@ -1,25 +1,30 @@
 package com.hyjj.hyjjservice.service.settings.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.settings.viewObject.ReportTemplateInfoVO;
 import com.hyjj.hyjjservice.controller.settings.viewObject.ReportTemplateVO;
 import com.hyjj.hyjjservice.controller.settings.viewObject.UnitFillReportVO;
 import com.hyjj.hyjjservice.controller.settings.viewObject.FormulaListVO;
 import com.hyjj.hyjjservice.dao.*;
-import com.hyjj.hyjjservice.dataobject.ComInfo;
-import com.hyjj.hyjjservice.dataobject.Formula;
-import com.hyjj.hyjjservice.dataobject.Gdp;
+import com.hyjj.hyjjservice.dataobject.*;
+import com.hyjj.hyjjservice.dataobject.Process;
 import com.hyjj.hyjjservice.service.settings.ReportManageService;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.xml.crypto.Data;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class ReportManageServiceImpl implements ReportManageService {
+
 
     @Autowired
     private FormulaMapper formulaMapper;
@@ -35,6 +40,15 @@ public class ReportManageServiceImpl implements ReportManageService {
 
     @Autowired
     private GdpMapper gdpMapper;
+
+    @Autowired
+    private ReportDataMapper reportDataMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private ProcessMapper processMapper;
 
     @Override
     public List<FormulaListVO> getFormulaList(Integer pageNum,Integer pageSize) {
@@ -60,7 +74,7 @@ public class ReportManageServiceImpl implements ReportManageService {
 
     @Override
     public Boolean setFillReportList(Long comInfoId, String reportIds) {
-        if(reportIds == ""){
+        if(reportIds == null||reportIds == ""){
             int i = comFillReportMapper.deleteAllFillReport(comInfoId);
             return i != 0;
         }
@@ -112,22 +126,21 @@ public class ReportManageServiceImpl implements ReportManageService {
     }
 
     @Override
-    public List<ComInfo> getComInfoList(Integer pageNum,Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize==0?10:pageSize);
-        List<ComInfo> comInfos = comInfoMapper.getCompanyNameList();
+    public List<ComInfo> getComInfoList(String name,Integer pageNum,Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize==null?10:pageSize);
+        List<ComInfo> comInfos = comInfoMapper.getCompanyNameList(name);
         return comInfos;
     }
 
     @Override
     public ReportTemplateInfoVO getReportTemplateInfo(Integer id){
         ReportTemplateInfoVO reportTemplateInfo = reportTemplateMapper.getReportTemplateInfo(id);
-        System.out.println(reportTemplateInfo);
         return reportTemplateInfo;
     }
 
     @Override
     public List<Gdp> getCurrentYearData(Integer pageNum,Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize==0?10:pageSize);
+        PageHelper.startPage(pageNum,pageSize==null?10:pageSize);
         List<Gdp> gdps = gdpMapper.selectCurrentYearData();
         return gdps;
     }
@@ -153,13 +166,15 @@ public class ReportManageServiceImpl implements ReportManageService {
 
     @Override
     public List<Gdp> searchGdpData(String district, String year,Integer pageNum,Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize==0?10:pageSize);
+        PageHelper.startPage(pageNum,pageSize==null?10:pageSize);
         return gdpMapper.searchGdpData(district, year);
     }
 
+
+
     @Override
     public List<Gdp> getPassYearData(Integer pageNum,Integer pageSize){
-        PageHelper.startPage(pageNum,pageSize==0?10:pageSize);
+        PageHelper.startPage(pageNum,pageSize==null?10:pageSize);
         List<Gdp> gdps = gdpMapper.selectPassYearData();
         return gdps;
     }
@@ -167,5 +182,69 @@ public class ReportManageServiceImpl implements ReportManageService {
     @Override
     public Gdp getGdpDataById(Integer id) {
         return gdpMapper.selectGdpDataById(id);
+    }
+
+    @Override
+    public boolean manualCreateReport(String endDate, Long id,Integer reportId) throws Exception{
+        Date beginDate = new Date();
+        ReportData reportData = new ReportData();
+        Process process = new Process();
+        process.setProcessName("填报数据");
+        process.setProsessDescription("填报数据");
+        process.setCreatTime(beginDate);
+        process.setGmtCreate(beginDate);
+        endDate = endDate +" 00:00:00";
+        ComInfo comInfo = comInfoMapper.selectByPrimaryKey(id);
+        User user = userMapper.selectByComInfoId(id);
+        reportData.setFillUnit(comInfo.getComName());
+        reportData.setAreaName(comInfo.getComAddressCounty());
+        reportData.setEnterpriseName(comInfo.getComName());
+        reportData.setOrgCode(comInfo.getComCode());
+        reportData.setBeginDate(beginDate);
+        reportData.setEndDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endDate));
+        reportData.setGmtModified(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endDate));
+        reportData.setProStatus("填报数据");
+        reportData.setProStatusName("填报数据");
+        reportData.setGmtCreate(beginDate);
+        reportData.setExpireDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endDate));
+        reportData.setDataFrom("null");
+        reportData.setFillPerson(user.getName());
+        reportData.setIsSave(0);
+        reportData.setUserId(user.getId());
+        List<Integer> integers = comFillReportMapper.selectReportTemplateId(id);
+        System.out.println(integers);
+        if(reportId == null){
+            System.out.println(666);
+            int i = 0;
+            for (Integer integer : integers) {
+                processMapper.insertSelective(process);
+                ReportTemplate reportTemplate = reportTemplateMapper.selectByPrimaryKey(integer.longValue());
+                reportData.setProcessId(process.getId());
+                reportData.setHeadHtml(reportTemplate.getHeadHtml());
+                reportData.setBodyHtml(reportTemplate.getBodyHtml());
+                reportData.setTailHtml(reportTemplate.getTailHtml());
+                reportData.setTitle(reportTemplate.getTitle());
+                reportData.setNumber(reportTemplate.getNumber());
+                reportData.setReportTemplateId(reportTemplate.getId());
+                process.setId(null);
+                if(reportDataMapper.insertSelective(reportData)==1)
+                    i++;
+            }
+            return i==integers.size();
+
+        }
+
+        processMapper.insertSelective(process);
+        ReportTemplate reportTemplate = reportTemplateMapper.selectByPrimaryKey(reportId.longValue());
+        reportData.setProcessId(process.getId());
+        reportData.setHeadHtml(reportTemplate.getHeadHtml());
+        reportData.setBodyHtml(reportTemplate.getBodyHtml());
+        reportData.setTailHtml(reportTemplate.getTailHtml());
+        reportData.setTitle(reportTemplate.getTitle());
+        reportData.setNumber(reportTemplate.getNumber());
+        reportData.setReportTemplateId(reportTemplate.getId());
+        return reportDataMapper.insertSelective(reportData)==1;
+
+
     }
 }

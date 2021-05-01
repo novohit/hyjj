@@ -57,5 +57,11 @@ public interface UserMapper {
 
     User selectByUserName(@Param("username") String userName);
 
-    List<UserInfoVO> selectUserInfoList();
+    List<UserInfoVO> selectUserInfoList(@Param("obj") UserInfoVO userInfoVO);
+    User selectByComInfoId(Long comId);
+    int deleteUser(Long id);
+    int checkUserName(String name);
+    int enableUser(Long id);
+    int disableUser(Long id);
+
 }

@@ -8,6 +8,7 @@ import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ReportDataMapper {
@@ -134,4 +135,5 @@ public interface ReportDataMapper {
                                                             @Param("userId") Long userId);
 
     Long selectReportTemplateByReportId(@Param("reportId") Long reportId);
+
 }

@@ -309,5 +309,12 @@
   </select>
   <select id="getCompanyNameList" resultMap="BaseResultMap">
     select id, com_name from cominfo
+    <if test="name != null">
+      where com_name like concat('%',#{name},'%')
+    </if>
+  </select>
+  <select id="getNotUsedCompanyList" resultMap="BaseResultMap">
+    select cominfo.id, cominfo.com_name from cominfo
+    where (select count(*) from user_role where id = cominfo.id) = 0
   </select>
 </mapper>
