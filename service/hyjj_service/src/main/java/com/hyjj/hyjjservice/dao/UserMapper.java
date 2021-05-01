@@ -2,6 +2,7 @@ package com.hyjj.hyjjservice.dao;
 
 import com.hyjj.hyjjservice.controller.settings.viewObject.UserInfoVO;
 import com.hyjj.hyjjservice.dataobject.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -54,7 +55,7 @@ public interface UserMapper {
      */
     int updateByPrimaryKey(User record);
 
-    User selectByUserName(String userName);
+    User selectByUserName(@Param("username") String userName);
 
     List<UserInfoVO> selectUserInfoList();
 }
