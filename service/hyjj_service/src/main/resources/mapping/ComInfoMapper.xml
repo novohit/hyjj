@@ -315,6 +315,7 @@
   </select>
   <select id="getNotUsedCompanyList" resultMap="BaseResultMap">
     select cominfo.id, cominfo.com_name from cominfo
+
     where (select count(*) from user_role where id = cominfo.id) = 0
   </select>
 </mapper>

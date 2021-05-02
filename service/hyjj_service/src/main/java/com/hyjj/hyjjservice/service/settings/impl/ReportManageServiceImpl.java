@@ -186,6 +186,10 @@ public class ReportManageServiceImpl implements ReportManageService {
 
     @Override
     public boolean manualCreateReport(String endDate, Long id,Integer reportId) throws Exception{
+        User user = userMapper.selectByComInfoId(id);
+        if(user == null){
+            return false;
+        }
         Date beginDate = new Date();
         ReportData reportData = new ReportData();
         Process process = new Process();
@@ -195,7 +199,6 @@ public class ReportManageServiceImpl implements ReportManageService {
         process.setGmtCreate(beginDate);
         endDate = endDate +" 00:00:00";
         ComInfo comInfo = comInfoMapper.selectByPrimaryKey(id);
-        User user = userMapper.selectByComInfoId(id);
         reportData.setFillUnit(comInfo.getComName());
         reportData.setAreaName(comInfo.getComAddressCounty());
         reportData.setEnterpriseName(comInfo.getComName());
