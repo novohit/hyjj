@@ -23,6 +23,7 @@ public class TemplateId31 extends AddTargetTemplate {
     @Autowired
     private StatisticService statisticService;
 
+    @Override
     public Integer changeValue(Long reportDataId, List<Double> data) {
         List<StatisticsTargetKey> statisticTargetKey = statisticService.getStatisticTargetKey(145l);
         return addTargetValue(targetValueMapper, targetKeyValueMapper, reportDataId, data, statisticTargetKey);

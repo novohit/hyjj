@@ -23,6 +23,7 @@ public class TemplateId16 extends AddTargetTemplate {
     @Autowired
     private StatisticService statisticService;
 
+    @Override
     public Integer changeValue(Long reportDataId, List<Double> data) {
         data.remove(1);
         data.remove(2);
@@ -57,13 +58,13 @@ public class TemplateId16 extends AddTargetTemplate {
         List<Double> data2 = data.subList(23, 27);
         List<Double> data3 = data.subList(27, 29);
         int result = 0;
-        List<StatisticsTargetKey> statisticTargetKey1 = statisticService.getStatisticTargetKey(164l);
+        List<StatisticsTargetKey> statisticTargetKey1 = statisticService.getStatisticTargetKey(164L);
         result += addTargetValue(targetValueMapper, targetKeyValueMapper, reportDataId, data1, statisticTargetKey1);
 
-        List<StatisticsTargetKey> statisticTargetKey2 = statisticService.getStatisticTargetKey(165l);
+        List<StatisticsTargetKey> statisticTargetKey2 = statisticService.getStatisticTargetKey(165L);
         result += addTargetValue(targetValueMapper, targetKeyValueMapper, reportDataId, data2, statisticTargetKey2);
 
-        List<StatisticsTargetKey> statisticTargetKey3 = statisticService.getStatisticTargetKey(166l);
+        List<StatisticsTargetKey> statisticTargetKey3 = statisticService.getStatisticTargetKey(166L);
         result += addTargetValue(targetValueMapper, targetKeyValueMapper, reportDataId, data3, statisticTargetKey3);
 
         return result;

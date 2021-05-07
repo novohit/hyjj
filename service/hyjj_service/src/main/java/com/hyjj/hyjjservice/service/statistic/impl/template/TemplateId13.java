@@ -29,4 +29,11 @@ public class TemplateId13 extends AddTargetTemplate {
         List<StatisticsTargetKey> statisticTargetKey = statisticService.getStatisticTargetKey(140L);
         return addTargetValue(targetValueMapper, targetKeyValueMapper, reportDataId, data, statisticTargetKey);
     }
+
+    @Override
+    public Boolean formulaVerification(List<Long> data) {
+        return data.get(0) >= data.get(1) &&
+                data.get(0) <= data.get(1) * 365 &&
+                data.get(3) == data.get(4) + data.get(5) + data.get(6) + data.get(7) + data.get(8);
+    }
 }

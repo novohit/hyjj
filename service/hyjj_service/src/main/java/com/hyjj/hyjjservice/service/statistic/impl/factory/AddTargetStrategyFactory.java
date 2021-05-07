@@ -67,28 +67,28 @@ public class AddTargetStrategyFactory implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        map.put(1l, templateId1);
-        map.put(6l, templateId6);
-        map.put(9l, templateId9);
-        map.put(10l, templateId10);
-        map.put(11l, templateId11);
-        map.put(13l, templateId13);
-        map.put(14l, templateId14);
-        map.put(16l, templateId16);
-        map.put(18l, templateId18);
-        map.put(19l, templateId19);
-        map.put(20l, templateId20);
-        map.put(21l, templateId21);
-        map.put(22l, templateId22);
-        map.put(23l, templateId23);
-        map.put(24l, templateId24);
-        map.put(25l, templateId25);
-        map.put(26l, templateId26);
-        map.put(27l, templateId27);
-        map.put(29l, templateId29);
-        map.put(30l, templateId30);
-        map.put(31l, templateId31);
-        map.put(32l, templateId32);
-        map.put(33l, templateId33);
+        map.put(1L, templateId1);
+        map.put(6L, templateId6);
+        map.put(9L, templateId9);
+        map.put(10L, templateId10);
+        map.put(11L, templateId11);
+        map.put(13L, templateId13);
+        map.put(14L, templateId14);
+        map.put(16L, templateId16);
+        map.put(18L, templateId18);
+        map.put(19L, templateId19);
+        map.put(20L, templateId20);
+        map.put(21L, templateId21);
+        map.put(22L, templateId22);
+        map.put(23L, templateId23);
+        map.put(24L, templateId24);
+        map.put(25L, templateId25);
+        map.put(26L, templateId26);
+        map.put(27L, templateId27);
+        map.put(29L, templateId29);
+        map.put(30L, templateId30);
+        map.put(31L, templateId31);
+        map.put(32L, templateId32);
+        map.put(33L, templateId33);
     }
 }

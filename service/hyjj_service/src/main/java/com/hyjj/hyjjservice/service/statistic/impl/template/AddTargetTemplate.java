@@ -26,6 +26,14 @@ public abstract class AddTargetTemplate {
      */
     public abstract Integer changeValue(Long reportDataId, List<Double> data);
 
+    /**
+     * 对每张表进行公式校验
+     * @param data 传过来的数据
+     * @return 校验是否通过
+     */
+    public Boolean formulaVerification(List<Long> data){
+        return true;
+    }
 
     public Integer addTargetValue(TargetValueMapper targetValueMapper,TargetKeyValueMapper targetKeyValueMapper, Long reportDataId, List<Double> data, List<StatisticsTargetKey> statisticTargetKey){
         Integer result = 0;

@@ -23,14 +23,22 @@ public class TemplateId22 extends AddTargetTemplate {
     @Autowired
     private StatisticService statisticService;
 
+    @Override
     public Integer changeValue(Long reportDataId, List<Double> data) {
         data.remove(1);
         data.remove(1);
         data.remove(2);
         data.remove(2);
         data.remove(2);
-        data = data.subList(0,3);
-        List<StatisticsTargetKey> statisticTargetKey = statisticService.getStatisticTargetKey(156l);
+        data = data.subList(0, 3);
+        List<StatisticsTargetKey> statisticTargetKey = statisticService.getStatisticTargetKey(156L);
         return addTargetValue(targetValueMapper, targetKeyValueMapper, reportDataId, data, statisticTargetKey);
+    }
+
+    @Override
+    public Boolean formulaVerification(List<Long> data) {
+        return data.get(0) >= data.get(1) &&
+                data.get(0) >= data.get(2) &&
+                data.get(3) >= data.get(4);
     }
 }

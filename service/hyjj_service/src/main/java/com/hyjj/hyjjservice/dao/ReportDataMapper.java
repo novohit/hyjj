@@ -134,6 +134,11 @@ public interface ReportDataMapper {
                                                             @Param("nextYear") String nextYear,
                                                             @Param("userId") Long userId);
 
+    /**
+     * 根据报表查询模板表id
+     * @param reportId
+     * @return
+     */
     Long selectReportTemplateByReportId(@Param("reportId") Long reportId);
 
 }

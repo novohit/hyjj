@@ -1,6 +1,7 @@
 package com.hyjj.hyjjservice.service.fill.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.hyjj.hyjjservice.controller.fill.dto.FormulaVerificationDto;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportVO;
 import com.hyjj.hyjjservice.dao.ProcessMapper;
 import com.hyjj.hyjjservice.dao.ReportDataMapper;
@@ -10,6 +11,8 @@ import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
 import com.hyjj.hyjjservice.dataobject.Process;
 import com.hyjj.hyjjservice.service.fill.FillService;
+import com.hyjj.hyjjservice.service.statistic.impl.factory.AddTargetStrategyFactory;
+import com.hyjj.hyjjservice.service.statistic.impl.template.AddTargetTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,9 @@ import java.util.List;
 
 @Service
 public class FillServiceImpl implements FillService {
+
+    @Autowired
+    private AddTargetStrategyFactory addTargetStrategyFactory;
 
     @Autowired
     private ReportDataMapper reportDataMapper;
@@ -118,5 +124,12 @@ public class FillServiceImpl implements FillService {
         }
         PageHelper.startPage(pageNum, pageSize);
         return reportDataMapper.reportSelectReportDataByIndustryId(industriesId, reportVO.getType(), status, year, nextYear, userId);
+    }
+
+    @Override
+    public String formulaVerification(FormulaVerificationDto formulaVerificationDto) {
+        AddTargetTemplate template = addTargetStrategyFactory.getAddTargetValueStatus(
+                reportDataMapper.selectReportTemplateByReportId(formulaVerificationDto.getReportId()));
+        return template.formulaVerification(formulaVerificationDto.getData()) ? "公式校验通过" : "公式校验不通过";
     }
 }

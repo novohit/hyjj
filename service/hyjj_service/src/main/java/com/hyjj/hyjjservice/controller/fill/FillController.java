@@ -1,6 +1,7 @@
 package com.hyjj.hyjjservice.controller.fill;
 
 import com.hyjj.hyjjservice.annotation.GetUser;
+import com.hyjj.hyjjservice.controller.fill.dto.FormulaVerificationDto;
 import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
@@ -124,6 +125,10 @@ public class FillController {
     public CommonReturnType getStatement(ReportVO reportVO) {
         User user = threadLocal.get();
         return CommonReturnType.ok().add("statement", fillService.getStatement(reportVO, user, reportVO.getPageNum(), reportVO.getPageSize()));
+    }
 
+    @PostMapping("formulaVerification")
+    public CommonReturnType formulaVerification(FormulaVerificationDto formulaVerificationDto) {
+        return CommonReturnType.ok().add("result", fillService.formulaVerification(formulaVerificationDto));
     }
 }
