@@ -79,6 +79,9 @@ public class SysApplicationServiceImpl implements SysApplicationService {
 
     @Override
     public boolean insertUserInfo(User user) {
+        if(user.getCominfoId()==null){
+            return false;
+        }
         Date date = new Date();
         user.setGmtCreate(date);
         user.setGmtModified(date);

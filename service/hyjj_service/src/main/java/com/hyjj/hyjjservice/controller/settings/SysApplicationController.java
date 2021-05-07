@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
 @RequestMapping("/settings/sys")
+@CrossOrigin
 public class SysApplicationController {
 
     @Autowired
@@ -31,6 +32,7 @@ public class SysApplicationController {
 
     @PostMapping("updateUserInfo")
     public CommonReturnType updateUserInfo(@RequestBody User user){
+        System.out.println(user);
         return CommonReturnType.ok().add("success",sysApplicationService.updateUserInfo(user));
     }
 

@@ -545,11 +545,23 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "comName='" + comName + '\'' +
+                ", id=" + id +
                 ", account='" + account + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", statue='" + statue + '\'' +
+                ", remark='" + remark + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", creatDatatime=" + creatDatatime +
+                ", lastIp='" + lastIp + '\'' +
+                ", lastDatatime=" + lastDatatime +
+                ", area='" + area + '\'' +
+                ", userType='" + userType + '\'' +
                 ", cominfoId=" + cominfoId +
+                ", gmtCreate=" + gmtCreate +
+                ", gmtModified=" + gmtModified +
                 '}';
     }
 }

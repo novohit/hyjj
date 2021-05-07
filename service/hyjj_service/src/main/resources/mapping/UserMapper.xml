@@ -49,7 +49,7 @@
       This element was generated on Sat Mar 06 22:10:39 CST 2021.
     -->
     select 
-    u.id,u.account,u.password,u.name,u.email,u.statue,u.remark,u.phone_number,u.area,u.user_type,u.cominfo_id,ci.com_name "comName"
+    u.id,u.account,u.name,u.email,u.statue,u.remark,u.phone_number,u.area,u.user_type,u.cominfo_id,ci.com_name "comName"
     from user u
     inner join cominfo ci
     on u.cominfo_id = ci.id
