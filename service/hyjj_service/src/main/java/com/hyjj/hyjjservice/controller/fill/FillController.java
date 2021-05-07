@@ -6,7 +6,6 @@ import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportVO;
 import com.hyjj.hyjjservice.controller.fill.viewObject.UploadVO;
-import com.hyjj.hyjjservice.dataobject.ReportData;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.fill.FillService;
@@ -15,13 +14,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.List;
@@ -30,7 +26,7 @@ import java.util.Map;
 @RestController
 @Api(tags = "填报数据相关")
 @RequestMapping("report")
-public class FillController{
+public class FillController {
 
     @Autowired
     private FillService fillService;
@@ -44,10 +40,12 @@ public class FillController{
     @GetUser
     @GetMapping("list")
     @ApiOperation("获取待填报的报表")
-    public CommonReturnType getReportList(Integer pageNum,Integer pageSize) {
+    public CommonReturnType getReportList(
+            @RequestParam(required = false, defaultValue = "1") int pageNum,
+            @RequestParam(required = false, defaultValue = "10") int pageSize) {
         User user = threadLocal.get();
         Long userId = user.getId();
-        List<ReportDataList> reportDataList = fillService.getReportListByUserId(userId,pageNum,pageSize);
+        List<ReportDataList> reportDataList = fillService.getReportListByUserId(userId, pageNum, pageSize);
         return CommonReturnType.ok().add("data", reportDataList);
     }
 
@@ -64,12 +62,12 @@ public class FillController{
 
     @PostMapping("save")
     @ApiOperation("填报界面点击保存按钮")
-    public CommonReturnType saveReportDataHtml(@RequestBody Map<String, Object> mapParam){
+    public CommonReturnType saveReportDataHtml(@RequestBody Map<String, Object> mapParam) {
         ReportDataHtml reportDataHtml = new ReportDataHtml();
         reportDataHtml.setHeadHtml(mapParam.get("headHtml").toString());
         reportDataHtml.setBodyHtml(mapParam.get("bodyHtml").toString());
         reportDataHtml.setTailHtml(mapParam.get("tailHtml").toString());
-        reportDataHtml.setId((Integer)mapParam.get("id"));
+        reportDataHtml.setId((Integer) mapParam.get("id"));
         Integer i = fillService.saveReportDataHtml(reportDataHtml);
         return i.equals(1) ? CommonReturnType.ok() : CommonReturnType.error();
     }
@@ -82,7 +80,7 @@ public class FillController{
         reportDataHtml.setHeadHtml(mapParam.get("headHtml").toString());
         reportDataHtml.setBodyHtml(mapParam.get("bodyHtml").toString());
         reportDataHtml.setTailHtml(mapParam.get("tailHtml").toString());
-        reportDataHtml.setId((Integer)mapParam.get("id"));
+        reportDataHtml.setId((Integer) mapParam.get("id"));
         Integer i = fillService.submitReportData(reportDataHtml);
         return i.equals(1) ? CommonReturnType.ok() : CommonReturnType.error();
     }
@@ -96,7 +94,7 @@ public class FillController{
         InputStream is = new ByteArrayInputStream(bytes);
         ReportTemplate reportTemplate = fillService.getRowAndColByTemplateId(Integer.parseInt(uploadVO.getReportId()));
         List<Object> cellList = fileUtil.getCellList(reportTemplate, is);
-        return CommonReturnType.ok().add("value",cellList);
+        return CommonReturnType.ok().add("value", cellList);
     }
 
     @DeleteMapping("clear")
@@ -110,22 +108,22 @@ public class FillController{
     @GetMapping("download")
     @ApiOperation("导出报表的模板表（空表）")
     @ApiImplicitParam(name = "filename", value = "报表的名称", required = true, dataTypeClass = String.class)
-    public void download(String filename, HttpServletResponse response){
+    public void download(String filename, HttpServletResponse response) {
         fileUtil.download(filename, response);
     }
 
     @ApiOperation("传个模板表的id，返回表号过来")
     @ApiImplicitParam(name = "reportTemplateId", value = "模板表的id", required = true, dataTypeClass = Long.class)
     @GetMapping("getReportNumber")
-    public CommonReturnType getReportNumber(@RequestBody List<Long> reportTemplateId){
+    public CommonReturnType getReportNumber(@RequestBody List<Long> reportTemplateId) {
         return CommonReturnType.ok().add("reportNumber", fillService.getReportNumber(reportTemplateId));
     }
 
     @GetMapping("statement")
     @GetUser
-    public CommonReturnType getStatement(ReportVO reportVO){
+    public CommonReturnType getStatement(ReportVO reportVO) {
         User user = threadLocal.get();
-        return CommonReturnType.ok().add("statement",fillService.getStatement(reportVO,user,reportVO.getPageNum(),reportVO.getPageSize()));
+        return CommonReturnType.ok().add("statement", fillService.getStatement(reportVO, user, reportVO.getPageNum(), reportVO.getPageSize()));
 
     }
 }

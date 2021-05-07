@@ -10,7 +10,7 @@ public class DateUtil {
      * @param date
      * @return
      */
-    public static String changeDateToStringWithMonth(Date date){
+    public static synchronized String changeDateToStringWithMonth(Date date){
         sdf= new SimpleDateFormat("yyyy年MM月");
         return sdf.format(date);
     }
@@ -20,7 +20,7 @@ public class DateUtil {
      * @param date
      * @return
      */
-    public static String changeDateToStringWithDate(Date date){
+    public static synchronized String changeDateToStringWithDate(Date date){
         sdf= new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(date);
     }

@@ -5,7 +5,6 @@ import com.hyjj.hyjjservice.dataobject.Menu;
 import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.report.AuditService;
 import com.hyjj.hyjjservice.service.user.UserRoleService;
-import com.hyjj.util.error.EmBusinessError;
 import com.hyjj.util.responce.CommonReturnType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,10 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hyjj.hyjjservice.service.menu.*;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @Api(tags = "首页相关的接口")
@@ -94,8 +90,9 @@ public class IndexController {
     public Boolean checkUser(User user) {
         List<Integer> userRoleIds = userRoleService.selectRoleIdByUserId(user.getId());
         for (Integer userRoleId : userRoleIds) {
-            if (userRoleId < 3)
+            if (userRoleId < 3) {
                 return true;
+            }
         }
         return false;
     }

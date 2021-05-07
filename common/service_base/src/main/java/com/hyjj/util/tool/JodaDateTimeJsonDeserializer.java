@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class JodaDateTimeJsonDeserializer extends JsonDeserializer<DateTime> {
     @Override
-    public DateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+    public DateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         String dateString = jsonParser.readValueAs(String.class);
         DateTimeFormatter formatter = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 

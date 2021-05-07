@@ -27,11 +27,11 @@ import java.util.List;
 public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
 
 
-    private TokenManager tokenManager;
-    private RedisTemplate redisTemplate;
+    private final TokenManager tokenManager;
+    private final RedisTemplate redisTemplate;
 
 
-    private static final String userAuthority = "authority:";
+    private static final String USER_AUTHORITY = "authority:";
 
     public TokenAuthenticationFilter(AuthenticationManager authManager, TokenManager tokenManager, RedisTemplate redisTemplate) {
         super(authManager);
@@ -42,13 +42,11 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
             throws IOException, ServletException {
-        logger.info("================="+req.getRequestURI());//调debug
-//        if(req.getRequestURI().indexOf("admin") == -1) {
-//            chain.doFilter(req, res);
-//            return;
-//        }
+        //调debug
+        logger.info("=================" + req.getRequestURI());
 
-        UsernamePasswordAuthenticationToken authentication = null;
+
+        UsernamePasswordAuthenticationToken authentication;
         try {
             authentication = getAuthentication(req);
         } catch (Exception e) {
@@ -71,11 +69,13 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
         if (token != null && !"".equals(token.trim())) {
             String userName = tokenManager.getUserFromToken(token);
 
-            List<String> permissionValueList = (List<String>) redisTemplate.opsForValue().get(userAuthority + userName);
+            List<String> permissionValueList = (List<String>) redisTemplate.opsForValue().get(USER_AUTHORITY + userName);
             permissionValueList.add("ROLE_User");
             Collection<GrantedAuthority> authorities = new ArrayList<>();
-            for(String permissionValue : permissionValueList) {
-                if(StringUtils.isEmpty(permissionValue)) continue;
+            for (String permissionValue : permissionValueList) {
+                if (StringUtils.isEmpty(permissionValue)) {
+                    continue;
+                }
                 SimpleGrantedAuthority authority = new SimpleGrantedAuthority(permissionValue);
                 authorities.add(authority);
             }

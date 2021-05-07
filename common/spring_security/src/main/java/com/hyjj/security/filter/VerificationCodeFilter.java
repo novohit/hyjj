@@ -18,7 +18,9 @@ import java.io.IOException;
 public class VerificationCodeFilter extends OncePerRequestFilter {
 
     @Autowired
-    private RedisUtil redisUtil;
+    private final RedisUtil redisUtil;
+
+    private final static String  USER_LOGIN = "/user/login";
 
     public VerificationCodeFilter(RedisUtil redisUtil) {
         this.redisUtil = redisUtil;
@@ -26,38 +28,32 @@ public class VerificationCodeFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (!"/user/login".equals(request.getRequestURI())) {
+        if (!USER_LOGIN.equals(request.getRequestURI())) {
             filterChain.doFilter(request, response);
         } else {
             try {
-                verificationCode(request, response);
+                verificationCode(request);
                 try {
                     filterChain.doFilter(request, response);
                 } catch (Exception e) {
-
                     ResponseUtil.out(response, CommonReturnType.error(EmBusinessError.USER_LOGIN_FAIL));
-                    return;
                 }
             } catch (Exception e) {
                 ResponseUtil.out(response, CommonReturnType.error().setErrMsg("验证码不正确"));
-                return;
-
             }
         }
     }
 
 
-    private void verificationCode(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    private void verificationCode(HttpServletRequest request) throws Exception {
         String requestCode = request.getParameter("captcha").toUpperCase();
         String captchaId = "captcha:verification:" + request.getParameter("captchaId");
-
 
         String truecaptcha = (String) redisUtil.get(captchaId);
         truecaptcha = truecaptcha.toUpperCase();
         if (StringUtils.isEmpty(truecaptcha)) {
             redisUtil.del(captchaId);
         }
-
 
         if (StringUtils.isEmpty(requestCode) || StringUtils.isEmpty(truecaptcha) || !requestCode.equals(truecaptcha)) {
             throw new Exception();

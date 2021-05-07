@@ -1,7 +1,6 @@
 package com.hyjj.util.responce;
 
 import com.hyjj.util.error.EmBusinessError;
-import com.hyjj.util.tool.R;
 import com.hyjj.util.tool.ResultCode;
 
 import java.util.HashMap;
@@ -13,10 +12,12 @@ public class CommonReturnType {
     private Integer code;
     private String errMsg;
     private short successful;
-    private Map<String, Object> data = new HashMap<String, Object>();
+    private Map<String, Object> data = new HashMap<>();
 
-
-    //成功静态方法
+    /**
+     * 成功静态方法
+     * @return  返回成功信息
+     */
     public static CommonReturnType ok() {
         CommonReturnType commonReturnType = new CommonReturnType();
         commonReturnType.setCode(ResultCode.SUCCESS);
@@ -24,7 +25,9 @@ public class CommonReturnType {
         return commonReturnType;
     }
 
-    //失败静态方法
+    /**
+     * 失败静态方法
+     */
     public static CommonReturnType error() {
         CommonReturnType commonReturnType = new CommonReturnType();
         commonReturnType.setCode(ResultCode.ERROR);

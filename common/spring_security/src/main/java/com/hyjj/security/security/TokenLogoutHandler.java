@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class TokenLogoutHandler implements LogoutHandler {
 
-    private TokenManager tokenManager;
+    private final TokenManager tokenManager;
     private RedisTemplate redisTemplate;
 
     public TokenLogoutHandler(TokenManager tokenManager, RedisTemplate redisTemplate) {

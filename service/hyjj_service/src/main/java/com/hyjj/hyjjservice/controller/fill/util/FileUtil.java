@@ -2,10 +2,8 @@ package com.hyjj.hyjjservice.controller.fill.util;
 
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -55,35 +53,40 @@ public class FileUtil {
     public static Cell getExcelValue(XSSFWorkbook xssfWorkbook,Integer rowNum, Integer cellNum, InputStream is) throws IOException {
         XSSFSheet sheet = xssfWorkbook.getSheetAt(0);
         XSSFRow row = sheet.getRow(rowNum);
-        XSSFCell cell = row.getCell(cellNum);
-
-        return cell;
+        return row.getCell(cellNum);
     }
 
     public static Object getCellValue(Cell cell) {
         String cellValue = "";
-        double cellNum = 0;
+        double cellNum;
         // 以下是判断数据的类型
         switch (cell.getCellType()) {
-            case NUMERIC: // 数字
-                if (DateUtil.isCellDateFormatted(cell)){  //日期
+            // 数字
+            case NUMERIC:
+                //日期
+                if (DateUtil.isCellDateFormatted(cell)){
                     Date date = cell.getDateCellValue();
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                     cellValue = df.format(date);
                     break;
                 }else{
-                    cellNum = cell.getNumericCellValue(); //数字
+                    //数字
+                    cellNum = cell.getNumericCellValue();
                     return cellNum;
                 }
-
-            case STRING:// 字符串
+            // 字符串
+            case STRING:
                 cellValue = cell.getStringCellValue();
                 break;
-            case BLANK: // 空值
+            // 空值
+            case BLANK:
                 cellValue = "";
                 break;
-            case ERROR: // 故障
+            // 故障
+            case ERROR:
                 cellValue = "非法字符";
+                break;
+            default:
                 break;
         }
         return cellValue;

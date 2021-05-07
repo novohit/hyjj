@@ -2,8 +2,6 @@ package com.hyjj.hyjjservice.service.fill.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportVO;
-import com.hyjj.hyjjservice.controller.report.viewobject.AuditVO;
-import com.hyjj.hyjjservice.dao.IndustryMapper;
 import com.hyjj.hyjjservice.dao.ProcessMapper;
 import com.hyjj.hyjjservice.dao.ReportDataMapper;
 import com.hyjj.hyjjservice.dao.ReportTemplateMapper;
@@ -29,14 +27,11 @@ public class FillServiceImpl implements FillService {
     private ProcessMapper processMapper;
 
     @Autowired
-    private IndustryMapper industryMapper;
-
-    @Autowired
     private ReportTemplateMapper reportTemplateMapper;
 
     @Override
-    public List<ReportDataList> getReportListByUserId(Long userId,Integer pageNum,Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize==null?10:pageSize);
+    public List<ReportDataList> getReportListByUserId(Long userId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize == null ? 10 : pageSize);
         return reportDataMapper.getReportDataListByUserId(userId);
     }
 
@@ -83,7 +78,7 @@ public class FillServiceImpl implements FillService {
 
 
     @Override
-    public List<ReportDataList> getStatement(ReportVO reportVO, User user,Integer pageNum,Integer pageSize) {
+    public List<ReportDataList> getStatement(ReportVO reportVO, User user, Integer pageNum, Integer pageSize) {
         //指定搜索某一年
         Long userId = user.getId();
 
@@ -93,7 +88,7 @@ public class FillServiceImpl implements FillService {
         String status = null;
         if (reportVO.getStatus() == 1) {
             status = "未填报";
-        }else if(reportVO.getStatus() == 2){
+        } else if (reportVO.getStatus() == 2) {
             status = "审核不通过";
         } else if (reportVO.getStatus() == 3) {
             status = "未提交";
@@ -106,7 +101,7 @@ public class FillServiceImpl implements FillService {
         List<Integer> industriesId = new ArrayList<>();
         if (industry.charAt(0) == '1') {
             //全选的情况
-            PageHelper.startPage(pageNum,pageSize==null?10:pageSize);
+            PageHelper.startPage(pageNum, pageSize == null ? 10 : pageSize);
             return reportDataMapper.reportSelectAllIndustryReportData(reportVO.getType(), status, year, nextYear, userId);
         } else {
             for (int i = 1; i < 14; i++) {
@@ -114,13 +109,14 @@ public class FillServiceImpl implements FillService {
                     industriesId.add(i);
                 }
             }
-            if (industry.charAt(14) == '1') {  //勾选了其他选项
+            //勾选了其他选项
+            if (industry.charAt(14) == '1') {
                 for (int i = 14; i < 35; i++) {
                     industriesId.add(i);
                 }
             }
         }
-        PageHelper.startPage(pageNum,pageSize==null?10:pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         return reportDataMapper.reportSelectReportDataByIndustryId(industriesId, reportVO.getType(), status, year, nextYear, userId);
     }
 }

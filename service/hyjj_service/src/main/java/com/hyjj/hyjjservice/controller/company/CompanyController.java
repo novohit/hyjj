@@ -1,6 +1,5 @@
 package com.hyjj.hyjjservice.controller.company;
 
-
 import com.hyjj.hyjjservice.controller.company.viewObject.*;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
 import com.hyjj.hyjjservice.dataobject.Industry;
@@ -72,7 +71,7 @@ public class CompanyController {
 
     @GetMapping("detailCominfo")
     @ApiOperation("获取详细的企业信息")
-    public CommonReturnType getDeatailComInfo(Long id){
+    public CommonReturnType getDetailComInfo(Long id){
 
         DeatailComInfoModel deatailComInfoModel =  companyService.getDeatailComInfo(id);
         if(deatailComInfoModel == null){

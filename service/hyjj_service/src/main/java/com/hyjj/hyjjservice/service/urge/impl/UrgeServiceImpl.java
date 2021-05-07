@@ -1,5 +1,6 @@
 package com.hyjj.hyjjservice.service.urge.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.hyjj.hyjjservice.controller.urge.viewobject.UrgeReportVO;
 import com.hyjj.hyjjservice.dao.ComInfoMapper;
 import com.hyjj.hyjjservice.dao.ReportDataMapper;
@@ -52,9 +53,11 @@ public class UrgeServiceImpl implements UrgeService {
     }
 
     @Override
-    public List<UrgeReportVO> getUrge(Integer year, String company) {
-        if (company.equals("全部"))
+    public List<UrgeReportVO> getUrge(Integer year, String company, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        if ("全部".equals(company)) {
             company = null;
+        }
         List<UrgeReportVO> urgeReportVOS = reportDataMapper.selectByYearAndCompany(year, company);
         for (UrgeReportVO urgeReportVO : urgeReportVOS) {
             urgeReportVO.setReportDate(DateUtil.changeDateToStringWithMonth(urgeReportVO.getBeginDate()));

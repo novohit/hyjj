@@ -4,8 +4,6 @@ import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditVO;
 import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.report.AuditService;
-import com.hyjj.hyjjservice.service.user.UserRoleService;
-import com.hyjj.util.error.EmBusinessError;
 import com.hyjj.util.responce.CommonReturnType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -16,8 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @RestController

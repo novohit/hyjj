@@ -18,6 +18,12 @@ public abstract class AddTargetTemplate {
         return changeValue(reportDataId, data);
     }
 
+    /**
+     * 每张表的样子和要存的值都不一样，因此每张表都要做单独处理
+     * @param reportDataId 报表id
+     * @param data  报表里面的数据
+     * @return  大于0则为成功，否则失败
+     */
     public abstract Integer changeValue(Long reportDataId, List<Double> data);
 
 

@@ -8,18 +8,16 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler{
 
-    private AuthenticationManager authenticationManager;
-    private TokenManager   tokenManager;
-    private RedisTemplate redisTemplate;
+    private final AuthenticationManager authenticationManager;
+    private final TokenManager   tokenManager;
+    private final RedisTemplate redisTemplate;
 
-    private static final String userAuthority = "authority:";
+    private static final String USER_AUTHORITY = "authority:";
 
     public LoginAuthenticationSuccessHandler(AuthenticationManager authenticationManager, TokenManager tokenManager, RedisTemplate redisTemplate) {
         this.authenticationManager = authenticationManager;
@@ -28,10 +26,10 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
     }
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication){
         SecurityUser user = (SecurityUser) authentication.getPrincipal();
         String token = tokenManager.createToken(user.getCurrentUserInfo().getUsername());
-        redisTemplate.opsForValue().set(userAuthority + user.getCurrentUserInfo().getUsername(), user.getPermissionValueList());
+        redisTemplate.opsForValue().set(USER_AUTHORITY + user.getCurrentUserInfo().getUsername(), user.getPermissionValueList());
 
 
         ResponseUtil.out(response, CommonReturnType.ok().add("token", token).add("permission",user.getResourcePathList()).add("role",user.getRole()));

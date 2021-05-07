@@ -3,7 +3,6 @@ package com.hyjj.util.validator;
 
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
 
 
 import javax.validation.ConstraintViolation;
@@ -43,7 +42,7 @@ public class ValidatorImpl implements InitializingBean {
 
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet(){
         this.validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 }
