@@ -488,7 +488,7 @@
     </select>
 
     <update id="saveReportDataHtml" parameterType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml">
-        update report_data set head_html = #{headHtml},body_html = #{bodyHtml},tail_html = #{tailHtml},is_save = 1,gmt_moified = current_date where id = #{id}
+        update report_data set head_html = #{headHtml},body_html = #{bodyHtml},tail_html = #{tailHtml},is_save = 1,gmt_modified = current_date where id = #{id}
     </update>
 
     <update id="submitReportData" parameterType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml">
