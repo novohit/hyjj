@@ -13,7 +13,7 @@ import java.util.List;
  * 模板id为29的报表的模板（海洋工程装备制造企业生产情况）
  */
 @Component
-public class TemplateId29 extends AddTargetTemplate {
+public class TemplateId29 extends AbstractTargetTemplate {
     @Autowired
     private TargetKeyValueMapper targetKeyValueMapper;
 

@@ -128,7 +128,7 @@ public class FillController {
     }
 
     @PostMapping("formulaVerification")
-    public CommonReturnType formulaVerification(FormulaVerificationDto formulaVerificationDto) {
+    public CommonReturnType formulaVerification(@RequestBody FormulaVerificationDto formulaVerificationDto) {
         return CommonReturnType.ok().add("result", fillService.formulaVerification(formulaVerificationDto));
     }
 }

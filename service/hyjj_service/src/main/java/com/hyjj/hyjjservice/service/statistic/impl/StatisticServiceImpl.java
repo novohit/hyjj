@@ -7,7 +7,7 @@ import com.hyjj.hyjjservice.dao.TargetKeyValueMapper;
 import com.hyjj.hyjjservice.dataobject.StatisticsTargetKey;
 import com.hyjj.hyjjservice.service.statistic.StatisticService;
 import com.hyjj.hyjjservice.service.statistic.impl.factory.AddTargetStrategyFactory;
-import com.hyjj.hyjjservice.service.statistic.impl.template.AddTargetTemplate;
+import com.hyjj.hyjjservice.service.statistic.impl.template.AbstractTargetTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +38,7 @@ public class StatisticServiceImpl implements StatisticService {
     public Integer addTargetKeyValue(Long reportDataId, List<Double> data) {
         //先根据报表查询出对应模板表
         Long reportTemplateId = reportDataMapper.selectReportTemplateByReportId(reportDataId);
-        AddTargetTemplate addTargetValueStatus = addTargetStrategyFactory.getAddTargetValueStatus(reportTemplateId);
+        AbstractTargetTemplate addTargetValueStatus = addTargetStrategyFactory.getAddTargetValueStatus(reportTemplateId);
         return addTargetValueStatus.add(reportDataId, data);
     }
 

@@ -12,7 +12,7 @@ import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
 import com.hyjj.hyjjservice.dataobject.Process;
 import com.hyjj.hyjjservice.service.fill.FillService;
 import com.hyjj.hyjjservice.service.statistic.impl.factory.AddTargetStrategyFactory;
-import com.hyjj.hyjjservice.service.statistic.impl.template.AddTargetTemplate;
+import com.hyjj.hyjjservice.service.statistic.impl.template.AbstractTargetTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -128,7 +128,7 @@ public class FillServiceImpl implements FillService {
 
     @Override
     public String formulaVerification(FormulaVerificationDto formulaVerificationDto) {
-        AddTargetTemplate template = addTargetStrategyFactory.getAddTargetValueStatus(
+        AbstractTargetTemplate template = addTargetStrategyFactory.getAddTargetValueStatus(
                 reportDataMapper.selectReportTemplateByReportId(formulaVerificationDto.getReportId()));
         return template.formulaVerification(formulaVerificationDto.getData()) ? "公式校验通过" : "公式校验不通过";
     }

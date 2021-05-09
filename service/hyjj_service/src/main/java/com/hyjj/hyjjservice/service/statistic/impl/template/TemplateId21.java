@@ -14,7 +14,7 @@ import java.util.List;
  * 模板id为21的报表的模板（天然气水合物技术研发情况）
  */
 @Component
-public class TemplateId21 extends AddTargetTemplate {
+public class TemplateId21 extends AbstractTargetTemplate {
     @Autowired
     private TargetKeyValueMapper targetKeyValueMapper;
 

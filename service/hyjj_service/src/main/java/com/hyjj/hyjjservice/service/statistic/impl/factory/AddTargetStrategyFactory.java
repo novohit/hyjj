@@ -59,9 +59,9 @@ public class AddTargetStrategyFactory implements InitializingBean {
     TemplateId33 templateId33;
 
 
-    private final Map<Long, AddTargetTemplate> map = new HashMap<>();
+    private final Map<Long, AbstractTargetTemplate> map = new HashMap<>();
 
-    public AddTargetTemplate getAddTargetValueStatus(Long id) {
+    public AbstractTargetTemplate getAddTargetValueStatus(Long id) {
         return map.get(id);
     }
 

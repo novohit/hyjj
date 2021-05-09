@@ -14,7 +14,7 @@ import java.util.List;
  * 模板id为18的报表的模板（重点涉海企业情况-建筑业企业）
  */
 @Component
-public class TemplateId18 extends AddTargetTemplate {
+public class TemplateId18 extends AbstractTargetTemplate {
     @Autowired
     private TargetKeyValueMapper targetKeyValueMapper;
 
