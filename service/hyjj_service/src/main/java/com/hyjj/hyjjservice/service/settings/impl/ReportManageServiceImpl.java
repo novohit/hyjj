@@ -217,7 +217,6 @@ public class ReportManageServiceImpl implements ReportManageService {
         List<Integer> integers = comFillReportMapper.selectReportTemplateId(id);
         System.out.println(integers);
         if(reportId == null){
-            System.out.println(666);
             int i = 0;
             for (Integer integer : integers) {
                 processMapper.insertSelective(process);

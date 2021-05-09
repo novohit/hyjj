@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
 @RequestMapping("/settings/sys")
-@CrossOrigin
 public class SysApplicationController {
 
     @Autowired

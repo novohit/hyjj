@@ -24,7 +24,6 @@ import java.util.Map;
 @Api(tags = "设置中的报表管理")
 @RequestMapping("/settings/report")
 @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
-@CrossOrigin
 public class ReportManageController {
 
 
