@@ -447,6 +447,7 @@
             and rd.`submit_date` between #{year} and #{nextYear}
             and rd.`pro_status` like #{statue}
         </where>
+        order by rd.`report_date` DESC
     </select>
 
     <select id="selectAllIndustryReportData" resultType="com.hyjj.hyjjservice.controller.report.viewobject.AuditReportVO">
@@ -464,6 +465,7 @@
             and rd.`submit_date` between #{year} and #{nextYear}
             and rd.`pro_status` like #{statue}
         </where>
+        order by rd.`report_date` DESC
     </select>
 
     <update id="updateProcessByReportId">
@@ -522,6 +524,7 @@
                 and rd.`user_id` = #{userId}
             </if>
         </where>
+        order by rd.`add_date` DESC
     </select>
 
     <select id="getRowAndColByTemplateId" resultType="com.hyjj.hyjjservice.dataobject.ReportTemplate">
@@ -538,6 +541,7 @@
                 and rd.`fill_unit` = #{company}
             </if>
         </where>
+        order by rd.`begin_date` DESC
     </select>
     <select id="reportSelectAllIndustryReportData" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList">
         SELECT
