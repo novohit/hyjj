@@ -206,8 +206,10 @@ public class ReportManageServiceImpl implements ReportManageService {
         reportData.setBeginDate(beginDate);
         reportData.setEndDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endDate));
         reportData.setGmtModified(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endDate));
+        reportData.setReportDate(beginDate);
         reportData.setProStatus("填报数据");
         reportData.setProStatusName("1");
+        reportData.setAreaCode("04");
         reportData.setGmtCreate(beginDate);
         reportData.setExpireDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endDate));
         reportData.setDataFrom("null");
