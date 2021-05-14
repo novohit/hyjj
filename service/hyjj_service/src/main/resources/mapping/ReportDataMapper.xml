@@ -482,7 +482,7 @@
     </update>
 
     <select id="getReportDataListByUserId" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList">
-        select id,`number`,title,end_date,fill_unit,begin_date,pro_status_name from report_data where user_id = #{userId}
+        select id,`number`,title,end_date,fill_unit,begin_date,pro_status_name from report_data where user_id = #{userId} order by end_date desc
     </select>
 
     <select id="getReportDataHtml" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml">
@@ -561,6 +561,9 @@
             <if test="statue == '未提交' ">
                 and rd.`pro_status` = "填报数据"
                 and rd.is_save = 1
+            </if>
+            <if test="statue == '审核不通过'">
+                and rd.`pro_status` = "审核不通过"
             </if>
             <if test="statue == '未填报'">
                 and (rd.pro_status = "审核不通过" or rd.pro_status = "填报数据")
