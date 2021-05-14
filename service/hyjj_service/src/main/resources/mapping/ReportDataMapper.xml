@@ -447,7 +447,7 @@
             and rd.`submit_date` between #{year} and #{nextYear}
             and rd.`pro_status` like #{statue}
         </where>
-        order by rd.`report_date` DESC
+        ORDER BY rd.`pro_status_name` DESC, rd.`report_date` DESC
     </select>
 
     <select id="selectAllIndustryReportData" resultType="com.hyjj.hyjjservice.controller.report.viewobject.AuditReportVO">
@@ -465,7 +465,7 @@
             and rd.`submit_date` between #{year} and #{nextYear}
             and rd.`pro_status` like #{statue}
         </where>
-        order by rd.`report_date` DESC
+        ORDER BY rd.`pro_status_name` DESC, rd.`report_date` DESC
     </select>
 
     <update id="updateProcessByReportId">
