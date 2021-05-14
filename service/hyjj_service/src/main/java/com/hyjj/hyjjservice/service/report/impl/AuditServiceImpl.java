@@ -1,7 +1,6 @@
 package com.hyjj.hyjjservice.service.report.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditReportVO;
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditVO;
 import com.hyjj.hyjjservice.dao.*;
@@ -28,9 +27,6 @@ public class AuditServiceImpl implements AuditService {
     private IndustryMapper industryMapper;
 
     @Autowired
-    private ComAuditReportMapper comAuditReportMapper;
-
-    @Autowired
     private ReportDataMapper reportDataMapper;
 
     @Autowired
@@ -39,6 +35,9 @@ public class AuditServiceImpl implements AuditService {
     @Autowired
     private ProcessMapper processMapper;
 
+    private static final Character IS_SELECT = '1';
+    private static final int INDUSTRY_NUMBER = 14;
+    private static final int ALL_INDUSTRY_NUMBER = 35;
 
     @Override
     public List<Industry> getIndustry() {
@@ -66,6 +65,7 @@ public class AuditServiceImpl implements AuditService {
 
     @Override
     public List<AuditReportVO> getStatement(AuditVO auditVO, User user, int pageNum, int pageSize) throws BusinessException {
+
         PageHelper.startPage(pageNum, pageSize);
         //指定搜索某一年
         String year = auditVO.getYear() + "-01-01 00:00:00";
@@ -77,11 +77,12 @@ public class AuditServiceImpl implements AuditService {
         } else if (auditVO.getStatus() == 2) {
             status = "审核通过";
         }
+
         //先查询出所有已选行业
         String industry = auditVO.getIndustry();
         //需要查询的行业id的集合
         List<Integer> industriesId = new ArrayList<>();
-        if (industry.charAt(0) == '1') {
+        if (industry.charAt(0) == IS_SELECT) {
             //全选的情况
             List<AuditReportVO> auditReportVOS = reportDataMapper.selectAllIndustryReportData(auditVO.getType(), status, year, nextYear);
             for (AuditReportVO auditReportVO : auditReportVOS) {
@@ -89,26 +90,51 @@ public class AuditServiceImpl implements AuditService {
                 auditReportVO.setReportDateString(DateUtil.changeDateToStringWithMonth(auditReportVO.getReportDate()));
                 auditReportVO.setSubmitDateString(DateUtil.changeDateToStringWithDate(auditReportVO.getSubmitDate()));
             }
+
             return auditReportVOS;
         } else {
-            for (int i = 1; i < 14; i++) {
-                if (industry.charAt(i) == '1')
+            for (int i = 1; i < INDUSTRY_NUMBER; i++) {
+                if (industry.charAt(i) == IS_SELECT) {
                     industriesId.add(i);
-
+                }
             }
-            if (industry.charAt(14) == '1') {  //勾选了其他选项
-                for (int i = 14; i < 35; i++)
+            //勾选了其他选项
+            if (industry.charAt(INDUSTRY_NUMBER) == IS_SELECT) {
+                for (int i = INDUSTRY_NUMBER; i < ALL_INDUSTRY_NUMBER; i++) {
                     industriesId.add(i);
+                }
             }
         }
-        if (industriesId.size() == 0)
+        if (industriesId.size() == 0) {
             return null;
+        }
         List<AuditReportVO> auditReportVOS = reportDataMapper.selectReportDataByIndustryId(industriesId, auditVO.getType(), status, year, nextYear);
         for (AuditReportVO auditReportVO : auditReportVOS) {
             auditReportVO.setBeginDate(DateUtil.changeDateToStringWithDate(auditReportVO.getReportDate()));
             auditReportVO.setReportDateString(DateUtil.changeDateToStringWithMonth(auditReportVO.getReportDate()));
             auditReportVO.setSubmitDateString(DateUtil.changeDateToStringWithDate(auditReportVO.getSubmitDate()));
         }
+        int start = -1, end = -1;
+        for (int i = 0; i < auditReportVOS.size(); i++) {
+            if ("审核数据".equals(auditReportVOS.get(i).getProStatus())) {
+                if (start == -1) {
+                    start = i;
+                    end = i + 1;
+                } else {
+                    end++;
+                }
+            }
+        }
+        if (end != -1) {
+            List<AuditReportVO> auditReportVOS1 = auditReportVOS.subList(start, end);
+            for (int i = start - 1; i >= 0; i--) {
+                auditReportVOS.set(--end, auditReportVOS.get(i));
+            }
+            for (int i = 0; i < auditReportVOS1.size(); i++) {
+                auditReportVOS.set(i, auditReportVOS1.get(i));
+            }
+        }
+
         return auditReportVOS;
     }
 
@@ -119,12 +145,10 @@ public class AuditServiceImpl implements AuditService {
 
 
     @Override
-    @Transactional
     public String batchAuditReport(Map<Long, Integer> map, User user) {
         for (Long reportId : map.keySet()) {
             auditReport(reportId, map.get(reportId), user);
         }
-
         return "audit success";
     }
 
@@ -138,10 +162,10 @@ public class AuditServiceImpl implements AuditService {
      * @return
      */
     @Override
-    @Transactional
     public String auditReport(Long reportId, Integer judge, User user) {
-        Date date = new Date();     //获取当前时间
-        Integer isSave = null;
+        //获取当前时间
+        Date date = new Date();
+        Integer isSave;
         //根据报表id查询流程
         Process process = processMapper.selectByReportId(reportId);
         if (process == null) {
@@ -158,20 +182,18 @@ public class AuditServiceImpl implements AuditService {
         process.setRemark("");
         process.setGmtModified(date);
 
-        if (judge == 0) {    //审核不通过
-            isSave = 0;
-            process.setProcessName("审核不通过");
-            process.setProsessDescription("审核不通过");
-        } else {             //审核通过
-            process.setProcessName("审核通过");
-            process.setProsessDescription("审核通过");
-        }
-        if (process.getId() == null)    //如果id为null说明这是一个现在 new 出来的流程状态，因此叫添加到数据库
-            processMapper.insertSelective(process);
-        else
-            processMapper.updateByPrimaryKeySelective(process);
+        isSave = judge == 0 ? 0 : null;
+        process.setProcessName(judge == 0 ? "审核不通过" : "审核通过");
+        process.setProsessDescription(judge == 0 ? "审核通过" : "审核通过");
 
-        reportDataMapper.updateProcessByReportId(reportId, process.getId(), process.getProcessName(), process.getProcessName(), isSave);
+        //如果id为null说明这是一个现在 new 出来的流程状态，因此叫添加到数据库
+        if (process.getId() == null) {
+            processMapper.insertSelective(process);
+        } else {
+            processMapper.updateByPrimaryKeySelective(process);
+        }
+
+        reportDataMapper.updateProcessByReportId(reportId, process.getId(), process.getProcessName(), judge == 0 ? "2" : "3", isSave);
 
         return "audit success";
     }
@@ -179,5 +201,28 @@ public class AuditServiceImpl implements AuditService {
     @Override
     public List<ComInfo> selectAllCompany() {
         return comInfoMapper.selectAllCompany();
+    }
+
+    public void sort(List<AuditReportVO> auditReportVOS) {
+        int start = -1, end = -1;
+        for (int i = 0; i < auditReportVOS.size(); i++) {
+            if ("审核数据".equals(auditReportVOS.get(i).getProStatus())) {
+                if (start == -1) {
+                    start = i;
+                    end = i + 1;
+                } else {
+                    end++;
+                }
+            }
+        }
+        if (end != -1) {
+            List<AuditReportVO> auditReportVOS1 = auditReportVOS.subList(start, end);
+            for (int i = start - 1; i >= 0; i--) {
+                auditReportVOS.set(--end, auditReportVOS.get(i));
+            }
+            for (int i = 0; i < auditReportVOS1.size(); i++) {
+                auditReportVOS.set(i, auditReportVOS1.get(i));
+            }
+        }
     }
 }
