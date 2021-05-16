@@ -482,7 +482,7 @@
     </update>
 
     <select id="getReportDataListByUserId" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList">
-        select id,`number`,title,end_date,fill_unit,begin_date,pro_status_name from report_data where user_id = #{userId} order by end_date desc
+        select id,`number`,title,end_date,fill_unit,begin_date,pro_status from report_data where user_id = #{userId} order by end_date desc
     </select>
 
     <select id="getReportDataHtml" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml">
@@ -545,7 +545,7 @@
     </select>
     <select id="reportSelectAllIndustryReportData" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList">
         SELECT
-        rd.id,rd.`number`,rd.title,rd.begin_date,rd.fill_unit,rd.end_date,rd.pro_status_name,i.name
+        rd.id,rd.`number`,rd.title,rd.begin_date,rd.fill_unit,rd.end_date,rd.pro_status,i.name
         FROM report_data rd
         INNER JOIN report_template rt
         ON rd.`report_template_id` = rt.`id`
@@ -577,7 +577,7 @@
 
     <select id="reportSelectReportDataByIndustryId" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList">
         SELECT
-        rd.id,rd.`number`,rd.title,rd.end_date,rd.fill_unit,rd.begin_date,rd.pro_status_name,i.name
+        rd.id,rd.`number`,rd.title,rd.end_date,rd.fill_unit,rd.begin_date,rd.pro_status,i.name
         FROM report_data rd
         INNER JOIN report_template rt
         ON rd.`report_template_id` = rt.`id`
