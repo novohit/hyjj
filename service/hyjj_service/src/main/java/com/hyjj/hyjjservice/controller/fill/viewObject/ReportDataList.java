@@ -7,7 +7,7 @@ public class ReportDataList {
     private String endDate;
     private String fillUnit;
     private String beginDate;
-    private String proStatusName;
+    private String proStatus;
     private String name;
 
     public String getName() {
@@ -67,12 +67,11 @@ public class ReportDataList {
     }
 
 
-
-    public String getProStatusName() {
-        return proStatusName;
+    public String getProStatus() {
+        return proStatus;
     }
 
-    public void setProStatusName(String proStatusName) {
-        this.proStatusName = proStatusName;
+    public void setProStatus(String proStatus) {
+        this.proStatus = proStatus;
     }
 }
