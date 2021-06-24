@@ -1,6 +1,8 @@
 package com.hyjj.hyjjservice.controller.settings;
 
+import com.hyjj.hyjjservice.controller.fill.viewObject.UploadVO;
 import com.hyjj.hyjjservice.controller.settings.viewObject.UserInfoVO;
+import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.settings.SysApplicationService;
 import com.hyjj.util.responce.CommonReturnType;
@@ -8,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -17,6 +21,7 @@ public class SysApplicationController {
 
     @Autowired
     private SysApplicationService sysApplicationService;
+
 
     @GetMapping("userList")
     public CommonReturnType getUserList(Integer pageNum,Integer pageSize,UserInfoVO userInfoVO){
@@ -58,5 +63,12 @@ public class SysApplicationController {
     @GetMapping("enableUser")
     public CommonReturnType enableUser(Long id){
         return CommonReturnType.ok().add("success",sysApplicationService.enableUser(id));
+    }
+
+    @PostMapping("batchUpload")
+    public CommonReturnType batchUpload(UploadVO[] uploadVOS){
+        boolean b = sysApplicationService.batchUpload(uploadVOS);
+        return b==true?CommonReturnType.ok().add("success",1):CommonReturnType.ok().add("success",0);
+
     }
 }

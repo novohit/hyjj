@@ -1,18 +1,27 @@
 package com.hyjj.hyjjservice.service.settings.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
+import com.hyjj.hyjjservice.controller.fill.viewObject.UploadVO;
 import com.hyjj.hyjjservice.controller.settings.viewObject.UserInfoVO;
 import com.hyjj.hyjjservice.dao.ComInfoMapper;
 import com.hyjj.hyjjservice.dao.UserMapper;
 import com.hyjj.hyjjservice.dao.UserRoleMapper;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
+import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.dataobject.UserRole;
+import com.hyjj.hyjjservice.service.fill.FillService;
 import com.hyjj.hyjjservice.service.settings.SysApplicationService;
 import com.hyjj.security.security.DefaultPasswordEncoder;
+import com.hyjj.util.responce.CommonReturnType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
@@ -28,10 +37,37 @@ public class SysApplicationServiceImpl implements SysApplicationService {
     private UserRoleMapper userRoleMapper;
     @Autowired
     private ComInfoMapper comInfoMapper;
-
+    @Autowired
+    private FillService fillService;
+    @Autowired
+    private FileUtil fileUtil;
     @Override
     public boolean enableUser(Long id) {
         return userMapper.enableUser(id)!=0;
+    }
+
+    @Override
+    public boolean batchUpload(UploadVO[] uploadVO){
+        if (uploadVO.length == 0) {
+            return false;
+        }
+        int i = 0;
+        List<Object>[] cellList = new List[uploadVO.length];
+        for (UploadVO vo : uploadVO) {
+            try{
+                byte[] bytes = vo.getFile().getBytes();
+                InputStream is = new ByteArrayInputStream(bytes);
+                ReportTemplate reportTemplate = fillService.getRowAndColByTemplateId(Integer.parseInt(vo.getReportId()));
+                cellList[i] = fileUtil.getCellList(reportTemplate, is);
+                i++;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+
+        return true;
+
     }
 
     @Override
@@ -69,6 +105,16 @@ public class SysApplicationServiceImpl implements SysApplicationService {
         if(user.getStatue().equals("禁用")){
             userMapper.disableUser(user.getId());
         }
+        UserRole ur = new UserRole();
+        ur.setId(user.getCominfoId());
+        if(user.getUserType().equals("超级管理员")){
+            ur.setRoleId(4);
+        }else if(user.getUserType().equals("管理员")){
+            ur.setRoleId(3);
+        }else if(user.getUserType().equals("普通用户")){
+            ur.setRoleId(2);
+        }
+        int i = userRoleMapper.updateByPrimaryKeySelective(ur);
         return userMapper.updateByPrimaryKeySelective(user);
     }
 
@@ -79,6 +125,7 @@ public class SysApplicationServiceImpl implements SysApplicationService {
 
     @Override
     public boolean insertUserInfo(User user) {
+
         if(user.getCominfoId()==null){
             return false;
         }

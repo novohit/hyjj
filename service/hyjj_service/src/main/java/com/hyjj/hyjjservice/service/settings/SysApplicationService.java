@@ -1,5 +1,6 @@
 package com.hyjj.hyjjservice.service.settings;
 
+import com.hyjj.hyjjservice.controller.fill.viewObject.UploadVO;
 import com.hyjj.hyjjservice.controller.settings.viewObject.UserInfoVO;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
 import com.hyjj.hyjjservice.dataobject.User;
@@ -16,4 +17,5 @@ public interface SysApplicationService {
     List<ComInfo> getNotUseCom();
     boolean checkUserName(String name);
     boolean enableUser(Long id);
+    boolean batchUpload(UploadVO[] uploadVOS);
 }
