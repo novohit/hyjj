@@ -9,13 +9,21 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface SysApplicationService {
-    List<UserInfoVO> getUserInfoList(UserInfoVO userInfoVO,Integer pageNum,Integer pageSize);
+    List<UserInfoVO> getUserInfoList(UserInfoVO userInfoVO, Integer pageNum, Integer pageSize);
+
     User getUserDetail(Long id);
+
     int updateUserInfo(User user);
+
     boolean insertUserInfo(User user);
+
     boolean deleteUser(Long id);
+
     List<ComInfo> getNotUseCom();
+
     boolean checkUserName(String name);
+
     boolean enableUser(Long id);
+
     boolean batchUpload(UploadVO[] uploadVOS);
 }

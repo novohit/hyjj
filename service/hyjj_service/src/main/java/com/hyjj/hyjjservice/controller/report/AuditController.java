@@ -44,6 +44,15 @@ public class AuditController {
         return CommonReturnType.ok().add("reportData", auditService.getStatement(auditVO, user, pageNum, pageSize));
     }
 
+    @GetMapping("statementSum")
+    @ApiOperation("查看总记录条数")
+    @GetUser
+    public CommonReturnType getStatementSum(AuditVO auditVO){
+        User user = threadLocal.get();
+        return CommonReturnType.ok().add("reportData", auditService.getStatementSum(auditVO, user));
+    }
+
+
     @GetMapping("detailReport")
     @ApiOperation("获取报表的详情信息")
     @ApiImplicitParam(name = "reportId", value = "报表id", required = true, dataTypeClass = String.class)

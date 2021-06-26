@@ -12,7 +12,6 @@ import com.hyjj.util.Date.DateUtil;
 import com.hyjj.util.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -59,8 +58,7 @@ public class AuditServiceImpl implements AuditService {
             audit = "审核数据";
             userId = null;
         }
-        List<ReportData> statements = strategyFactory.getStatementStrategy(select).getStatement(audit, userId);
-        return statements;
+        return strategyFactory.getStatementStrategy(select).getStatement(audit, userId);
     }
 
     @Override
@@ -114,27 +112,6 @@ public class AuditServiceImpl implements AuditService {
             auditReportVO.setReportDateString(DateUtil.changeDateToStringWithMonth(auditReportVO.getReportDate()));
             auditReportVO.setSubmitDateString(DateUtil.changeDateToStringWithDate(auditReportVO.getSubmitDate()));
         }
-        int start = -1, end = -1;
-        for (int i = 0; i < auditReportVOS.size(); i++) {
-            if ("审核数据".equals(auditReportVOS.get(i).getProStatus())) {
-                if (start == -1) {
-                    start = i;
-                    end = i + 1;
-                } else {
-                    end++;
-                }
-            }
-        }
-        if (end != -1) {
-            List<AuditReportVO> auditReportVOS1 = auditReportVOS.subList(start, end);
-            for (int i = start - 1; i >= 0; i--) {
-                auditReportVOS.set(--end, auditReportVOS.get(i));
-            }
-            for (int i = 0; i < auditReportVOS1.size(); i++) {
-                auditReportVOS.set(i, auditReportVOS1.get(i));
-            }
-        }
-
         return auditReportVOS;
     }
 
@@ -150,6 +127,52 @@ public class AuditServiceImpl implements AuditService {
             auditReport(reportId, map.get(reportId), user);
         }
         return "audit success";
+    }
+
+    /**
+     * 返回总记录数
+     *
+     * @param auditVO
+     * @param user
+     * @return
+     */
+    @Override
+    public Integer getStatementSum(AuditVO auditVO, User user) {
+        //指定搜索某一年
+        String year = auditVO.getYear() + "-01-01 00:00:00";
+        String nextYear = (Integer.parseInt(auditVO.getYear()) + 1) + "-01-01 00:00:00";
+
+        String status = "审核%";
+        if (auditVO.getStatus() == 1) {
+            status = "审核数据";
+        } else if (auditVO.getStatus() == 2) {
+            status = "审核通过";
+        }
+
+        //先查询出所有已选行业
+        String industry = auditVO.getIndustry();
+        //需要查询的行业id的集合
+        List<Integer> industriesId = new ArrayList<>();
+        if (industry.charAt(0) == IS_SELECT) {
+            return reportDataMapper.selectAllIndustryReportDataSum(auditVO.getType(), status, year, nextYear);
+        } else {
+            for (int i = 1; i < INDUSTRY_NUMBER; i++) {
+                if (industry.charAt(i) == IS_SELECT) {
+                    industriesId.add(i);
+                }
+            }
+            //勾选了其他选项
+            if (industry.charAt(INDUSTRY_NUMBER) == IS_SELECT) {
+                for (int i = INDUSTRY_NUMBER; i < ALL_INDUSTRY_NUMBER; i++) {
+                    industriesId.add(i);
+                }
+            }
+        }
+        if (industriesId.size() == 0) {
+            return null;
+        }
+        return reportDataMapper.selectReportDataByIndustryIdSum(industriesId, auditVO.getType(), status, year, nextYear);
+
     }
 
     /**
@@ -201,28 +224,5 @@ public class AuditServiceImpl implements AuditService {
     @Override
     public List<ComInfo> selectAllCompany() {
         return comInfoMapper.selectAllCompany();
-    }
-
-    public void sort(List<AuditReportVO> auditReportVOS) {
-        int start = -1, end = -1;
-        for (int i = 0; i < auditReportVOS.size(); i++) {
-            if ("审核数据".equals(auditReportVOS.get(i).getProStatus())) {
-                if (start == -1) {
-                    start = i;
-                    end = i + 1;
-                } else {
-                    end++;
-                }
-            }
-        }
-        if (end != -1) {
-            List<AuditReportVO> auditReportVOS1 = auditReportVOS.subList(start, end);
-            for (int i = start - 1; i >= 0; i--) {
-                auditReportVOS.set(--end, auditReportVOS.get(i));
-            }
-            for (int i = 0; i < auditReportVOS1.size(); i++) {
-                auditReportVOS.set(i, auditReportVOS1.get(i));
-            }
-        }
     }
 }

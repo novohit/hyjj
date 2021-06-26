@@ -132,4 +132,50 @@ public class FillServiceImpl implements FillService {
                 reportDataMapper.selectReportTemplateByReportId(formulaVerificationDto.getReportId()));
         return template.formulaVerification(formulaVerificationDto.getData()) ? "公式校验通过" : "公式校验不通过";
     }
+
+    @Override
+    public Integer getReportListByUserIdSum(Long userId) {
+        return reportDataMapper.getReportDataListByUserIdSum(userId);
+    }
+
+    @Override
+    public Integer getStatementSum(ReportVO reportVO, User user) {
+        //指定搜索某一年
+        Long userId = user.getId();
+
+        String year = reportVO.getYear() + "-01-01 00:00:00";
+        String nextYear = (Integer.parseInt(reportVO.getYear()) + 1) + "-01-01 00:00:00";
+
+        String status = null;
+        if (reportVO.getStatus() == 1) {
+            status = "未填报";
+        } else if (reportVO.getStatus() == 2) {
+            status = "审核不通过";
+        } else if (reportVO.getStatus() == 3) {
+            status = "未提交";
+        } else if (reportVO.getStatus() == 4) {
+            status = "已入库";
+        }
+        //先查询出所有已选行业
+        String industry = reportVO.getIndustry();
+        //需要查询的行业id的集合
+        List<Integer> industriesId = new ArrayList<>();
+        if (industry.charAt(0) == '1') {
+            //全选的情况
+            return reportDataMapper.reportSelectAllIndustryReportDataSum(reportVO.getType(), status, year, nextYear, userId);
+        } else {
+            for (int i = 1; i < 14; i++) {
+                if (industry.charAt(i) == '1') {
+                    industriesId.add(i);
+                }
+            }
+            //勾选了其他选项
+            if (industry.charAt(14) == '1') {
+                for (int i = 14; i < 35; i++) {
+                    industriesId.add(i);
+                }
+            }
+        }
+        return reportDataMapper.reportSelectReportDataByIndustryIdSum(industriesId, reportVO.getType(), status, year, nextYear, userId);
+    }
 }

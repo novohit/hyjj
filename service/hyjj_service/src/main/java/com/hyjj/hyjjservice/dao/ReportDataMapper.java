@@ -73,6 +73,22 @@ public interface ReportDataMapper {
                                                      @Param("nextYear") String nextYear);
 
     /**
+     * 查询报表，返回总条数
+     *
+     * @param industriesIds
+     * @param type
+     * @param statue
+     * @param year
+     * @param nextYear
+     * @return
+     */
+    Integer selectReportDataByIndustryIdSum(@Param("industriesIds") List<Integer> industriesIds,
+                                            @Param("type") Integer type,
+                                            @Param("statue") String statue,
+                                            @Param("year") String year,
+                                            @Param("nextYear") String nextYear);
+
+    /**
      * 行业全选的情况
      *
      * @return
@@ -81,6 +97,21 @@ public interface ReportDataMapper {
                                                     @Param("statue") String statue,
                                                     @Param("year") String year,
                                                     @Param("nextYear") String nextYear);
+
+
+    /**
+     * 行业全选，返回总条数
+     *
+     * @param type
+     * @param statue
+     * @param year
+     * @param nextYear
+     * @return
+     */
+    Integer selectAllIndustryReportDataSum(@Param("type") Integer type,
+                                           @Param("statue") String statue,
+                                           @Param("year") String year,
+                                           @Param("nextYear") String nextYear);
 
     /**
      * 审核指定id的报表
@@ -136,9 +167,25 @@ public interface ReportDataMapper {
 
     /**
      * 根据报表查询模板表id
+     *
      * @param reportId
      * @return
      */
     Long selectReportTemplateByReportId(@Param("reportId") Long reportId);
+
+    /**
+     * 返回催办名单总条数
+     *
+     * @param year
+     * @param company
+     * @return
+     */
+    Integer selectByYearAndCompanySum(Integer year, String company);
+
+    Integer getReportDataListByUserIdSum(Long userId);
+
+    Integer reportSelectAllIndustryReportDataSum(Integer type, String status, String year, String nextYear, Long userId);
+
+    Integer reportSelectReportDataByIndustryIdSum(List<Integer> industriesId, Integer type, String status, String year, String nextYear, Long userId);
 
 }

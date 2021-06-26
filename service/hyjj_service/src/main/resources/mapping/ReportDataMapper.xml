@@ -450,11 +450,47 @@
         ORDER BY rd.`pro_status_name` DESC, rd.`report_date` DESC
     </select>
 
+    <select id="selectReportDataByIndustryIdSum" resultType="java.lang.Integer">
+        SELECT
+        count(*)
+        FROM report_data rd
+        INNER JOIN report_template rt
+        ON rd.`report_template_id` = rt.`id`
+        INNER JOIN industry i
+        ON rt.`type` = i.`id`
+        <where>
+            rt.type IN
+            <foreach collection="industriesIds" item="industriesId" open="(" close=")" separator=",">
+                #{industriesId}
+            </foreach>
+            and rt.`rep_class` = #{type}
+            and rd.`submit_date` between #{year} and #{nextYear}
+            and rd.`pro_status` like #{statue}
+        </where>
+        ORDER BY rd.`pro_status_name` DESC, rd.`report_date` DESC
+    </select>
+
     <select id="selectAllIndustryReportData" resultType="com.hyjj.hyjjservice.controller.report.viewobject.AuditReportVO">
         SELECT
         rd.`id`,rd.`fill_person`,rd.`fill_unit`,rd.`report_template_id`,rd.`begin_date`,
         rd.`submit_date`,rd.`pro_status`,
         rd.`enterprise_name`,rd.`report_date`,rd.`number`,rd.`title`,i.`name`
+        FROM report_data rd
+        INNER JOIN report_template rt
+        ON rd.`report_template_id` = rt.`id`
+        INNER JOIN industry i
+        ON rt.`type` = i.`id`
+        <where>
+            and rt.`rep_class` = #{type}
+            and rd.`submit_date` between #{year} and #{nextYear}
+            and rd.`pro_status` like #{statue}
+        </where>
+        ORDER BY rd.`pro_status_name` DESC, rd.`report_date` DESC
+    </select>
+
+    <select id="selectAllIndustryReportDataSum" resultType="java.lang.Integer">
+        SELECT
+        count(*)
         FROM report_data rd
         INNER JOIN report_template rt
         ON rd.`report_template_id` = rt.`id`
@@ -483,6 +519,10 @@
 
     <select id="getReportDataListByUserId" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList">
         select id,`number`,title,end_date,fill_unit,begin_date,pro_status from report_data where user_id = #{userId} order by end_date desc
+    </select>
+
+    <select id="getReportDataListByUserIdSum" resultType="java.lang.Integer">
+        select count(*) from report_data where user_id = #{userId} order by end_date desc
     </select>
 
     <select id="getReportDataHtml" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml">
@@ -543,6 +583,20 @@
         </where>
         order by rd.`begin_date` DESC
     </select>
+
+    <select id="selectByYearAndCompanySum" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM report_data rd
+        <where>
+            YEAR(rd.`begin_date`) = #{year}
+            AND rd.`pro_status` = '填报数据'
+            <if test="company != null">
+                and rd.`fill_unit` = #{company}
+            </if>
+        </where>
+        order by rd.`begin_date` DESC
+    </select>
+
     <select id="reportSelectAllIndustryReportData" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList">
         SELECT
         rd.id,rd.`number`,rd.title,rd.begin_date,rd.fill_unit,rd.end_date,rd.pro_status,i.name
@@ -575,9 +629,77 @@
         </where>
     </select>
 
+    <select id="reportSelectAllIndustryReportDataSum" resultType="java.lang.Integer">
+        SELECT
+        count(*)
+        FROM report_data rd
+        INNER JOIN report_template rt
+        ON rd.`report_template_id` = rt.`id`
+        INNER JOIN industry i
+        ON rt.`type` = i.`id`
+        <where>
+            and rt.`rep_class` = #{type}
+            and rd.`submit_date` between #{year} and #{nextYear}
+            and rd.`user_id` = #{userId}
+            <if test="statue == '已入库'">
+                and rd.`pro_status` = "审核通过"
+            </if>
+            <if test="statue == '未提交' ">
+                and rd.`pro_status` = "填报数据"
+                and rd.is_save = 1
+            </if>
+            <if test="statue == '审核不通过'">
+                and rd.`pro_status` = "审核不通过"
+            </if>
+            <if test="statue == '未填报'">
+                and (rd.pro_status = "审核不通过" or rd.pro_status = "填报数据")
+                and rd.is_save = 0
+            </if>
+            <if test="statue == null">
+                and rd.pro_status != "审核数据"
+            </if>
+        </where>
+    </select>
+
     <select id="reportSelectReportDataByIndustryId" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList">
         SELECT
         rd.id,rd.`number`,rd.title,rd.end_date,rd.fill_unit,rd.begin_date,rd.pro_status,i.name
+        FROM report_data rd
+        INNER JOIN report_template rt
+        ON rd.`report_template_id` = rt.`id`
+        INNER JOIN industry i
+        ON rt.`type` = i.`id`
+        <where>
+            rt.type IN
+            <foreach collection="industriesIds" item="industriesId" open="(" close=")" separator=",">
+                #{industriesId}
+            </foreach>
+            and rt.`rep_class` = #{type}
+            and rd.`submit_date` between #{year} and #{nextYear}
+            and rd.`user_id` = #{userId}
+            <if test="statue == '已入库'">
+                and rd.`pro_status` = "审核通过"
+            </if>
+            <if test="statue == '未提交' ">
+                and (rd.`pro_status` = "填报数据" or rd.`pro_status` = "审核不通过")
+                and rd.is_save = 1
+            </if>
+            <if test="statue == '审核不通过'">
+                and rd.`pro_status` = "审核不通过"
+            </if>
+            <if test="statue == '未填报'">
+                and rd.pro_status = "填报数据"
+                and rd.is_save = 0
+            </if>
+            <if test="statue == null">
+                and rd.pro_status != "审核数据"
+            </if>
+        </where>
+    </select>
+
+    <select id="reportSelectReportDataByIndustryIdSum" resultType="java.lang.Integer">
+        SELECT
+        count(*)
         FROM report_data rd
         INNER JOIN report_template rt
         ON rd.`report_template_id` = rt.`id`
