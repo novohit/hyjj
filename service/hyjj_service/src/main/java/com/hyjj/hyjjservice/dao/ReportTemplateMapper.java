@@ -1,5 +1,6 @@
 package com.hyjj.hyjjservice.dao;
 
+import com.hyjj.hyjjservice.controller.settings.viewObject.ReportNameAndIdVO;
 import com.hyjj.hyjjservice.controller.settings.viewObject.ReportTemplateInfoVO;
 import com.hyjj.hyjjservice.controller.settings.viewObject.ReportTemplateVO;
 import com.hyjj.hyjjservice.controller.settings.viewObject.SearchReportTemplateVO;
@@ -63,5 +64,8 @@ public interface ReportTemplateMapper {
     List<ReportTemplateVO> getReportTemplateList(@Param("reportTemplateVO") ReportTemplateVO reportTemplateVO);
 
     ReportTemplateInfoVO getReportTemplateInfo(Integer id);
+    List<ReportNameAndIdVO> selectReportNameAndId();
+    ReportTemplate getRowAndColByTemplateId(Integer reportId);
+
 
 }

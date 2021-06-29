@@ -93,7 +93,7 @@ public class FillController {
         }
         byte[] bytes = uploadVO.getFile().getBytes();
         InputStream is = new ByteArrayInputStream(bytes);
-        ReportTemplate reportTemplate = fillService.getRowAndColByTemplateId(Integer.parseInt(uploadVO.getReportId()));
+        ReportTemplate reportTemplate = fillService.getRowAndColByReportId(Integer.parseInt(uploadVO.getReportId()));
         List<Object> cellList = fileUtil.getCellList(reportTemplate, is);
         return CommonReturnType.ok().add("value", cellList);
     }

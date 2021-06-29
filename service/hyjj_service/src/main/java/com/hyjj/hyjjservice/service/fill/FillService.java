@@ -20,7 +20,7 @@ public interface FillService {
 
     int clearReportData(Integer reportId);
 
-    ReportTemplate getRowAndColByTemplateId(Integer reportId);
+    ReportTemplate getRowAndColByReportId(Integer reportId);
 
     List<String> getReportNumber(List<Long> reportId);
 

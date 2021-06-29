@@ -527,7 +527,7 @@
         order by rd.`add_date` DESC
     </select>
 
-    <select id="getRowAndColByTemplateId" resultType="com.hyjj.hyjjservice.dataobject.ReportTemplate">
+    <select id="getRowAndColByReportId" resultType="com.hyjj.hyjjservice.dataobject.ReportTemplate">
         select `row`,col from report_template rt join report_data rd on rt.id = rd.report_template_id where rd.id = #{reportId}
     </select>
 
@@ -611,7 +611,7 @@
         </where>
     </select>
 
-    <select id="selectReportTemplateByReportId" resultType="java.lang.Long">
-        SELECT report_template_id FROM report_data WHERE id = #{reportId}
-    </select>
+
+
+
 </mapper>

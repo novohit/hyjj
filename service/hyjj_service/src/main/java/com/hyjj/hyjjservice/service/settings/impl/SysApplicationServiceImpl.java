@@ -1,12 +1,12 @@
 package com.hyjj.hyjjservice.service.settings.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
 import com.hyjj.hyjjservice.controller.fill.viewObject.UploadVO;
+import com.hyjj.hyjjservice.controller.settings.viewObject.ReportNameAndIdVO;
 import com.hyjj.hyjjservice.controller.settings.viewObject.UserInfoVO;
-import com.hyjj.hyjjservice.dao.ComInfoMapper;
-import com.hyjj.hyjjservice.dao.UserMapper;
-import com.hyjj.hyjjservice.dao.UserRoleMapper;
+import com.hyjj.hyjjservice.dao.*;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.dataobject.User;
@@ -18,11 +18,13 @@ import com.hyjj.util.responce.CommonReturnType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -41,29 +43,38 @@ public class SysApplicationServiceImpl implements SysApplicationService {
     private FillService fillService;
     @Autowired
     private FileUtil fileUtil;
+    @Autowired
+    private ReportTemplateMapper reportTemplateMapper;
     @Override
     public boolean enableUser(Long id) {
         return userMapper.enableUser(id)!=0;
     }
 
     @Override
-    public boolean batchUpload(UploadVO[] uploadVO){
-        if (uploadVO.length == 0) {
+    public boolean batchUpload(UploadVO uploadVO){
+        if (uploadVO.getFiles().length == 0) {
             return false;
         }
         int i = 0;
-        List<Object>[] cellList = new List[uploadVO.length];
-        for (UploadVO vo : uploadVO) {
+        List<Object>[] cellList = new List[uploadVO.getFiles().length];
+        ReportTemplate reportTemplate = reportTemplateMapper.getRowAndColByTemplateId(Integer.parseInt(uploadVO.getReportId()));
+        reportTemplate.setRow(reportTemplate.getDataRow());
+        reportTemplate.setCol(reportTemplate.getDataCol());
+        for (MultipartFile file : uploadVO.getFiles()) {
+
             try{
-                byte[] bytes = vo.getFile().getBytes();
+                byte[] bytes = file.getBytes();
                 InputStream is = new ByteArrayInputStream(bytes);
-                ReportTemplate reportTemplate = fillService.getRowAndColByTemplateId(Integer.parseInt(vo.getReportId()));
                 cellList[i] = fileUtil.getCellList(reportTemplate, is);
                 i++;
             }catch (Exception e){
                 e.printStackTrace();
             }
-
+        }
+        for (List<Object> objects : cellList) {
+            for (Object object : objects) {
+                System.out.println(object);
+            }
         }
 
         return true;
@@ -77,7 +88,7 @@ public class SysApplicationServiceImpl implements SysApplicationService {
 
     @Override
     public List<UserInfoVO> getUserInfoList(UserInfoVO userInfoVO,Integer pageNum,Integer pageSize){
-        PageHelper.startPage(pageNum,pageSize==null?10:pageSize);
+        Page Page = PageHelper.startPage(pageNum, pageSize == null ? 10 : pageSize);
         List<UserInfoVO> userInfoVOS = userMapper.selectUserInfoList(userInfoVO);
         return userInfoVOS;
     }
@@ -121,6 +132,11 @@ public class SysApplicationServiceImpl implements SysApplicationService {
     @Override
     public boolean checkUserName(String name) {
         return userMapper.checkUserName(name)==1;
+    }
+
+    @Override
+    public List<ReportNameAndIdVO> getReportInfo() {
+        return reportTemplateMapper.selectReportNameAndId();
     }
 
     @Override

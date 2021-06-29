@@ -1,6 +1,7 @@
 package com.hyjj.hyjjservice.dao;
 
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditReportVO;
+import com.hyjj.hyjjservice.controller.settings.viewObject.ReportNameAndIdVO;
 import com.hyjj.hyjjservice.controller.urge.viewobject.UrgeReportVO;
 import com.hyjj.hyjjservice.dataobject.ReportData;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
@@ -100,7 +101,7 @@ public interface ReportDataMapper {
 
     int submitReportData(ReportDataHtml reportDataHtml);
 
-    ReportTemplate getRowAndColByTemplateId(Integer reportId);
+    ReportTemplate getRowAndColByReportId(Integer reportId);
 
 
     int clearReportDataByReportId(Integer reportId);
@@ -140,5 +141,6 @@ public interface ReportDataMapper {
      * @return
      */
     Long selectReportTemplateByReportId(@Param("reportId") Long reportId);
+
 
 }

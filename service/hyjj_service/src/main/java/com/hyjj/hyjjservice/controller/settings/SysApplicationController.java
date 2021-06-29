@@ -9,6 +9,7 @@ import com.hyjj.util.responce.CommonReturnType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -66,9 +67,15 @@ public class SysApplicationController {
     }
 
     @PostMapping("batchUpload")
-    public CommonReturnType batchUpload(UploadVO[] uploadVOS){
-        boolean b = sysApplicationService.batchUpload(uploadVOS);
+    public CommonReturnType batchUpload(UploadVO uploadVOs){
+        MultipartFile[] files = uploadVOs.getFiles();
+        boolean b = sysApplicationService.batchUpload(uploadVOs);
         return b==true?CommonReturnType.ok().add("success",1):CommonReturnType.ok().add("success",0);
 
+    }
+
+    @GetMapping("reportInfo")
+    public CommonReturnType reportInfo(){
+        return CommonReturnType.ok().add("list",sysApplicationService.getReportInfo());
     }
 }

@@ -355,4 +355,11 @@
     inner join cominfo ci on cfr.cominfo_id = ci.id)
     where rt.id = #{id}
   </select>
+  <select id="selectReportNameAndId" resultType="com.hyjj.hyjjservice.controller.settings.viewObject.ReportNameAndIdVO">
+    select title "name",id  from report_template where type != -1
+  </select>
+
+  <select id="getRowAndColByTemplateId" resultType="com.hyjj.hyjjservice.dataobject.ReportTemplate">
+    select `data_row`,data_col from report_template rt  where id = #{reportId}
+  </select>
 </mapper>

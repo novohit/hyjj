@@ -681,4 +681,23 @@ public class ReportTemplate {
     public void setCol(String col) {
         this.col = col;
     }
+
+    private String dataRow;
+    private String dataCol;
+
+    public String getDataRow() {
+        return dataRow;
+    }
+
+    public void setDataRow(String dataRow) {
+        this.dataRow = dataRow;
+    }
+
+    public String getDataCol() {
+        return dataCol;
+    }
+
+    public void setDataCol(String dataCol) {
+        this.dataCol = dataCol;
+    }
 }

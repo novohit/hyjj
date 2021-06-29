@@ -1,5 +1,6 @@
 package com.hyjj.hyjjservice.service.fill.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.hyjj.hyjjservice.controller.fill.dto.FormulaVerificationDto;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportVO;
@@ -73,8 +74,8 @@ public class FillServiceImpl implements FillService {
     }
 
     @Override
-    public ReportTemplate getRowAndColByTemplateId(Integer reportId) {
-        return reportDataMapper.getRowAndColByTemplateId(reportId);
+    public ReportTemplate getRowAndColByReportId(Integer reportId) {
+        return reportDataMapper.getRowAndColByReportId(reportId);
     }
 
     @Override
@@ -132,4 +133,9 @@ public class FillServiceImpl implements FillService {
                 reportDataMapper.selectReportTemplateByReportId(formulaVerificationDto.getReportId()));
         return template.formulaVerification(formulaVerificationDto.getData()) ? "公式校验通过" : "公式校验不通过";
     }
+
+//    @Override
+//    public List<String> getFormHeadInfo(){
+//
+//    }
 }
