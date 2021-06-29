@@ -73,8 +73,8 @@ public class FillServiceImpl implements FillService {
     }
 
     @Override
-    public ReportTemplate getRowAndColByTemplateId(Integer reportId) {
-        return reportDataMapper.getRowAndColByTemplateId(reportId);
+    public ReportTemplate getRowAndColByReportId(Integer reportId) {
+        return reportDataMapper.getRowAndColByReportId(reportId);
     }
 
     @Override

@@ -5,7 +5,7 @@ import com.hyjj.hyjjservice.controller.settings.viewObject.UserInfoVO;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
 import com.hyjj.hyjjservice.dataobject.User;
 import org.springframework.stereotype.Service;
-
+import com.hyjj.hyjjservice.controller.settings.viewObject.ReportNameAndIdVO;
 import java.util.List;
 
 public interface SysApplicationService {
