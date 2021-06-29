@@ -78,4 +78,16 @@ public class UrgeServiceImpl implements UrgeService {
 
         return urgeData;
     }
+
+    /**
+     * 返回催办名单总条数
+     *
+     * @param year
+     * @param company
+     * @return
+     */
+    @Override
+    public Integer getUrgeSum(Integer year, String company) {
+        return reportDataMapper.selectByYearAndCompanySum(year, "全部".equals(company) ? null : company);
+    }
 }

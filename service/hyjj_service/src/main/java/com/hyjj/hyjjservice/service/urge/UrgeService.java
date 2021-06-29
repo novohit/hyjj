@@ -32,4 +32,12 @@ public interface UrgeService {
      * @return
      */
     List<UrgeData> urgeStatus(Long userId);
+
+    /**
+     * 返回催办名单总条数
+     * @param year
+     * @param company
+     * @return
+     */
+    Integer getUrgeSum(Integer year, String company);
 }

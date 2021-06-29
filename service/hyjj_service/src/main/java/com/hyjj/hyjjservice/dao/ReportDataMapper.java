@@ -1,7 +1,6 @@
 package com.hyjj.hyjjservice.dao;
 
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditReportVO;
-import com.hyjj.hyjjservice.controller.settings.viewObject.ReportNameAndIdVO;
 import com.hyjj.hyjjservice.controller.urge.viewobject.UrgeReportVO;
 import com.hyjj.hyjjservice.dataobject.ReportData;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
@@ -137,10 +136,26 @@ public interface ReportDataMapper {
 
     /**
      * 根据报表查询模板表id
+     *
      * @param reportId
      * @return
      */
     Long selectReportTemplateByReportId(@Param("reportId") Long reportId);
+
+    /**
+     * 返回催办名单总条数
+     *
+     * @param year
+     * @param company
+     * @return
+     */
+    Integer selectByYearAndCompanySum(Integer year, String company);
+
+    Integer getReportDataListByUserIdSum(Long userId);
+
+    Integer reportSelectAllIndustryReportDataSum(Integer type, String status, String year, String nextYear, Long userId);
+
+    Integer reportSelectReportDataByIndustryIdSum(List<Integer> industriesId, Integer type, String status, String year, String nextYear, Long userId);
 
 
 }

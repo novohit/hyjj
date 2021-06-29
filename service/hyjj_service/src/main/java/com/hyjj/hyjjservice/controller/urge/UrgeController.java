@@ -43,7 +43,17 @@ public class UrgeController {
     public CommonReturnType getUrge(Integer year, String company,
                                     @RequestParam(required = false, defaultValue = "1") int pageNum,
                                     @RequestParam(required = false, defaultValue = "10") int pageSize) {
-        return CommonReturnType.ok().add("result", urgeService.getUrge(year, company,pageNum,pageSize));
+        return CommonReturnType.ok().add("result", urgeService.getUrge(year, company, pageNum, pageSize));
+    }
+
+    @GetMapping("getUrgeSum")
+    @ApiOperation("获取催办名单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "year", value = "年份", required = true, dataTypeClass = Integer.class),
+            @ApiImplicitParam(name = "company", value = "要催办的公司的名称", required = true, dataTypeClass = String.class)
+    })
+    public CommonReturnType getUrgeSum(Integer year, String company) {
+        return CommonReturnType.ok().add("result", urgeService.getUrgeSum(year, company));
     }
 
     @PostMapping("urge")
@@ -56,7 +66,7 @@ public class UrgeController {
     @GetMapping("urgeStatus")
     @ApiOperation("查看有没有被催办")
     @GetUser
-    public CommonReturnType urgeStatus(){
+    public CommonReturnType urgeStatus() {
         List<UrgeData> urgeData = urgeService.urgeStatus(threadLocal.get().getId());
         List<UrgeVO> urgeVOList = new ArrayList<>();
         for (UrgeData urgeDatum : urgeData) {

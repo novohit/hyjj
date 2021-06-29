@@ -22,4 +22,12 @@ public interface AuditService {
     List<ReportData> getStatement(Integer select, User user, Boolean isManager, int pageNum, int pageSize);
 
     String batchAuditReport(Map<Long, Integer> map, User user);
+
+    /**
+     * 返回总记录数
+     * @param auditVO
+     * @param user
+     * @return
+     */
+    Integer getStatementSum(AuditVO auditVO, User user);
 }

@@ -51,6 +51,15 @@ public class FillController {
     }
 
     @GetUser
+    @GetMapping("listSum")
+    @ApiOperation("获取待填报的报表")
+    public CommonReturnType getReportListSum() {
+        User user = threadLocal.get();
+        Long userId = user.getId();
+        return CommonReturnType.ok().add("data", fillService.getReportListByUserIdSum(userId));
+    }
+
+    @GetUser
     @GetMapping("fill")
     @ApiOperation("点击报表名称，返回报表的html")
     @ApiImplicitParam(name = "id", value = "报表id", required = true, dataTypeClass = Integer.class)
@@ -125,6 +134,13 @@ public class FillController {
     public CommonReturnType getStatement(ReportVO reportVO) {
         User user = threadLocal.get();
         return CommonReturnType.ok().add("statement", fillService.getStatement(reportVO, user, reportVO.getPageNum(), reportVO.getPageSize()));
+    }
+
+    @GetMapping("statementSum")
+    @GetUser
+    public CommonReturnType getStatementSum(ReportVO reportVO) {
+        User user = threadLocal.get();
+        return CommonReturnType.ok().add("statement", fillService.getStatementSum(reportVO, user));
     }
 
     @PostMapping("formulaVerification")

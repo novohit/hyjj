@@ -32,4 +32,8 @@ public interface FillService {
      * @return
      */
     String formulaVerification(FormulaVerificationDto formulaVerificationDto);
+
+    Integer getReportListByUserIdSum(Long userId);
+
+    Integer getStatementSum(ReportVO reportVO, User user);
 }

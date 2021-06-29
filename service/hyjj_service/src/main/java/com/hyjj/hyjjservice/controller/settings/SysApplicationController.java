@@ -25,45 +25,45 @@ public class SysApplicationController {
 
 
     @GetMapping("userList")
-    public CommonReturnType getUserList(Integer pageNum,Integer pageSize,UserInfoVO userInfoVO){
+    public CommonReturnType getUserList(Integer pageNum, Integer pageSize, UserInfoVO userInfoVO) {
         List<UserInfoVO> userInfoList = sysApplicationService.getUserInfoList(userInfoVO, pageNum, pageSize);
-        return CommonReturnType.ok().add("userInfoList",userInfoList);
+        return CommonReturnType.ok().add("userInfoList", userInfoList);
     }
 
     @GetMapping("userInfo")
-    public CommonReturnType getUserInfo(Long id){
-        return CommonReturnType.ok().add("info",sysApplicationService.getUserDetail(id));
+    public CommonReturnType getUserInfo(Long id) {
+        return CommonReturnType.ok().add("info", sysApplicationService.getUserDetail(id));
     }
 
     @PostMapping("updateUserInfo")
-    public CommonReturnType updateUserInfo(@RequestBody User user){
+    public CommonReturnType updateUserInfo(@RequestBody User user) {
         System.out.println(user);
-        return CommonReturnType.ok().add("success",sysApplicationService.updateUserInfo(user));
+        return CommonReturnType.ok().add("success", sysApplicationService.updateUserInfo(user));
     }
 
     @PostMapping("addUserInfo")
-    public CommonReturnType addUserInfo(@RequestBody User user){
-        return CommonReturnType.ok().add("success",sysApplicationService.insertUserInfo(user));
+    public CommonReturnType addUserInfo(@RequestBody User user) {
+        return CommonReturnType.ok().add("success", sysApplicationService.insertUserInfo(user));
     }
 
     @DeleteMapping("deleteUser")
-    public CommonReturnType deleteUser(Long id){
-        return CommonReturnType.ok().add("success",sysApplicationService.deleteUser(id));
+    public CommonReturnType deleteUser(Long id) {
+        return CommonReturnType.ok().add("success", sysApplicationService.deleteUser(id));
     }
 
     @GetMapping("notUseComList")
-    public CommonReturnType getNotUseComList(){
-        return CommonReturnType.ok().add("list",sysApplicationService.getNotUseCom());
+    public CommonReturnType getNotUseComList() {
+        return CommonReturnType.ok().add("list", sysApplicationService.getNotUseCom());
     }
 
     @GetMapping("checkUserName")
-    public CommonReturnType checkUserName(String name){
-        return CommonReturnType.ok().add("isUsed",sysApplicationService.checkUserName(name));
+    public CommonReturnType checkUserName(String name) {
+        return CommonReturnType.ok().add("isUsed", sysApplicationService.checkUserName(name));
     }
 
     @GetMapping("enableUser")
-    public CommonReturnType enableUser(Long id){
-        return CommonReturnType.ok().add("success",sysApplicationService.enableUser(id));
+    public CommonReturnType enableUser(Long id) {
+        return CommonReturnType.ok().add("success", sysApplicationService.enableUser(id));
     }
 
     @PostMapping("batchUpload")
