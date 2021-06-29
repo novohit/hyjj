@@ -3,6 +3,8 @@ package com.hyjj.hyjjservice.service.fill.impl;
 import com.github.pagehelper.PageHelper;
 import com.hyjj.hyjjservice.controller.fill.dto.FormulaVerificationDto;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportVO;
+import com.hyjj.hyjjservice.controller.fill.viewObject.TableHeadInfo;
+import com.hyjj.hyjjservice.dao.ComInfoMapper;
 import com.hyjj.hyjjservice.dao.ProcessMapper;
 import com.hyjj.hyjjservice.dao.ReportDataMapper;
 import com.hyjj.hyjjservice.dao.ReportTemplateMapper;
@@ -35,10 +37,18 @@ public class FillServiceImpl implements FillService {
     @Autowired
     private ReportTemplateMapper reportTemplateMapper;
 
+    @Autowired
+    private ComInfoMapper comInfoMapper;
+
     @Override
     public List<ReportDataList> getReportListByUserId(Long userId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize == null ? 10 : pageSize);
         return reportDataMapper.getReportDataListByUserId(userId);
+    }
+
+    @Override
+    public TableHeadInfo getTableHeadInfo(Integer reportId) {
+        return comInfoMapper.getTableHeadInfo(reportId);
     }
 
     @Override

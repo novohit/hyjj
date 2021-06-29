@@ -3,10 +3,7 @@ package com.hyjj.hyjjservice.controller.fill;
 import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.fill.dto.FormulaVerificationDto;
 import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
-import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
-import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
-import com.hyjj.hyjjservice.controller.fill.viewObject.ReportVO;
-import com.hyjj.hyjjservice.controller.fill.viewObject.UploadVO;
+import com.hyjj.hyjjservice.controller.fill.viewObject.*;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.fill.FillService;
@@ -67,7 +64,8 @@ public class FillController {
         User user = threadLocal.get();
         long userId = user.getId();
         ReportDataHtml reportDataHtml = fillService.getReportDataHtml(id, userId);
-        return CommonReturnType.ok().add("data", reportDataHtml);
+        TableHeadInfo tableHeadInfo = fillService.getTableHeadInfo(id);
+        return CommonReturnType.ok().add("data", reportDataHtml).add("tableHeadInfo",tableHeadInfo);
     }
 
     @PostMapping("save")
@@ -147,4 +145,6 @@ public class FillController {
     public CommonReturnType formulaVerification(@RequestBody FormulaVerificationDto formulaVerificationDto) {
         return CommonReturnType.ok().add("result", fillService.formulaVerification(formulaVerificationDto));
     }
+
+
 }

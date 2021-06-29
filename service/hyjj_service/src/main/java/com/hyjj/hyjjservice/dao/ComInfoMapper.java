@@ -1,8 +1,10 @@
 package com.hyjj.hyjjservice.dao;
 
+import com.hyjj.hyjjservice.controller.fill.viewObject.TableHeadInfo;
 import com.hyjj.hyjjservice.dao.param.ComInfoQueryPo;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
 import com.hyjj.hyjjservice.service.company.model.CompanyAnalyseModel;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -85,5 +87,5 @@ public interface ComInfoMapper {
 
     List<ComInfo> getNotUsedCompanyList();
 
-
+    TableHeadInfo getTableHeadInfo(Integer reportId);
 }

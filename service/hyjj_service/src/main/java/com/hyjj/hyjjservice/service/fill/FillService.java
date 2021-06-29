@@ -4,8 +4,10 @@ import com.hyjj.hyjjservice.controller.fill.dto.FormulaVerificationDto;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportVO;
+import com.hyjj.hyjjservice.controller.fill.viewObject.TableHeadInfo;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.dataobject.User;
+import io.swagger.models.auth.In;
 
 import java.util.List;
 
@@ -36,4 +38,6 @@ public interface FillService {
     Integer getReportListByUserIdSum(Long userId);
 
     Integer getStatementSum(ReportVO reportVO, User user);
+
+    TableHeadInfo getTableHeadInfo(Integer reportId);
 }
