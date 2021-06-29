@@ -158,4 +158,24 @@ public interface ReportDataMapper {
     Integer reportSelectReportDataByIndustryIdSum(List<Integer> industriesId, Integer type, String status, String year, String nextYear, Long userId);
 
 
+    /**
+     * 行业全选，返回总条数
+     *
+     * @param type
+     * @param statue
+     * @param year
+     * @param nextYear
+     * @return
+     */
+    Integer selectAllIndustryReportDataSum(@Param("type") Integer type,
+                                           @Param("statue") String statue,
+                                           @Param("year") String year,
+                                           @Param("nextYear") String nextYear);
+
+    Integer selectReportDataByIndustryIdSum(@Param("industriesIds") List<Integer> industriesIds,
+                                            @Param("type") Integer type,
+                                            @Param("statue") String statue,
+                                            @Param("year") String year,
+                                            @Param("nextYear") String nextYear);
+
 }

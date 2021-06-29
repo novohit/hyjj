@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-public class FileUtil {
+public class FileUtil<E> {
 
     @Value("${file.download.url}")
     private String pathName;
@@ -92,10 +92,10 @@ public class FileUtil {
         return cellValue;
     }
 
-    public List<Object> getCellList(ReportTemplate reportTemplate,InputStream is) throws IOException {
+    public List<E> getCellList(ReportTemplate reportTemplate,InputStream is) throws IOException {
         XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
 
-        List<Object> cells = new ArrayList<>();
+        List<E> cells = new ArrayList<>();
         int i = 0;
         String[] rowStringArray = reportTemplate.getRow().split(",");
         String[] colStringArray = reportTemplate.getCol().split(",");
@@ -113,7 +113,7 @@ public class FileUtil {
 
         for (int j = 0; j < rowArray.length; j++) {
             Cell excelValue = getExcelValue(xssfWorkbook,rowArray[j], colArray[j], is);
-            cells.add(getCellValue(excelValue));
+            cells.add((E)getCellValue(excelValue));
         }
         return cells;
     }

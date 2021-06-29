@@ -68,10 +68,8 @@ public class SysApplicationController {
 
     @PostMapping("batchUpload")
     public CommonReturnType batchUpload(UploadVO uploadVOs){
-        MultipartFile[] files = uploadVOs.getFiles();
         boolean b = sysApplicationService.batchUpload(uploadVOs);
         return b==true?CommonReturnType.ok().add("success",1):CommonReturnType.ok().add("success",0);
-
     }
 
     @GetMapping("reportInfo")

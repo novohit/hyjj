@@ -13,6 +13,7 @@ import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.dataobject.UserRole;
 import com.hyjj.hyjjservice.service.fill.FillService;
 import com.hyjj.hyjjservice.service.settings.SysApplicationService;
+import com.hyjj.hyjjservice.service.statistic.StatisticService;
 import com.hyjj.security.security.DefaultPasswordEncoder;
 import com.hyjj.util.responce.CommonReturnType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SysApplicationServiceImpl implements SysApplicationService {
@@ -45,6 +44,9 @@ public class SysApplicationServiceImpl implements SysApplicationService {
     private FileUtil fileUtil;
     @Autowired
     private ReportTemplateMapper reportTemplateMapper;
+    @Autowired
+    private StatisticService statisticService;
+
     @Override
     public boolean enableUser(Long id) {
         return userMapper.enableUser(id)!=0;
@@ -56,7 +58,7 @@ public class SysApplicationServiceImpl implements SysApplicationService {
             return false;
         }
         int i = 0;
-        List<Object>[] cellList = new List[uploadVO.getFiles().length];
+        List<Double>[] cellList = new ArrayList[uploadVO.getFiles().length];
         ReportTemplate reportTemplate = reportTemplateMapper.getRowAndColByTemplateId(Integer.parseInt(uploadVO.getReportId()));
         reportTemplate.setRow(reportTemplate.getDataRow());
         reportTemplate.setCol(reportTemplate.getDataCol());
@@ -71,13 +73,13 @@ public class SysApplicationServiceImpl implements SysApplicationService {
                 e.printStackTrace();
             }
         }
-        for (List<Object> objects : cellList) {
-            for (Object object : objects) {
-                System.out.println(object);
-            }
+        int sum = 0;
+        for (List<Double> doubles : cellList) {
+            Integer integer = statisticService.addTargetKeyValue(Long.parseLong(uploadVO.getReportId().toString()), doubles);
+            sum += integer;
         }
 
-        return true;
+        return sum!=0;
 
     }
 
