@@ -17,6 +17,7 @@ import com.hyjj.hyjjservice.service.statistic.StatisticService;
 import com.hyjj.security.security.DefaultPasswordEncoder;
 import com.hyjj.util.responce.CommonReturnType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -169,5 +170,9 @@ public class SysApplicationServiceImpl implements SysApplicationService {
         int j = userRoleMapper.insertSelective(userRole);
 
         return i==j;
+
     }
+
+
+
 }

@@ -12,6 +12,7 @@ import com.hyjj.hyjjservice.dataobject.Process;
 import com.hyjj.hyjjservice.service.settings.ReportManageService;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,6 +20,7 @@ import javax.xml.crypto.Data;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -185,7 +187,7 @@ public class ReportManageServiceImpl implements ReportManageService {
     }
 
     @Override
-    public boolean manualCreateReport(String endDate, Long id,Integer reportId) throws Exception{
+    public boolean manualCreateReport(String endDate, Long id) throws Exception{
         User user = userMapper.selectByComInfoId(id);
         if(user == null){
             return false;
@@ -218,37 +220,40 @@ public class ReportManageServiceImpl implements ReportManageService {
         reportData.setUserId(user.getId());
         List<Integer> integers = comFillReportMapper.selectReportTemplateId(id);
         System.out.println(integers);
-        if(reportId == null){
-            int i = 0;
-            for (Integer integer : integers) {
-                processMapper.insertSelective(process);
-                ReportTemplate reportTemplate = reportTemplateMapper.selectByPrimaryKey(integer.longValue());
-                reportData.setProcessId(process.getId());
-                reportData.setHeadHtml(reportTemplate.getHeadHtml());
-                reportData.setBodyHtml(reportTemplate.getBodyHtml());
-                reportData.setTailHtml(reportTemplate.getTailHtml());
-                reportData.setTitle(reportTemplate.getTitle());
-                reportData.setNumber(reportTemplate.getNumber());
-                reportData.setReportTemplateId(reportTemplate.getId());
-                process.setId(null);
-                if(reportDataMapper.insertSelective(reportData)==1)
-                    i++;
-            }
+        int i = 0;
+        for (Integer integer : integers) {
+            processMapper.insertSelective(process);
+            ReportTemplate reportTemplate = reportTemplateMapper.selectByPrimaryKey(integer.longValue());
+            reportData.setProcessId(process.getId());
+            reportData.setHeadHtml(reportTemplate.getHeadHtml());
+            reportData.setBodyHtml(reportTemplate.getBodyHtml());
+            reportData.setTailHtml(reportTemplate.getTailHtml());
+            reportData.setTitle(reportTemplate.getTitle());
+            reportData.setNumber(reportTemplate.getNumber());
+            reportData.setReportTemplateId(reportTemplate.getId());
+            process.setId(null);
+            if(reportDataMapper.insertSelective(reportData)==1)
+                i++;
+        }
             return i==integers.size();
 
+
+
+    }
+
+    @Scheduled(cron = "0 0 0 1 * ?")
+    public void autoCreateReport() throws Exception{
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        List<Long> ids = comInfoMapper.selectComInfoIds();
+        for (Long id : ids) {
+            System.out.println(id);
         }
-
-        processMapper.insertSelective(process);
-        ReportTemplate reportTemplate = reportTemplateMapper.selectByPrimaryKey(reportId.longValue());
-        reportData.setProcessId(process.getId());
-        reportData.setHeadHtml(reportTemplate.getHeadHtml());
-        reportData.setBodyHtml(reportTemplate.getBodyHtml());
-        reportData.setTailHtml(reportTemplate.getTailHtml());
-        reportData.setTitle(reportTemplate.getTitle());
-        reportData.setNumber(reportTemplate.getNumber());
-        reportData.setReportTemplateId(reportTemplate.getId());
-        return reportDataMapper.insertSelective(reportData)==1;
-
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH,1);
+        for (Long id : ids) {
+            manualCreateReport(dateFormat.format(calendar.getTime()),id);
+        }
 
     }
 }

@@ -28,5 +28,5 @@ public interface ReportManageService {
     Gdp getGdpDataById(Integer id);
     int deleteGdpDataById(Integer id);
     int insertGdpDataById(Gdp gdpObj);
-    boolean manualCreateReport(String endDate,Long id,Integer reportId) throws Exception;
+    boolean manualCreateReport(String endDate,Long id) throws Exception;
 }

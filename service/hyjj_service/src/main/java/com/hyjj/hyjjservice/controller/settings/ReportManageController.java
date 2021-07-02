@@ -113,10 +113,10 @@ public class ReportManageController {
     }
 
     @GetMapping("manualCreateReport")
-    public CommonReturnType manualCreateReport(String endDate,Long[] ids,Integer reportId) throws Exception{
+    public CommonReturnType manualCreateReport(String endDate,Long[] ids) throws Exception{
         boolean flag = true;
         for (Long id : ids) {
-            if(!reportManageService.manualCreateReport(endDate,id,reportId)){
+            if(!reportManageService.manualCreateReport(endDate,id)){
                 flag = false;
             }
         }
