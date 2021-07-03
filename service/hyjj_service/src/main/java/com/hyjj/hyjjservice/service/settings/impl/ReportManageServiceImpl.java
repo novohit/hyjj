@@ -122,6 +122,7 @@ public class ReportManageServiceImpl implements ReportManageService {
                 Calendar calendar = Calendar.getInstance();
                 calendar.add(Calendar.MONTH,1);
                 manualCreateReport(dateFormat.format(calendar.getTime()),comInfoId);
+                redisTemplate.boundSetOps("NewUserComInfoId").remove(comInfoId);
             }catch (Exception e){
                 e.printStackTrace();
             }
