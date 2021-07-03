@@ -17,6 +17,7 @@ import com.hyjj.hyjjservice.service.statistic.StatisticService;
 import com.hyjj.security.security.DefaultPasswordEncoder;
 import com.hyjj.util.responce.CommonReturnType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,6 +48,8 @@ public class SysApplicationServiceImpl implements SysApplicationService {
     private ReportTemplateMapper reportTemplateMapper;
     @Autowired
     private StatisticService statisticService;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     public boolean enableUser(Long id) {
@@ -168,7 +171,7 @@ public class SysApplicationServiceImpl implements SysApplicationService {
         userRole.setGmtCreate(date);
         userRole.setGmtModified(date);
         int j = userRoleMapper.insertSelective(userRole);
-
+        redisTemplate.boundSetOps("NewUserComInfoId").add(user.getCominfoId());
         return i==j;
 
     }

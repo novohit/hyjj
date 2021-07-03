@@ -10,10 +10,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.TestContextManager;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -23,6 +25,9 @@ public class CompanyInfoServiceImplTest {
 
     @Autowired
     public CompanyInfoService companyInfoService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Parameterized.Parameter(0)
     public CompanyInfoPo companyInfoPo;
@@ -85,6 +90,15 @@ public class CompanyInfoServiceImplTest {
             assertTrue(1 == 0);
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
+        }
+    }
+
+    @Test
+    public void test(){
+        redisTemplate.boundSetOps("NewUser").add(666);
+        Set newUser = redisTemplate.boundSetOps("NewUser").members();
+        for (Object o : newUser) {
+            System.out.println(o);
         }
     }
 }

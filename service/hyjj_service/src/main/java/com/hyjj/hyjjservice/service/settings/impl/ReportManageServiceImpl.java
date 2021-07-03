@@ -12,6 +12,7 @@ import com.hyjj.hyjjservice.dataobject.Process;
 import com.hyjj.hyjjservice.service.settings.ReportManageService;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +52,9 @@ public class ReportManageServiceImpl implements ReportManageService {
 
     @Autowired
     private ProcessMapper processMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     public List<FormulaListVO> getFormulaList(Integer pageNum,Integer pageSize) {
@@ -110,6 +114,18 @@ public class ReportManageServiceImpl implements ReportManageService {
                 comFillReportMapper.deleteFillReport(comInfoId,integer);
                 tag2++;
             }
+        }
+        Boolean isMember = redisTemplate.boundSetOps("NewUserComInfoId").isMember(comInfoId);
+        if(isMember){
+            try{
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.MONTH,1);
+                manualCreateReport(dateFormat.format(calendar.getTime()),comInfoId);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
 
         return tag1 == newReportIds.size()&&tag2 == oldReportIds.size();
