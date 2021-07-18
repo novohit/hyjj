@@ -54,6 +54,12 @@ public class IndexController {
                 : CommonReturnType.ok().add("reports", auditService.getStatement(1, user, true, pageNum, pageSize));
     }
 
+    /**
+     * 这里的功能原来是本周已填报/审核，但是甲方要求改成本季度。。。所以函数名就懒得改了
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @ApiOperation(value = "获取当前用户本周已审核/填报列表")
     @GetMapping("alreadyAuditInWeek")
     @GetUser

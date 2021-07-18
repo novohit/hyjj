@@ -1,6 +1,7 @@
 package com.hyjj.hyjjservice.controller.company;
 
 import com.hyjj.hyjjservice.controller.company.viewObject.*;
+import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
 import com.hyjj.hyjjservice.dataobject.Industry;
 import com.hyjj.hyjjservice.dataobject.myEnum.ComBusinessStatus;
@@ -26,10 +27,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,6 +51,9 @@ public class CompanyController {
     private final Logger log = LoggerFactory.getLogger(CompanyController.class);
 
     @Autowired
+    private FileUtil<String> fileUtil;
+
+    @Autowired
     private IndustryService industryService;
 
     @Autowired
@@ -54,67 +64,66 @@ public class CompanyController {
 
     @GetMapping("industry")
     @ApiOperation("获取行业信息")
-    public CommonReturnType getIndustry(){
+    public CommonReturnType getIndustry() {
 
         List<Industry> industries = industryService.getIndustry();
         List<IndustryVO> res = new LinkedList<>();
-        for(Industry i : industries){
+        for (Industry i : industries) {
             IndustryVO iv = new IndustryVO();
-            BeanUtils.copyProperties(i,iv);
+            BeanUtils.copyProperties(i, iv);
 
             res.add(iv);
         }
 
-        return CommonReturnType.ok().add("industries",res);
+        return CommonReturnType.ok().add("industries", res);
     }
 
 
     @GetMapping("detailCominfo")
     @ApiOperation("获取详细的企业信息")
-    public CommonReturnType getDetailComInfo(Long id){
+    public CommonReturnType getDetailComInfo(Long id) {
 
-        DeatailComInfoModel deatailComInfoModel =  companyService.getDeatailComInfo(id);
-        if(deatailComInfoModel == null){
+        DeatailComInfoModel deatailComInfoModel = companyService.getDeatailComInfo(id);
+        if (deatailComInfoModel == null) {
             return CommonReturnType.error();
         }
         DetailComInfoVO detailComInfoVO = new DetailComInfoVO();
-        BeanUtils.copyProperties(deatailComInfoModel,detailComInfoVO);
-        if(detailComInfoVO.getBussiness() == null){
+        BeanUtils.copyProperties(deatailComInfoModel, detailComInfoVO);
+        if (detailComInfoVO.getBussiness() == null) {
             detailComInfoVO.setBussiness(new LinkedList<>());
         }
 
-        int length =detailComInfoVO.getBussiness().size();
-        for(int i = length;i < 3;i++){
+        int length = detailComInfoVO.getBussiness().size();
+        for (int i = length; i < 3; i++) {
             detailComInfoVO.getBussiness().add("");
         }
 
-        return CommonReturnType.ok().add("detailComInfo",detailComInfoVO);
+        return CommonReturnType.ok().add("detailComInfo", detailComInfoVO);
     }
 
 
     @GetMapping("analyse")
     @ApiOperation("分析企业信息")
-    public CommonReturnType analyseCompany(@ApiParam("分析的对象，例如所属行业 ，地区，单位类型 分别对应(0,1,2)") Integer type){
+    public CommonReturnType analyseCompany(@ApiParam("分析的对象，例如所属行业 ，地区，单位类型 分别对应(0,1,2)") Integer type) {
 
 
         List<CompanyAnalyseModel> res = companyService.getAnalyseData(type);
-        return CommonReturnType.ok().add("analyseData",res).add("sum",companyService.selectCountCompany());
+        return CommonReturnType.ok().add("analyseData", res).add("sum", companyService.selectCountCompany());
     }
 
 
     @PostMapping
     @ApiOperation("添加企业")
-    public CommonReturnType addOrUpdateCompany(@ApiParam("表单提交的数据")CompanyVO companyVO,@ApiParam("修改0 添加1")Integer jude, HttpServletRequest request) throws Exception{
+    public CommonReturnType addOrUpdateCompany(@ApiParam("表单提交的数据") CompanyVO companyVO, @ApiParam("修改0 添加1") Integer jude, HttpServletRequest request) throws Exception {
 
-        boolean res =  companyService.addOrUpdateCompany(companyVO,jude,request);
+        boolean res = companyService.addOrUpdateCompany(companyVO, jude, request);
 
-        if(!res){
+        if (!res) {
             return CommonReturnType.error();
         }
         return CommonReturnType.ok();
 
     }
-
 
 
     @GetMapping
@@ -131,7 +140,7 @@ public class CompanyController {
             throw new IllegalArgumentException();
         }
         log.info("接收到请求参数{}, page: {}, size: {}", companyInfoPo, page, size);
-    //分页查询
+        //分页查询
         List<ComInfo> comInfos = companyInfoService.selectByIndustryEtc(companyInfoPo, page, size);
         //转换Bo为Vo
         List<CompanyInfoVo> collect = comInfos.stream().map(comInfo -> {
@@ -155,7 +164,7 @@ public class CompanyController {
 
             return companyInfoVo;
         }).collect(Collectors.toList());
-    //查询总数
+        //查询总数
         Long companyCounty = companyService.selectCountCompany();
         log.debug("响应到companyCount：{}", companyCounty);
         log.debug("响应companyVos为：{}", collect);
@@ -164,13 +173,13 @@ public class CompanyController {
 
     @ExceptionHandler(Exception.class)
     public CommonReturnType exceptionHandler(Exception e) {
-        if(e instanceof BusinessException){
-            log.error(((BusinessException)(e)).getErrMsg());
-            CommonReturnType commonReturnType = ((BusinessException)(e)).getCommonReturnType();
-            if(commonReturnType.getCode() == 10003){
+        if (e instanceof BusinessException) {
+            log.error(((BusinessException) (e)).getErrMsg());
+            CommonReturnType commonReturnType = ((BusinessException) (e)).getCommonReturnType();
+            if (commonReturnType.getCode() == 10003) {
                 return commonReturnType;
             }
-        } else{
+        } else {
             log.error(e.getMessage());
         }
         return CommonReturnType.error(EmBusinessError.PARAMETER_VALIDATION_ERROR);
@@ -182,5 +191,20 @@ public class CompanyController {
         Long companyCounty = companyService.selectCountCompany();
         log.debug("查询到companyCount：{}", companyCounty);
         return CommonReturnType.ok().add("sum", companyCounty);
+    }
+
+    @PostMapping("/download")
+    @ApiOperation("导出excel/下载")
+    public void download(HttpServletResponse response) {
+        //TODO 记得把表存入服务器
+        fileUtil.download("新增企业信息", response);
+    }
+
+    @PostMapping("/upload")
+    @ApiOperation("导入excel/上传")
+    public CommonReturnType upload(MultipartFile file) throws IOException {
+        InputStream inputStream = new ByteArrayInputStream(file.getBytes());
+        //TODO 要补充的：
+        return null;
     }
 }
