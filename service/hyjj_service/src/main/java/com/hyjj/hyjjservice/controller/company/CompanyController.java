@@ -2,8 +2,10 @@ package com.hyjj.hyjjservice.controller.company;
 
 import com.hyjj.hyjjservice.controller.company.viewObject.*;
 import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
+import com.hyjj.hyjjservice.dao.ReportTemplateMapper;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
 import com.hyjj.hyjjservice.dataobject.Industry;
+import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.dataobject.myEnum.ComBusinessStatus;
 import com.hyjj.hyjjservice.dataobject.myEnum.Comtype;
 import com.hyjj.hyjjservice.service.company.CompanyInfoService;
@@ -11,6 +13,7 @@ import com.hyjj.hyjjservice.service.company.CompanyService;
 import com.hyjj.hyjjservice.service.company.IndustryService;
 import com.hyjj.hyjjservice.service.company.model.CompanyAnalyseModel;
 import com.hyjj.hyjjservice.service.company.model.DeatailComInfoModel;
+import com.hyjj.hyjjservice.service.fill.FillService;
 import com.hyjj.util.error.BusinessException;
 import com.hyjj.util.error.EmBusinessError;
 import com.hyjj.util.responce.CommonReturnType;
@@ -51,7 +54,7 @@ public class CompanyController {
     private final Logger log = LoggerFactory.getLogger(CompanyController.class);
 
     @Autowired
-    private FileUtil<String> fileUtil;
+    private FileUtil fileUtil;
 
     @Autowired
     private IndustryService industryService;
@@ -61,6 +64,12 @@ public class CompanyController {
 
     @Autowired
     private CompanyService companyService;
+
+    @Autowired
+    private FillService fillService;
+
+    @Autowired
+    private ReportTemplateMapper reportTemplateMapper;
 
     @GetMapping("industry")
     @ApiOperation("获取行业信息")
@@ -204,7 +213,10 @@ public class CompanyController {
     @ApiOperation("导入excel/上传")
     public CommonReturnType upload(MultipartFile file) throws IOException {
         InputStream inputStream = new ByteArrayInputStream(file.getBytes());
-        //TODO 要补充的：
-        return null;
+        ReportTemplate rowAndCol = reportTemplateMapper.getRowAndColByTemplateId(35);
+        rowAndCol.setCol(rowAndCol.getDataCol());
+        rowAndCol.setRow(rowAndCol.getDataRow());
+        List<Object> cellList = fileUtil.getCellList(rowAndCol, inputStream);
+        return CommonReturnType.ok().add("value",cellList);
     }
 }
