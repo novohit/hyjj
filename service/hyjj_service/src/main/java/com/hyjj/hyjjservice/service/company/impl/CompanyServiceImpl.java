@@ -1,6 +1,7 @@
 package com.hyjj.hyjjservice.service.company.impl;
 
 
+import com.hyjj.hyjjservice.controller.company.viewObject.CompanyInfo;
 import com.hyjj.hyjjservice.controller.company.viewObject.CompanyVO;
 import com.hyjj.hyjjservice.dao.BusinessMapper;
 import com.hyjj.hyjjservice.dao.ComInfoAppendixMapper;
@@ -294,6 +295,11 @@ public class CompanyServiceImpl implements CompanyService {
         deatailComInfoModel.setBussiness(bussiness);
 
         return deatailComInfoModel;
+    }
+
+    @Override
+    public List<CompanyInfo> getCompanyList() {
+        return comInfoMapper.getCompanyList();
     }
 
     private void getPercent(List<CompanyAnalyseModel> list){

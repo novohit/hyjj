@@ -1,5 +1,6 @@
 package com.hyjj.hyjjservice.dao;
 
+import com.hyjj.hyjjservice.controller.company.viewObject.CompanyInfo;
 import com.hyjj.hyjjservice.controller.fill.viewObject.TableHeadInfo;
 import com.hyjj.hyjjservice.dao.param.ComInfoQueryPo;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
@@ -90,4 +91,6 @@ public interface ComInfoMapper {
     TableHeadInfo getTableHeadInfo(Integer reportId);
 
     List<Long> selectComInfoIds();
+
+    List<CompanyInfo> getCompanyList();
 }

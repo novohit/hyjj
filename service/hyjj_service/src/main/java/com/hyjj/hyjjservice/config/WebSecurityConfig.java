@@ -60,8 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.exceptionHandling()
                 .authenticationEntryPoint(new UnauthorizedEntryPoint()).and()
                 .csrf().disable()
-
-                .authorizeRequests().antMatchers("/captcha/sayHello").hasRole("User")
+                .authorizeRequests().antMatchers("/company/list").hasRole("User")
                 .anyRequest().authenticated()
                 .and().logout().logoutUrl("/user/logout")
                 .addLogoutHandler(new TokenLogoutHandler(tokenManager,redisTemplate)).and()

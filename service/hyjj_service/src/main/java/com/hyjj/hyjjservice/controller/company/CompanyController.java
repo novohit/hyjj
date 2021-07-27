@@ -194,6 +194,12 @@ public class CompanyController {
         return CommonReturnType.error(EmBusinessError.PARAMETER_VALIDATION_ERROR);
     }
 
+    @GetMapping("list")
+    public CommonReturnType getCompanyList(){
+        return CommonReturnType.ok().add("list",companyService.getCompanyList());
+    }
+
+
     @GetMapping("/sum")
     @ApiOperation("查询企业总数，则分页总数为sum / 每页的大小（向上取整）")
     public CommonReturnType getCompanyCount() {
@@ -217,6 +223,6 @@ public class CompanyController {
         rowAndCol.setCol(rowAndCol.getDataCol());
         rowAndCol.setRow(rowAndCol.getDataRow());
         List<Object> cellList = fileUtil.getCellList(rowAndCol, inputStream);
-        return CommonReturnType.ok().add("value",cellList);
+        return CommonReturnType.ok().add("value", cellList);
     }
 }

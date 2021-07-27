@@ -326,4 +326,8 @@
   <select id="selectComInfoIds" resultType="java.lang.Long">
     select cominfo.id from cominfo inner join `user` on user.cominfo_id = cominfo.id where user.statue = "正常"
   </select>
+
+  <select id="getCompanyList" resultType="com.hyjj.hyjjservice.controller.company.viewObject.CompanyInfo">
+    SELECT c.id, c.com_name, i.`name` FROM cominfo c LEFT JOIN industry i ON c.`industry_id` = i.`id`;
+  </select>
 </mapper>
