@@ -12,9 +12,15 @@
     <select id="selectCurrentYearData" resultMap="BaseResultMap">
         select * from gdp where `year` = year(now())
     </select>
+    <select id="getCurrentYearGdpDataSum" resultMap="BaseResultMap">
+        select count(*) from gdp where `year` = year(now())
+    </select>
 
     <select id="selectPassYearData" resultMap="BaseResultMap">
         select * from gdp where `year` &lt; year(now())
+    </select>
+    <select id="getPassYearGdpDataSum" resultMap="BaseResultMap">
+        select count(*) from gdp where `year` &lt; year(now())
     </select>
 
     <update id="updateGdpData">
@@ -35,6 +41,20 @@
 
     <select id="searchGdpData" resultMap="BaseResultMap">
         select * from gdp
+        <where>
+            1=1
+            <if test="district!=null">
+                and district = #{district}
+            </if>
+            <if test="year!=null">
+                and `year` = #{year}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="getSearchGdpDataSum" resultType="java.lang.Integer">
+        select count(*) from gdp
         <where>
             1=1
             <if test="district!=null">

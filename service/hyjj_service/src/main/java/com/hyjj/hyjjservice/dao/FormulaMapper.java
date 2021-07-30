@@ -58,5 +58,7 @@ public interface FormulaMapper {
 
     List<FormulaListVO> getFormulaByFormName(String formName);
 
+    int getFormulaListSum();
+    int getSearchFormulaListSum(String formName);
 
 }

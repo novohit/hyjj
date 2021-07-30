@@ -29,4 +29,10 @@ public interface ReportManageService {
     int deleteGdpDataById(Integer id);
     int insertGdpDataById(Gdp gdpObj);
     boolean manualCreateReport(String endDate,Long id) throws Exception;
+    int getFormulaListSum();
+    int getSearchFormulaSum(String formName);
+    int getCurrentYearDataSum();
+    int getPassYearDataSum();
+    int getSearchGpaDataSum(String district,String year);
+    int getReportTemplateListSum(ReportTemplateVO reportTemplateVO);
 }

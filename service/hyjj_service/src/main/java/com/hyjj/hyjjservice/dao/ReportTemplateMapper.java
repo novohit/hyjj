@@ -67,5 +67,5 @@ public interface ReportTemplateMapper {
     List<ReportNameAndIdVO> selectReportNameAndId();
     ReportTemplate getRowAndColByTemplateId(Integer reportId);
 
-
+    int getReportTemplateListSum(ReportTemplateVO reportTemplateVO);
 }

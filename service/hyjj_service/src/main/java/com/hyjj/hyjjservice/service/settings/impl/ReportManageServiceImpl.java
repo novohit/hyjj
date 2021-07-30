@@ -258,6 +258,36 @@ public class ReportManageServiceImpl implements ReportManageService {
 
     }
 
+    @Override
+    public int getFormulaListSum() {
+        return formulaMapper.getFormulaListSum();
+    }
+
+    @Override
+    public int getSearchFormulaSum(String formName) {
+        return formulaMapper.getSearchFormulaListSum(formName);
+    }
+
+    @Override
+    public int getCurrentYearDataSum() {
+        return gdpMapper.getCurrentYearGdpDataSum();
+    }
+
+    @Override
+    public int getPassYearDataSum() {
+        return gdpMapper.getPassYearGdpDataSum();
+    }
+
+    @Override
+    public int getSearchGpaDataSum(String district, String year) {
+        return gdpMapper.getSearchGdpDataSum(district,year);
+    }
+
+    @Override
+    public int getReportTemplateListSum(ReportTemplateVO reportTemplateVO) {
+        return reportTemplateMapper.getReportTemplateListSum(reportTemplateVO);
+    }
+
     @Scheduled(cron = "0 0 0 1 * ?")
     public void autoCreateReport() throws Exception{
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -273,4 +303,5 @@ public class ReportManageServiceImpl implements ReportManageService {
         }
 
     }
+
 }

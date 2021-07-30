@@ -13,4 +13,7 @@ public interface GdpMapper {
     Gdp selectGdpDataById(Integer id);
     int deleteGdpDataById(Integer id);
     int insertGdpData(@Param("gdpObj") Gdp gdpObj);
+    int getPassYearGdpDataSum();
+    int getCurrentYearGdpDataSum();
+    int getSearchGdpDataSum(String district,String year);
 }

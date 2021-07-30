@@ -32,9 +32,15 @@ public class ReportManageController {
 
     @GetMapping("formulaList")
     @ApiOperation("获取公式列表")
-    public CommonReturnType formulaList(Integer id,Integer pageNum,Integer pageSize){
+    public CommonReturnType formulaList(Integer pageNum,Integer pageSize){
         List<FormulaListVO> formulaList = reportManageService.getFormulaList(pageNum,pageSize);
         return CommonReturnType.ok().add("list",formulaList);
+    }
+
+    @GetMapping("getFormulaListSum")
+    public CommonReturnType getFormulaListSum(){
+        int data = reportManageService.getFormulaListSum();
+        return CommonReturnType.ok().add("sum",data);
     }
 
     @GetMapping("searchFormula")
@@ -46,10 +52,22 @@ public class ReportManageController {
 
     }
 
+    @GetMapping("getSearchFormulaSum")
+    public CommonReturnType getSearchFormulaSum(String formName){
+        int data = reportManageService.getSearchFormulaSum(formName);
+        return CommonReturnType.ok().add("sum",data);
+    }
+
     @GetMapping("reportTemplateList")
     @ApiOperation("报表列表")
     public CommonReturnType reportTemplateList(ReportTemplateVO reportTemplateVO){
         return CommonReturnType.ok().add("list",reportManageService.getReportTemplateList(reportTemplateVO));
+    }
+
+    @GetMapping("getReportTemplateListSum")
+    public CommonReturnType getReportTemplateListSum(ReportTemplateVO reportTemplateVO){
+        int data = reportManageService.getReportTemplateListSum(reportTemplateVO);
+        return CommonReturnType.ok().add("sum",data);
     }
 
     @GetMapping("getComInfoList")
@@ -81,14 +99,32 @@ public class ReportManageController {
         return CommonReturnType.ok().add("GdpData",reportManageService.getCurrentYearData(pageNum,pageSize));
     }
 
+    @GetMapping("getCurrentYearDataSum")
+    public CommonReturnType getCurrentYearDataSum(){
+        int data = reportManageService.getCurrentYearDataSum();
+        return CommonReturnType.ok().add("sum",data);
+    }
+
     @GetMapping("getPassYearData")
     public CommonReturnType getPassYearData(Integer pageNum,Integer pageSize){
         return CommonReturnType.ok().add("GdpData",reportManageService.getPassYearData(pageNum,pageSize));
     }
 
+    @GetMapping("getPassYearDataSum")
+    public CommonReturnType getPassYearDataSum(){
+        int data = reportManageService.getPassYearDataSum();
+        return CommonReturnType.ok().add("sum",data);
+    }
+
     @GetMapping("searchGdpData")
     public CommonReturnType searchGdpData(String district,String year,Integer pageNum,Integer pageSize){
         return CommonReturnType.ok().add("GdpData",reportManageService.searchGdpData(district, year,pageNum,pageSize));
+    }
+
+    @GetMapping("getSearchGdpDataSum")
+    public CommonReturnType getSearchGpaDataSum(String district,String year){
+        int data = reportManageService.getSearchGpaDataSum(district,year);
+        return CommonReturnType.ok().add("sum",data);
     }
 
     @PostMapping("updateGdpData")

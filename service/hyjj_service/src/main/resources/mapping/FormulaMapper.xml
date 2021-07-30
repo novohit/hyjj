@@ -197,9 +197,19 @@
 <!--      where f.id = #{id}-->
 <!--    </if>-->
   </select>
+  <select id="getFormulaListSum" resultType="java.lang.Integer">
+    select count(*) from formula
+
+  </select>
 
   <select id="getFormulaByFormName" resultType="com.hyjj.hyjjservice.controller.settings.viewObject.FormulaListVO">
     select f.id,f.target_key_id,f.operator,f.expression,f.error_tip,f.remark,f.formula_type,rt.number from formula f join report_template rt on f.report_template_id = rt.id where rt.number = #{formName}
   </select>
+
+  <select id="getSearchFormulaListSum" resultType="java.lang.Integer">
+    select count(*) from formula f join report_template rt on f.report_template_id = rt.id where rt.number = #{formName}
+  </select>
+
+
 
 </mapper>
