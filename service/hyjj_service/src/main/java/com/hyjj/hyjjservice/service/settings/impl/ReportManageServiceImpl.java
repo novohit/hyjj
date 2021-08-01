@@ -224,7 +224,7 @@ public class ReportManageServiceImpl implements ReportManageService {
         reportData.setOrgCode(comInfo.getComCode());
         reportData.setBeginDate(beginDate);
         reportData.setEndDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endDate));
-        reportData.setGmtModified(null);
+        reportData.setGmtModified(beginDate);
         reportData.setReportDate(beginDate);
         reportData.setProStatus("填报数据");
         reportData.setProStatusName("1");

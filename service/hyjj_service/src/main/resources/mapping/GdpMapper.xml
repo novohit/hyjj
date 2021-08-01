@@ -12,14 +12,14 @@
     <select id="selectCurrentYearData" resultMap="BaseResultMap">
         select * from gdp where `year` = year(now())
     </select>
-    <select id="getCurrentYearGdpDataSum" resultMap="BaseResultMap">
+    <select id="getCurrentYearGdpDataSum" resultType="java.lang.Integer">
         select count(*) from gdp where `year` = year(now())
     </select>
 
     <select id="selectPassYearData" resultMap="BaseResultMap">
         select * from gdp where `year` &lt; year(now())
     </select>
-    <select id="getPassYearGdpDataSum" resultMap="BaseResultMap">
+    <select id="getPassYearGdpDataSum" resultType="java.lang.Integer">
         select count(*) from gdp where `year` &lt; year(now())
     </select>
 

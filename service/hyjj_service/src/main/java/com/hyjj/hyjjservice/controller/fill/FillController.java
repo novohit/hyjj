@@ -7,6 +7,7 @@ import com.hyjj.hyjjservice.controller.fill.viewObject.*;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.fill.FillService;
+import com.hyjj.hyjjservice.service.report.AuditService;
 import com.hyjj.util.responce.CommonReturnType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -34,6 +35,9 @@ public class FillController {
 
     @Autowired
     private FileUtil fileUtil;
+
+    @Autowired
+    private AuditService auditService;
 
     @GetUser
     @GetMapping("list")
@@ -144,6 +148,12 @@ public class FillController {
     @PostMapping("formulaVerification")
     public CommonReturnType formulaVerification(@RequestBody FormulaVerificationDto formulaVerificationDto) {
         return CommonReturnType.ok().add("result", fillService.formulaVerification(formulaVerificationDto));
+    }
+
+    @GetMapping("industry")
+    @ApiOperation("获取行业信息")
+    public CommonReturnType getIndustry() {
+        return CommonReturnType.ok().add("industry", auditService.getIndustry());
     }
 
 
