@@ -311,6 +311,36 @@
       and u.statue = "禁用"
     </if>
   </select>
+  <select id="selectUserInfoListSum" resultType="java.lang.Integer">
+    select count(*) from
+    ((user u inner join cominfo ci on u.cominfo_id = ci.id)inner join user_role ur on u.cominfo_id = ur.id)
+    inner join role r on ur.role_id = r.id
+    where 1 = 1
+    <if test="obj.statue == 'deleted'">
+      and statue = "已删除"
+    </if>
+    <if test="obj.statue == null">
+      and statue != "已删除"
+    </if>
+    <if test="obj.accountName != null">
+      and u.account like concat('%',#{obj.accountName},'%')
+    </if>
+    <if test="obj.name != null">
+      and u.name like concat('%',#{obj.name},'%')
+    </if>
+    <if test="obj.comName != null">
+      and ci.com_name like concat('%',#{obj.comName},'%')
+    </if>
+    <if test="obj.roleName != null">
+      and r.name = #{obj.roleName}
+    </if>
+    <if test="obj.statue == '正常'">
+      and u.statue = "正常"
+    </if>
+    <if test="obj.statue == '禁用'">
+      and u.statue = "禁用"
+    </if>
+  </select>
   <select id="selectByComInfoId" resultMap="BaseResultMap">
     <!--
       WARNING - @mbg.generated

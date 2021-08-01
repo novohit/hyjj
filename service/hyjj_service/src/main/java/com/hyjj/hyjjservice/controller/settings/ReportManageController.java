@@ -72,8 +72,12 @@ public class ReportManageController {
 
     @GetMapping("getComInfoList")
     public CommonReturnType getComInfoList(String name,Integer pageNum,Integer pageSize){
-        System.out.println(name);
         return CommonReturnType.ok().add("list",reportManageService.getComInfoList(name,pageNum,pageSize));
+    }
+
+    @GetMapping("getComInfoListSum")
+    public CommonReturnType getComInfoListSum(String name){
+        return CommonReturnType.ok().add("sum",reportManageService.getComInfoListSum(name));
     }
 
     @GetMapping("getFillReport")

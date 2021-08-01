@@ -224,7 +224,7 @@ public class ReportManageServiceImpl implements ReportManageService {
         reportData.setOrgCode(comInfo.getComCode());
         reportData.setBeginDate(beginDate);
         reportData.setEndDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endDate));
-        reportData.setGmtModified(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endDate));
+        reportData.setGmtModified(null);
         reportData.setReportDate(beginDate);
         reportData.setProStatus("填报数据");
         reportData.setProStatusName("1");
@@ -287,6 +287,13 @@ public class ReportManageServiceImpl implements ReportManageService {
     public int getReportTemplateListSum(ReportTemplateVO reportTemplateVO) {
         return reportTemplateMapper.getReportTemplateListSum(reportTemplateVO);
     }
+
+    @Override
+    public int getComInfoListSum(String name) {
+        return comInfoMapper.getCompanyNameListSum(name);
+    }
+
+
 
     @Scheduled(cron = "0 0 0 1 * ?")
     public void autoCreateReport() throws Exception{

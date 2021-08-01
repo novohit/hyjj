@@ -63,5 +63,6 @@ public interface UserMapper {
     int checkUserName(String name);
     int enableUser(Long id);
     int disableUser(Long id);
+    int selectUserInfoListSum(UserInfoVO userInfoVO);
 
 }

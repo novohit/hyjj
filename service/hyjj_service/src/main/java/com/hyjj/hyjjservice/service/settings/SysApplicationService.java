@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface SysApplicationService {
     List<UserInfoVO> getUserInfoList(UserInfoVO userInfoVO, Integer pageNum, Integer pageSize);
+    int getUserInfoListSum(UserInfoVO userInfoVO);
 
     User getUserDetail(Long id);
     int updateUserInfo(User user);

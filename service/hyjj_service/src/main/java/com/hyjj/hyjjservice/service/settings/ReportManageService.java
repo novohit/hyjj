@@ -35,4 +35,5 @@ public interface ReportManageService {
     int getPassYearDataSum();
     int getSearchGpaDataSum(String district,String year);
     int getReportTemplateListSum(ReportTemplateVO reportTemplateVO);
+    int getComInfoListSum(String name);
 }

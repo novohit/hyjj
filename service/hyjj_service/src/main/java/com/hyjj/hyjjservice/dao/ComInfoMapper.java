@@ -85,6 +85,7 @@ public interface ComInfoMapper {
     String selectCompanyNameByUserId(@Param("userId") Long userId);
 
     List<ComInfo> getCompanyNameList(String name);
+    int getCompanyNameListSum(String name);
 
     List<ComInfo> getNotUsedCompanyList();
 
