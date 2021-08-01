@@ -123,6 +123,7 @@ public class AuditServiceImpl implements AuditService {
 
     @Override
     public String batchAuditReport(Map<Long, Integer> map, User user) {
+        System.out.println(map);
         for (Long reportId : map.keySet()) {
             auditReport(reportId, map.get(reportId), user);
         }
@@ -198,7 +199,7 @@ public class AuditServiceImpl implements AuditService {
             process.setCreatTime(date);
             process.setGmtCreate(date);
         } else {
-            process.setVersionNum(process.getVersionNum() + 1);
+            process.setVersionNum(process.getVersionNum() == null ? 1 : process.getVersionNum() + 1);
         }
         process.setUpdateUser(user.getName());
         process.setUpdateTime(date);

@@ -146,6 +146,7 @@ public class FillServiceImpl implements FillService {
 
     @Override
     public String formulaVerification(FormulaVerificationDto formulaVerificationDto) {
+        System.out.println(formulaVerificationDto.getReportId());
         AbstractTargetTemplate template = addTargetStrategyFactory.getAddTargetValueStatus(
                 reportDataMapper.selectReportTemplateByReportId(formulaVerificationDto.getReportId()));
         return template.formulaVerification(formulaVerificationDto.getData()) ? "公式校验通过" : "公式校验不通过";
