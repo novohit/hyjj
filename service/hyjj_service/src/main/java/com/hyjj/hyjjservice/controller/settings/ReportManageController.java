@@ -43,20 +43,20 @@ public class ReportManageController {
         return CommonReturnType.ok().add("sum",data);
     }
 
-    @GetMapping("searchFormula")
-    @ApiOperation("搜索公式")
-    @ApiImplicitParam(name = "formname",value = "表名", required = true)
-    public CommonReturnType searchFormula(String formName,Integer pageNum,Integer pageSize){
-        List<FormulaListVO> formulaByFormName = reportManageService.getFormulaByFormName(formName,pageNum,pageSize);
-        return CommonReturnType.ok().add("list",formulaByFormName);
+//    @GetMapping("searchFormula")
+//    @ApiOperation("搜索公式")
+//    @ApiImplicitParam(name = "formname",value = "表名", required = true)
+//    public CommonReturnType searchFormula(String formName,Integer pageNum,Integer pageSize){
+//        List<FormulaListVO> formulaByFormName = reportManageService.getFormulaByFormName(formName,pageNum,pageSize);
+//        return CommonReturnType.ok().add("list",formulaByFormName);
+//
+//    }
 
-    }
-
-    @GetMapping("getSearchFormulaSum")
-    public CommonReturnType getSearchFormulaSum(String formName){
-        int data = reportManageService.getSearchFormulaSum(formName);
-        return CommonReturnType.ok().add("sum",data);
-    }
+//    @GetMapping("getSearchFormulaSum")
+//    public CommonReturnType getSearchFormulaSum(String formName){
+//        int data = reportManageService.getSearchFormulaSum(formName);
+//        return CommonReturnType.ok().add("sum",data);
+//    }
 
     @GetMapping("reportTemplateList")
     @ApiOperation("报表列表")
