@@ -1,6 +1,10 @@
 package com.hyjj.hyjjservice.dao;
 
+import com.hyjj.hyjjservice.controller.settings.viewObject.UnitFillReportVO;
 import com.hyjj.hyjjservice.dataobject.ComFillReport;
+
+import java.util.Date;
+import java.util.List;
 
 public interface ComFillReportMapper {
     /**
@@ -50,4 +54,11 @@ public interface ComFillReportMapper {
      * @mbg.generated Sat Jul 31 13:57:21 CST 2021
      */
     int updateByPrimaryKey(ComFillReport record);
+
+    List<UnitFillReportVO> selectFillReport(Long id);
+    List<UnitFillReportVO> selectNotFillReport(Long id);
+    int insertFillReport(Long comInfoId, Integer reportId, Date date);
+    List<Integer> selectReportTemplateId(Long id);
+    int deleteFillReport(Long comInfoId, Integer reportId);
+    int deleteAllFillReport(Long comInfoId);
 }

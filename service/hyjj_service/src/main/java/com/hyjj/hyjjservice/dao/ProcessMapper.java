@@ -1,6 +1,7 @@
 package com.hyjj.hyjjservice.dao;
 
 import com.hyjj.hyjjservice.dataobject.Process;
+import org.apache.ibatis.annotations.Param;
 
 public interface ProcessMapper {
     /**
@@ -50,4 +51,8 @@ public interface ProcessMapper {
      * @mbg.generated Sat Jul 31 13:57:21 CST 2021
      */
     int updateByPrimaryKey(Process record);
+
+    Process selectByReportId(@Param("reportId") Long reportId);
+
+    int updateProcessByReportId(@Param("reportId") Integer reportId,@Param("process")Process process);
 }
