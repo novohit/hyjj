@@ -93,5 +93,5 @@ public interface ComInfoMapper {
 
     List<Long> selectComInfoIds();
 
-    List<CompanyInfo> getCompanyList();
+    CompanyInfo getCompanyList(@Param("id") Long id);
 }

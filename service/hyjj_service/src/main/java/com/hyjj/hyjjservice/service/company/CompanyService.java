@@ -19,5 +19,5 @@ public interface CompanyService {
 
     DeatailComInfoModel getDeatailComInfo(Long id);
 
-    List<CompanyInfo> getCompanyList();
+    CompanyInfo getCompanyList(Long id);
 }

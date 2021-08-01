@@ -1,11 +1,13 @@
 package com.hyjj.hyjjservice.controller.company;
 
+import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.company.viewObject.*;
 import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
 import com.hyjj.hyjjservice.dao.ReportTemplateMapper;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
 import com.hyjj.hyjjservice.dataobject.Industry;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
+import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.dataobject.myEnum.ComBusinessStatus;
 import com.hyjj.hyjjservice.dataobject.myEnum.Comtype;
 import com.hyjj.hyjjservice.service.company.CompanyInfoService;
@@ -33,6 +35,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -70,6 +73,9 @@ public class CompanyController {
 
     @Autowired
     private ReportTemplateMapper reportTemplateMapper;
+
+    @Resource(name = "userThreadLocal")
+    private ThreadLocal<User> threadLocal;
 
     @GetMapping("industry")
     @ApiOperation("获取行业信息")
@@ -195,8 +201,10 @@ public class CompanyController {
     }
 
     @GetMapping("list")
+    @GetUser
     public CommonReturnType getCompanyList(){
-        return CommonReturnType.ok().add("list",companyService.getCompanyList());
+        User user = threadLocal.get();
+        return CommonReturnType.ok().add("list",companyService.getCompanyList(user.getCominfoId()));
     }
 
 

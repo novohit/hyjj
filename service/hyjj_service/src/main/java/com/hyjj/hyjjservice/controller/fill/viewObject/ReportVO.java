@@ -23,25 +23,6 @@ public class ReportVO {
     @NotBlank(message = "审核状态不能为空")
     Integer status;
 
-    Integer pageNum;
-    Integer pageSize;
-
-    public Integer getPageNum() {
-        return pageNum;
-    }
-
-    public void setPageNum(Integer pageNum) {
-        this.pageNum = pageNum;
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-    }
-
     public Integer getType() {
         return type;
     }

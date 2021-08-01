@@ -133,9 +133,12 @@ public class FillController {
 
     @GetMapping("statement")
     @GetUser
-    public CommonReturnType getStatement(ReportVO reportVO) {
+    public CommonReturnType getStatement(
+            @RequestParam(required = false, defaultValue = "1")Integer pageNum,
+            @RequestParam(required = false, defaultValue = "10")Integer pageSize,
+            ReportVO reportVO) {
         User user = threadLocal.get();
-        return CommonReturnType.ok().add("statement", fillService.getStatement(reportVO, user, reportVO.getPageNum(), reportVO.getPageSize()));
+        return CommonReturnType.ok().add("statement", fillService.getStatement(reportVO, user, pageNum,pageSize));
     }
 
     @GetMapping("statementSum")

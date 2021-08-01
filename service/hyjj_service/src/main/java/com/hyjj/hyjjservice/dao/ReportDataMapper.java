@@ -155,7 +155,7 @@ public interface ReportDataMapper {
 
     Integer reportSelectAllIndustryReportDataSum(Integer type, String status, String year, String nextYear, Long userId);
 
-    Integer reportSelectReportDataByIndustryIdSum(List<Integer> industriesId, Integer type, String status, String year, String nextYear, Long userId);
+    Integer reportSelectReportDataByIndustryIdSum(List<Integer> industriesIds, Integer type, String status, String year, String nextYear, Long userId);
 
 
     /**

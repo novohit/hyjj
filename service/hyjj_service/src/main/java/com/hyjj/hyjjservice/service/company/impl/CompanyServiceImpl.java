@@ -298,8 +298,15 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<CompanyInfo> getCompanyList() {
-        return comInfoMapper.getCompanyList();
+    public CompanyInfo getCompanyList(Long id) {
+        CompanyInfo companyList = comInfoMapper.getCompanyList(id);
+        if (companyList == null) {
+            companyList = new CompanyInfo();
+            companyList.setId(0L);
+            companyList.setComName("have not this company");
+            companyList.setName("have not this company");
+        }
+        return companyList;
     }
 
     private void getPercent(List<CompanyAnalyseModel> list){
