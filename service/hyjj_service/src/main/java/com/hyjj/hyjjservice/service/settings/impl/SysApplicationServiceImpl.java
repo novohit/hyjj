@@ -100,6 +100,11 @@ public class SysApplicationServiceImpl implements SysApplicationService {
     }
 
     @Override
+    public int getUserInfoListSum(UserInfoVO userInfoVO) {
+        return userMapper.selectUserInfoListSum(userInfoVO);
+    }
+
+    @Override
     public User getUserDetail(Long id){
         User user = userMapper.selectByPrimaryKey(id);
         return user;

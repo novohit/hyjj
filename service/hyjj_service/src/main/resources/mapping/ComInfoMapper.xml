@@ -313,6 +313,12 @@
       where com_name like concat('%',#{name},'%')
     </if>
   </select>
+  <select id="getCompanyNameListSum" resultType="java.lang.Integer">
+    select count(*) from cominfo
+    <if test="name != null">
+      where com_name like concat('%',#{name},'%')
+    </if>
+  </select>
   <select id="getNotUsedCompanyList" resultMap="BaseResultMap">
     select cominfo.id, cominfo.com_name from cominfo
 

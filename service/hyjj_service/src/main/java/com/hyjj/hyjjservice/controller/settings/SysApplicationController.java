@@ -29,6 +29,11 @@ public class SysApplicationController {
         List<UserInfoVO> userInfoList = sysApplicationService.getUserInfoList(userInfoVO, pageNum, pageSize);
         return CommonReturnType.ok().add("userInfoList", userInfoList);
     }
+    @GetMapping("userListSum")
+    public CommonReturnType getUserListSum(UserInfoVO userInfoVO) {
+        int data = sysApplicationService.getUserInfoListSum(userInfoVO);
+        return CommonReturnType.ok().add("sum", data);
+    }
 
     @GetMapping("userInfo")
     public CommonReturnType getUserInfo(Long id) {
