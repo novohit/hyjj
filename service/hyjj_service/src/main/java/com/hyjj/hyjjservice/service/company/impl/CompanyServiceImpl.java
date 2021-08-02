@@ -2,10 +2,12 @@ package com.hyjj.hyjjservice.service.company.impl;
 
 
 import com.hyjj.hyjjservice.controller.company.viewObject.CompanyInfo;
+import com.hyjj.hyjjservice.controller.company.viewObject.CompanyInfoPo;
 import com.hyjj.hyjjservice.controller.company.viewObject.CompanyVO;
 import com.hyjj.hyjjservice.dao.BusinessMapper;
 import com.hyjj.hyjjservice.dao.ComInfoAppendixMapper;
 import com.hyjj.hyjjservice.dao.ComInfoMapper;
+import com.hyjj.hyjjservice.dao.param.ComInfoQueryPo;
 import com.hyjj.hyjjservice.dataobject.Business;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
 import com.hyjj.hyjjservice.dataobject.ComInfoAppendix;
@@ -136,8 +138,64 @@ public class CompanyServiceImpl implements CompanyService {
 
 
     @Override
-    public Long selectCountCompany() {
-        return comInfoMapper.selectCountCompany();
+    public Long selectCountCompany(CompanyInfoPo companyInfoPo) {
+
+
+        ComInfoQueryPo comInfoQueryPo = new ComInfoQueryPo();
+        //解析comTypes
+        LinkedList<Integer> comTypes = new LinkedList<>();
+        String bitmap = companyInfoPo.getComTypes();
+
+        //判断是否没有0，即全1，全1即条件永真，不传参数到mapper即可，避免sql拼接
+        boolean hasZero = false;
+        for (int i = 0; i < bitmap.length(); i++) {
+            char bit = bitmap.charAt(i);
+            if (bit == '1') {
+                comTypes.add(i);
+            } else {
+                hasZero = true;
+            }
+        }
+
+        //- 不含有0的话，条件永真，避免拼接
+        if (!hasZero) {
+            comInfoQueryPo.setComTypes(null);
+        } else {
+            comInfoQueryPo.setComTypes(comTypes);
+        }
+
+        //解析industrys
+        hasZero = false;
+        LinkedList<Integer> industrys = new LinkedList<>();
+        bitmap = companyInfoPo.getIndustrys();
+        for (int i = 0; i < bitmap.length(); i++) {
+            char bit = bitmap.charAt(i);
+            if (bit == '1') {
+                industrys.add(i + 1);
+            } else {
+                hasZero = true;
+            }
+        }
+
+        //- 上面有解释
+        if (!hasZero) {
+            comInfoQueryPo.setIndustryIds(null);
+        } else {
+            comInfoQueryPo.setIndustryIds(industrys);
+        }
+
+
+        //设置name和county
+        String county = companyInfoPo.getCounty();
+        if (!StringUtils.isEmpty(county)) {
+            comInfoQueryPo.setCounty(county);
+        }
+        String name = companyInfoPo.getName();
+        if (!StringUtils.isEmpty(name)) {
+            comInfoQueryPo.setCounty(name);
+        }
+
+        return comInfoMapper.selectCountCompany(comInfoQueryPo);
     }
 
     @Override

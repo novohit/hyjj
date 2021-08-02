@@ -4,6 +4,7 @@ import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.company.viewObject.*;
 import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
 import com.hyjj.hyjjservice.dao.ReportTemplateMapper;
+import com.hyjj.hyjjservice.dao.param.ComInfoQueryPo;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
 import com.hyjj.hyjjservice.dataobject.Industry;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
@@ -119,11 +120,11 @@ public class CompanyController {
 
     @GetMapping("analyse")
     @ApiOperation("分析企业信息")
-    public CommonReturnType analyseCompany(@ApiParam("分析的对象，例如所属行业 ，地区，单位类型 分别对应(0,1,2)") Integer type) {
+    public CommonReturnType analyseCompany(@ApiParam("分析的对象，例如所属行业 ，地区，单位类型 分别对应(0,1,2)") Integer type, CompanyInfoPo queryPo) {
 
 
         List<CompanyAnalyseModel> res = companyService.getAnalyseData(type);
-        return CommonReturnType.ok().add("analyseData", res).add("sum", companyService.selectCountCompany());
+        return CommonReturnType.ok().add("analyseData", res).add("sum", companyService.selectCountCompany(queryPo));
     }
 
 
@@ -179,11 +180,8 @@ public class CompanyController {
 
             return companyInfoVo;
         }).collect(Collectors.toList());
-        //查询总数
-        Long companyCounty = companyService.selectCountCompany();
-        log.debug("响应到companyCount：{}", companyCounty);
         log.debug("响应companyVos为：{}", collect);
-        return CommonReturnType.ok().add("companies", collect).add("sum", companyCounty);
+        return CommonReturnType.ok().add("companies", collect);
     }
 
     @ExceptionHandler(Exception.class)
@@ -210,8 +208,8 @@ public class CompanyController {
 
     @GetMapping("/sum")
     @ApiOperation("查询企业总数，则分页总数为sum / 每页的大小（向上取整）")
-    public CommonReturnType getCompanyCount() {
-        Long companyCounty = companyService.selectCountCompany();
+    public CommonReturnType getCompanyCount(@Valid CompanyInfoPo companyInfoPo) {
+        Long companyCounty = companyService.selectCountCompany(companyInfoPo);
         log.debug("查询到companyCount：{}", companyCounty);
         return CommonReturnType.ok().add("sum", companyCounty);
     }

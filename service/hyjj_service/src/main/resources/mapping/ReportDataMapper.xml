@@ -518,7 +518,7 @@
     </update>
 
     <select id="getReportDataListByUserId" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList">
-        select id,`number`,title,end_date,fill_unit,begin_date,pro_status from report_data where user_id = #{userId} order by end_date desc
+        select id,number,title,end_date,fill_unit,begin_date,pro_status from report_data where user_id = #{userId} order by end_date desc
     </select>
 
     <select id="getReportDataListByUserIdSum" resultType="java.lang.Integer">

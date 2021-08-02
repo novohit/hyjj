@@ -286,10 +286,31 @@
          group by  com_comtype
   </select>
 
-  <select id="selectCountCompany" resultType="java.lang.Long">
-        select
-            count(*)
-         from cominfo
+  <select id="selectCountCompany" parameterType="com.hyjj.hyjjservice.dao.param.ComInfoQueryPo"  resultType="java.lang.Long">
+    select
+    count(*)
+    from cominfo inner join industry
+    on cominfo.industry_id = industry.id
+    <where>
+      <if test="comTypes != null">
+        com_comtype in
+        <foreach collection="comTypes" open="(" close=")" separator=", " item="comType">
+          #{comType}
+        </foreach>
+      </if>
+      <if test="industryIds != null">
+        and industry_id in
+        <foreach collection="industryIds" open="(" close=")" separator=", " item="id">
+          #{id}
+        </foreach>
+      </if>
+      <if test="county != null">
+        and com_address_county = #{county}
+      </if>
+      <if test="name != null">
+        and com_name like CONCAT('%', #{name}, '%')
+      </if>
+    </where>
   </select>
 
   <select id="selectAllCompany" resultMap="BaseResultMap">

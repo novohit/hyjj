@@ -7,6 +7,7 @@ import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.Date;
 import java.util.List;
@@ -92,6 +93,7 @@ public interface ReportDataMapper {
                                  @Param("isSave") Integer isSave);
 
 
+  //  @Select("select id,number,title,end_date,fill_unit,begin_date,pro_status from report_data where user_id = #{userId} order by end_date desc")
     List<ReportDataList> getReportDataListByUserId(Long userId);
 
     ReportDataHtml getReportDataHtml(int id, Long userId);

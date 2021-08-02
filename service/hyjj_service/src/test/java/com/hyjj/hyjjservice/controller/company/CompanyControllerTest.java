@@ -37,11 +37,5 @@ public class CompanyControllerTest {
         assertEquals(38L, returnType.getData().get("sum"));
     }
 
-    //@Test
-    public void getCompanyCount() {
-        CommonReturnType returnType = companyController.getCompanyCount();
-        assertEquals(7L, returnType.getData().get("sum"));
-        String forObject = testRestTemplate.getForObject(testRestTemplate.getRootUri() + "/company/sum", String.class);
-        System.out.println(forObject);
-    }
+
 }

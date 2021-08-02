@@ -1,6 +1,7 @@
 package com.hyjj.hyjjservice.dao;
 
 import com.hyjj.hyjjservice.controller.company.viewObject.CompanyInfo;
+import com.hyjj.hyjjservice.controller.company.viewObject.CompanyInfoPo;
 import com.hyjj.hyjjservice.controller.fill.viewObject.TableHeadInfo;
 import com.hyjj.hyjjservice.dao.param.ComInfoQueryPo;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
@@ -63,7 +64,7 @@ public interface ComInfoMapper {
      */
     int updateByPrimaryKey(ComInfo record);
 
-    Long selectCountCompany();
+    Long selectCountCompany(ComInfoQueryPo queryPo);
 
     List<CompanyAnalyseModel> countByRegion();
 
