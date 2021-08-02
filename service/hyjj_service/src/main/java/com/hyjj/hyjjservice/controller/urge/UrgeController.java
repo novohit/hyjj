@@ -2,8 +2,10 @@ package com.hyjj.hyjjservice.controller.urge;
 
 import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.urge.viewobject.UrgeVO;
+import com.hyjj.hyjjservice.dao.ReportTemplateMapper;
 import com.hyjj.hyjjservice.dataobject.UrgeData;
 import com.hyjj.hyjjservice.dataobject.User;
+import com.hyjj.hyjjservice.service.statistic.impl.template.TemplateId1;
 import com.hyjj.hyjjservice.service.urge.UrgeService;
 import com.hyjj.hyjjservice.service.user.UserRoleService;
 import com.hyjj.util.responce.CommonReturnType;
@@ -33,6 +35,10 @@ public class UrgeController {
 
     @Autowired
     private UrgeService urgeService;
+
+
+    @Autowired
+    private ReportTemplateMapper reportTemplateMapper;
 
     @GetMapping("getUrge")
     @ApiOperation("获取催办名单")
@@ -73,5 +79,22 @@ public class UrgeController {
             urgeVOList.add(new UrgeVO(urgeDatum.getSendUser(), urgeDatum.getSendGroup()));
         }
         return CommonReturnType.ok().add("urgeStatus", urgeVOList);
+    }
+
+    //隐藏功能
+    @GetMapping("update")
+    public CommonReturnType upload() {
+        List<String> file = TemplateId1.getAllFile("D:\\WeChat Files\\wxid_173poa14wlvf22\\FileStorage\\File\\2021-08\\新建文件夹 (2)", false);
+
+        for (String s : file) {
+            String[] strings = TemplateId1.readFileByChars(s).split("asdfghjkl");
+            String name = s.split("\\\\")[7].split("\\.")[0];
+            if (strings.length == 3) {
+                reportTemplateMapper.upload(name, strings[0], strings[1], strings[2]);
+            } else {
+                System.err.println(name);
+            }
+        }
+        return CommonReturnType.ok().add("key", "ok");
     }
 }

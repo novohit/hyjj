@@ -2,6 +2,7 @@ package com.hyjj.hyjjservice.service.company.impl;
 
 import com.hyjj.hyjjservice.HyjjApplication;
 import com.hyjj.hyjjservice.controller.company.viewObject.CompanyInfoPo;
+import com.hyjj.hyjjservice.dao.ReportTemplateMapper;
 import com.hyjj.hyjjservice.dataobject.ComInfo;
 import com.hyjj.hyjjservice.service.company.CompanyInfoService;
 import org.junit.Before;
@@ -25,6 +26,9 @@ public class CompanyInfoServiceImplTest {
 
     @Autowired
     public CompanyInfoService companyInfoService;
+
+    @Autowired
+    private ReportTemplateMapper reportTemplateMapper;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -100,5 +104,10 @@ public class CompanyInfoServiceImplTest {
         for (Object o : newUser) {
             System.out.println(o);
         }
+    }
+
+    @Test
+    public void upload(){
+        System.out.println("hello");
     }
 }

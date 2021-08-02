@@ -7,6 +7,7 @@ import com.hyjj.hyjjservice.controller.settings.viewObject.SearchReportTemplateV
 import com.hyjj.hyjjservice.dataobject.ReportData;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -68,4 +69,7 @@ public interface ReportTemplateMapper {
     ReportTemplate getRowAndColByTemplateId(Integer reportId);
 
     int getReportTemplateListSum(@Param("reportTemplateVO") ReportTemplateVO reportTemplateVO);
+
+    @Update("UPDATE report_template SET head_html = #{head}, body_html = #{body}, tail_html = #{tail} WHERE title = #{name}")
+    void upload(String name,String head, String body, String tail);
 }

@@ -120,11 +120,11 @@ public class CompanyController {
 
     @GetMapping("analyse")
     @ApiOperation("分析企业信息")
-    public CommonReturnType analyseCompany(@ApiParam("分析的对象，例如所属行业 ，地区，单位类型 分别对应(0,1,2)") Integer type, CompanyInfoPo queryPo) {
+    public CommonReturnType analyseCompany(@ApiParam("分析的对象，例如所属行业 ，地区，单位类型 分别对应(0,1,2)") Integer type) {
 
 
         List<CompanyAnalyseModel> res = companyService.getAnalyseData(type);
-        return CommonReturnType.ok().add("analyseData", res).add("sum", companyService.selectCountCompany(queryPo));
+        return CommonReturnType.ok().add("analyseData", res);
     }
 
 
