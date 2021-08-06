@@ -248,7 +248,7 @@ public class ReportManageServiceImpl implements ReportManageService {
             reportData.setTitle(reportTemplate.getTitle());
             reportData.setNumber(reportTemplate.getNumber());
             reportData.setReportTemplateId(reportTemplate.getId());
-            process.setId(null);
+            reportData.setProcessId(process.getId());
             if(reportDataMapper.insertSelective(reportData)==1)
                 i++;
         }
