@@ -115,7 +115,7 @@ public class FillServiceImpl implements FillService {
         } else if (reportVO.getStatus() == 2) {
             status = "审核不通过";
         } else if (reportVO.getStatus() == 3) {
-            status = "未提交";
+            status = "待审核";
         } else if (reportVO.getStatus() == 4) {
             status = "已入库";
         }
@@ -176,7 +176,7 @@ public class FillServiceImpl implements FillService {
         } else if (reportVO.getStatus() == 2) {
             status = "审核不通过";
         } else if (reportVO.getStatus() == 3) {
-            status = "未提交";
+            status = "待审核";
         } else if (reportVO.getStatus() == 4) {
             status = "已入库";
         }

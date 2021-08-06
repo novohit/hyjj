@@ -612,19 +612,17 @@
             <if test="statue == '已入库'">
                 and rd.`pro_status` = "审核通过"
             </if>
-            <if test="statue == '未提交' ">
-                and rd.`pro_status` = "填报数据"
-                and rd.is_save = 1
+            <if test="statue == '待审核'">
+                and rd.`pro_status` = "审核数据"
             </if>
             <if test="statue == '审核不通过'">
                 and rd.`pro_status` = "审核不通过"
             </if>
             <if test="statue == '未填报'">
-                and (rd.pro_status = "审核不通过" or rd.pro_status = "填报数据")
-                and rd.is_save = 0
+                and rd.pro_status = "填报数据"
             </if>
             <if test="statue == null">
-                and rd.pro_status != "审核数据"
+                and 1 = 1
             </if>
         </where>
     </select>
@@ -641,22 +639,20 @@
             and rt.`rep_class` = #{type}
             and rd.`submit_date` between #{year} and #{nextYear}
             and rd.`user_id` = #{userId}
-            <if test="status == '已入库'">
+            <if test="statue == '已入库'">
                 and rd.`pro_status` = "审核通过"
             </if>
-            <if test="status == '未提交' ">
-                and rd.`pro_status` = "填报数据"
-                and rd.is_save = 1
+            <if test="statue == '待审核'">
+                and rd.`pro_status` = "审核数据"
             </if>
-            <if test="status == '审核不通过'">
+            <if test="statue == '审核不通过'">
                 and rd.`pro_status` = "审核不通过"
             </if>
-            <if test="status == '未填报'">
-                and (rd.pro_status = "审核不通过" or rd.pro_status = "填报数据")
-                and rd.is_save = 0
+            <if test="statue == '未填报'">
+                and rd.pro_status = "填报数据"
             </if>
-            <if test="status == null">
-                and rd.pro_status != "审核数据"
+            <if test="statue == null">
+                and 1 = 1
             </if>
         </where>
     </select>
