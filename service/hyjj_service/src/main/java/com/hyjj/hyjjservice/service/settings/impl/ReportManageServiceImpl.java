@@ -208,7 +208,6 @@ public class ReportManageServiceImpl implements ReportManageService {
         User user = userMapper.selectByComInfoId(id);
 
         Integer tag = reportDataMapper.judgeIfExists(user.getId());
-        System.out.println(tag);
         if(tag!=0){
             return false;
         }
