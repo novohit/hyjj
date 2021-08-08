@@ -179,5 +179,6 @@ public interface ReportDataMapper {
                                             @Param("statue") String statue,
                                             @Param("year") String year,
                                             @Param("nextYear") String nextYear);
+    Integer judgeIfExists(Long id);
 
 }
