@@ -63,23 +63,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/company/list").hasRole("User")
                 .anyRequest().authenticated()
                 .and().logout().logoutUrl("/user/logout")
-                .addLogoutHandler(new TokenLogoutHandler(tokenManager,redisTemplate)).and()
+                .addLogoutHandler(new TokenLogoutHandler(tokenManager, redisTemplate)).and()
 
 
                 .addFilter(new TokenAuthenticationFilter(authenticationManager(), tokenManager, redisTemplate));
-                //addFilterAfter(new TokenLoginFilter(authenticationManager(), tokenManager, redisTemplate),UsernamePasswordAuthenticationFilter.class).httpBasic();
+        //addFilterAfter(new TokenLoginFilter(authenticationManager(), tokenManager, redisTemplate),UsernamePasswordAuthenticationFilter.class).httpBasic();
         http.cors(Customizer.withDefaults());
 
         http.addFilterBefore(new VerificationCodeFilter(redisUtil), UsernamePasswordAuthenticationFilter.class);
         http.formLogin()
-                .loginProcessingUrl("/user/login").permitAll().successHandler(new LoginAuthenticationSuccessHandler(authenticationManager(),tokenManager,redisTemplate))
-                                                              .failureHandler(new LoginAuthenticationFailureHandler());
+                .loginProcessingUrl("/user/login").permitAll().successHandler(new LoginAuthenticationSuccessHandler(authenticationManager(), tokenManager, redisTemplate))
+                .failureHandler(new LoginAuthenticationFailureHandler());
         http.userDetailsService(userDetailsService);
 
 
-
     }
-
 
 
     @Override
@@ -90,9 +88,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/api/**",
-                "/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**","/captcha/get","/companyimage/**","/publishimage/**"
+                "/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**", "/captcha/get", "/companyimage/**", "/publishimage/**"
         );
-
 
 
     }
@@ -104,14 +101,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Collections.singletonList("*"));
         configuration.setAllowedHeaders(Collections.singletonList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT", "DELETE"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-
-
 
 
 }

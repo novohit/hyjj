@@ -36,7 +36,7 @@ public class TemplateId22 extends AbstractTargetTemplate {
     }
 
     @Override
-    public Boolean formulaVerification(List<Long> data) {
+    public Boolean formulaVerification(List<Double> data) {
         return data.get(0) >= data.get(1) &&
                 data.get(0) >= data.get(2) &&
                 data.get(3) >= data.get(4);

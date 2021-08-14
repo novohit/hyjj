@@ -31,7 +31,7 @@ public abstract class AbstractTargetTemplate {
      * @param data 传过来的数据
      * @return 校验是否通过
      */
-    public Boolean formulaVerification(List<Long> data){
+    public Boolean formulaVerification(List<Double> data){
         return true;
     }
 

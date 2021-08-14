@@ -31,7 +31,7 @@ public class TemplateId27 extends AbstractTargetTemplate {
     }
 
     @Override
-    public Boolean formulaVerification(List<Long> data) {
+    public Boolean formulaVerification(List<Double> data) {
         return (data.get(0) * 366 * 24) / 10 >= data.get(1) &&
                 data.get(2) <= 366 * 24;
     }
