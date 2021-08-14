@@ -347,7 +347,7 @@
   </select>
 
   <select id="getTableHeadInfo" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.TableHeadInfo">
-    select com_code "OrganizationCode",com_name "UnitName",com_address_county "AreaName" from (cominfo inner join `user` on user.cominfo_id = cominfo.id)inner join report_data  on report_data.user_id = user.id where report_data.id = #{reportId} and report_data.is_save = 0;
+    select com_code "OrganizationCode",com_name "UnitName",com_address_county "AreaName" from (cominfo inner join `user` on user.cominfo_id = cominfo.id)inner join report_data  on report_data.user_id = user.id where report_data.id = #{reportId}
   </select>
 
   <select id="selectComInfoIds" resultType="java.lang.Long">

@@ -206,6 +206,11 @@ public class ReportManageServiceImpl implements ReportManageService {
     @Override
     public boolean manualCreateReport(String endDate, Long id) throws Exception{
         User user = userMapper.selectByComInfoId(id);
+
+        Integer tag = reportDataMapper.judgeIfExists(user.getId());
+        if(tag!=0){
+            return false;
+        }
         if(user == null){
             return false;
         }
