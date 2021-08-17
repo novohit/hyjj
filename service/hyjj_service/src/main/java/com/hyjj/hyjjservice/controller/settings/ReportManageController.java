@@ -162,4 +162,10 @@ public class ReportManageController {
         }
         return CommonReturnType.ok().add("success",flag);
     }
+
+    @GetMapping("oneKeyCreate")
+    public CommonReturnType oneKeyCreate(String endDate) throws Exception{
+        boolean b = reportManageService.oneKeyCreateReport(endDate);
+        return CommonReturnType.ok().add("success",b);
+    }
 }

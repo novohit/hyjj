@@ -207,7 +207,7 @@ public class ReportManageServiceImpl implements ReportManageService {
     public boolean manualCreateReport(String endDate, Long id) throws Exception{
         User user = userMapper.selectByComInfoId(id);
 
-        Integer tag = reportDataMapper.judgeIfExists(user.getId());
+        Integer tag = reportDataMapper.judgeIfExists(user.getId(),endDate);
         if(tag!=0){
             return false;
         }
@@ -316,4 +316,17 @@ public class ReportManageServiceImpl implements ReportManageService {
 
     }
 
+    @Override
+    public boolean oneKeyCreateReport(String endDate) throws Exception {
+        List<Long> ids = comInfoMapper.selectComInfoIds();
+        boolean flag = true;
+        for (Long id : ids) {
+            flag = manualCreateReport(endDate,id);
+        }
+        if (!flag){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
