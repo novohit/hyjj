@@ -730,6 +730,6 @@
     </select>
 
     <select id="judgeIfExists"  resultType="java.lang.Integer">
-        select count(*) from report_data where user_id = #{id} and month(end_date) = month(#{date})
+        select count(*) from report_data where user_id = #{id} and month(end_date) = month(#{date}) and year(end_date) = year(#{date})
     </select>
 </mapper>
