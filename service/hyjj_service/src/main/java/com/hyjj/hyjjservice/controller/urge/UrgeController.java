@@ -84,7 +84,7 @@ public class UrgeController {
     //隐藏功能
     @GetMapping("update")
     public CommonReturnType upload() {
-        List<String> file = TemplateId1.getAllFile("D:\\WeChat Files\\wxid_173poa14wlvf22\\FileStorage\\File\\2021-08\\新建文件夹 (2)", false);
+        List<String> file = TemplateId1.getAllFile("D:\\WeChat Files\\wxid_173poa14wlvf22\\FileStorage\\File\\2021-08\\html", false);
 
         for (String s : file) {
             String[] strings = TemplateId1.readFileByChars(s).split("asdfghjkl");

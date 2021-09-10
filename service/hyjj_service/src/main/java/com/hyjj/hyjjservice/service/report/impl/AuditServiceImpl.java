@@ -3,6 +3,7 @@ package com.hyjj.hyjjservice.service.report.impl;
 import com.github.pagehelper.PageHelper;
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditReportVO;
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditVO;
+import com.hyjj.hyjjservice.controller.report.viewobject.Degital;
 import com.hyjj.hyjjservice.dao.*;
 import com.hyjj.hyjjservice.dataobject.*;
 import com.hyjj.hyjjservice.dataobject.Process;
@@ -122,10 +123,9 @@ public class AuditServiceImpl implements AuditService {
 
 
     @Override
-    public String batchAuditReport(Map<Long, Integer> map, User user) {
-        System.out.println(map);
+    public String batchAuditReport(Map<Long, Degital> map, User user) {
         for (Long reportId : map.keySet()) {
-            auditReport(reportId, map.get(reportId), user);
+            auditReport(reportId, map.get(reportId).getJudge(), map.get(reportId).getTailHtml(), user);
         }
         return "audit success";
     }
@@ -186,7 +186,7 @@ public class AuditServiceImpl implements AuditService {
      * @return
      */
     @Override
-    public String auditReport(Long reportId, Integer judge, User user) {
+    public String auditReport(Long reportId, Integer judge, String tailHtml, User user) {
         //获取当前时间
         Date date = new Date();
         Integer isSave;
@@ -217,7 +217,7 @@ public class AuditServiceImpl implements AuditService {
             processMapper.updateByPrimaryKeySelective(process);
         }
 
-        reportDataMapper.updateProcessByReportId(reportId, process.getId(), process.getProcessName(), judge == 0 ? "2" : "3", isSave);
+        reportDataMapper.updateProcessByReportId(reportId, process.getId(), process.getProcessName(), judge == 0 ? "2" : "3", tailHtml, isSave);
 
         return "audit success";
     }

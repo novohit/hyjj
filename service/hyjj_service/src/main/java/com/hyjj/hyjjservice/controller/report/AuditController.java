@@ -2,6 +2,7 @@ package com.hyjj.hyjjservice.controller.report;
 
 import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditVO;
+import com.hyjj.hyjjservice.controller.report.viewobject.Degital;
 import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.report.AuditService;
 import com.hyjj.util.responce.CommonReturnType;
@@ -38,8 +39,8 @@ public class AuditController {
     @ApiOperation("查看需要审核的报表")
     @GetUser
     public CommonReturnType getStatement(AuditVO auditVO,
-                @RequestParam(required = false, defaultValue = "1") int pageNum,
-                @RequestParam(required = false, defaultValue = "10") int pageSize) throws Exception {
+                                         @RequestParam(required = false, defaultValue = "1") int pageNum,
+                                         @RequestParam(required = false, defaultValue = "10") int pageSize) throws Exception {
         User user = threadLocal.get();
         return CommonReturnType.ok().add("reportData", auditService.getStatement(auditVO, user, pageNum, pageSize));
     }
@@ -47,7 +48,7 @@ public class AuditController {
     @GetMapping("statementSum")
     @ApiOperation("查看总记录条数")
     @GetUser
-    public CommonReturnType getStatementSum(AuditVO auditVO){
+    public CommonReturnType getStatementSum(AuditVO auditVO) {
         User user = threadLocal.get();
         return CommonReturnType.ok().add("reportData", auditService.getStatementSum(auditVO, user));
     }
@@ -65,17 +66,18 @@ public class AuditController {
     @GetUser
     @ApiImplicitParams({
             @ApiImplicitParam(name = "reportId", value = "报表id", required = true, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "judge", value = "审核结果，0为不通过，1为通过", required = true, dataTypeClass = Integer.class)
+            @ApiImplicitParam(name = "judge", value = "审核结果，0为不通过，1为通过", required = true, dataTypeClass = Integer.class),
+            @ApiImplicitParam(name = "tailHtml", value = "尾html")
     })
-    public CommonReturnType auditReport(Long reportId, Integer judge) {
+    public CommonReturnType auditReport(Long reportId, Integer judge, String tailHtml) {
         User user = threadLocal.get();
-        return CommonReturnType.ok().add("result", auditService.auditReport(reportId, judge, user));
+        return CommonReturnType.ok().add("result", auditService.auditReport(reportId, judge, tailHtml, user));
     }
 
     @PutMapping("batchReport")
     @ApiOperation("批量审核报表")
     @GetUser
-    public CommonReturnType auditReport(@RequestBody Map<Long,Integer> map) {
+    public CommonReturnType auditReport(@RequestBody Map<Long, Degital> map) {
         User user = threadLocal.get();
         return CommonReturnType.ok().add("result", auditService.batchAuditReport(map, user));
     }

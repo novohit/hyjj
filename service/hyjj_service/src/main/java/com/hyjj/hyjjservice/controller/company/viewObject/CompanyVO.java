@@ -20,7 +20,7 @@ public class CompanyVO {
     private String comName;
 
     @ApiModelProperty("组织机构代码")
-
+    @NotBlank(message = "组织机构代码不能为空")
     private String comCode;
 
     @ApiModelProperty("法定负责人")
