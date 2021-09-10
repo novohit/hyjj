@@ -66,6 +66,7 @@ public class SysApplicationServiceImpl implements SysApplicationService {
         ReportTemplate reportTemplate = reportTemplateMapper.getRowAndColByTemplateId(Integer.parseInt(uploadVO.getReportId()));
         reportTemplate.setRow(reportTemplate.getDataRow());
         reportTemplate.setCol(reportTemplate.getDataCol());
+        System.out.println(reportTemplate.getRow());
         for (MultipartFile file : uploadVO.getFiles()) {
 
             try{

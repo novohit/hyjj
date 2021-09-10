@@ -730,7 +730,7 @@
         SELECT report_template_id FROM report_data WHERE id = #{reportId}
     </select>
 
-    <select id="judgeIfExists" parameterType="java.lang.Long" resultType="java.lang.Integer">
-        select count(*) from report_data where user_id = #{id} and month(begin_date) = month(current_date)
+    <select id="judgeIfExists"  resultType="java.lang.Integer">
+        select count(*) from report_data where user_id = #{id} and month(end_date) = month(#{date}) and year(end_date) = year(#{date})
     </select>
 </mapper>

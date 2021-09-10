@@ -10,6 +10,7 @@ import com.hyjj.hyjjservice.dao.*;
 import com.hyjj.hyjjservice.dataobject.*;
 import com.hyjj.hyjjservice.dataobject.Process;
 import com.hyjj.hyjjservice.service.settings.ReportManageService;
+import io.swagger.models.auth.In;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -207,7 +208,7 @@ public class ReportManageServiceImpl implements ReportManageService {
     public boolean manualCreateReport(String endDate, Long id) throws Exception{
         User user = userMapper.selectByComInfoId(id);
 
-        Integer tag = reportDataMapper.judgeIfExists(user.getId());
+        Integer tag = reportDataMapper.judgeIfExists(user.getId(),endDate);
         if(tag!=0){
             return false;
         }
@@ -241,7 +242,9 @@ public class ReportManageServiceImpl implements ReportManageService {
         reportData.setIsSave(0);
         reportData.setUserId(user.getId());
         List<Integer> integers = comFillReportMapper.selectReportTemplateId(id);
-        System.out.println(integers);
+        if (integers.size() == 0){
+            return false;
+        }
         int i = 0;
         for (Integer integer : integers) {
             processMapper.insertSelective(process);
@@ -316,4 +319,21 @@ public class ReportManageServiceImpl implements ReportManageService {
 
     }
 
+    @Override
+    public boolean oneKeyCreateReport(String endDate) throws Exception {
+        List<Long> ids = comInfoMapper.selectComInfoIds();
+        Integer flag = 0;
+        for (Long id : ids) {
+            boolean b = manualCreateReport(endDate,id);
+            if (b){
+                flag++;
+
+            }
+        }
+        if (flag==0){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }

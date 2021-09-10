@@ -48,12 +48,16 @@ public class FillServiceImpl implements FillService {
 
     @Override
     public TableHeadInfo getTableHeadInfo(Integer reportId) {
-        String OrgCode = null;
         TableHeadInfo tableHeadInfo = comInfoMapper.getTableHeadInfo(reportId);
+        String organizationCode = tableHeadInfo.getOrganizationCode();
+        if(organizationCode != null){
+            tableHeadInfo.setCreditCode(organizationCode);
+        }
         String creditCode = tableHeadInfo.getCreditCode();
-        if(creditCode != null){
-            OrgCode = creditCode.substring(8,16);
-            tableHeadInfo.setOrganizationCode(OrgCode);
+
+        if(creditCode != null && creditCode.length() == 18){
+            organizationCode = creditCode.substring(8,16);
+            tableHeadInfo.setOrganizationCode(organizationCode);
 
         }
         return tableHeadInfo;

@@ -36,4 +36,5 @@ public interface ReportManageService {
     int getSearchGpaDataSum(String district,String year);
     int getReportTemplateListSum(ReportTemplateVO reportTemplateVO);
     int getComInfoListSum(String name);
+    boolean oneKeyCreateReport(String endDate) throws Exception;
 }

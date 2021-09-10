@@ -113,6 +113,7 @@ public class FileUtil<E> {
 
         for (int j = 0; j < rowArray.length; j++) {
             Cell excelValue = getExcelValue(xssfWorkbook,rowArray[j], colArray[j], is);
+            System.out.println(excelValue);
             cells.add((E)getCellValue(excelValue));
         }
         return cells;
