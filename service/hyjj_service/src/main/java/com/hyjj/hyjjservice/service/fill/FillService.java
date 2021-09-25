@@ -14,7 +14,7 @@ import java.util.List;
 public interface FillService {
     List<ReportDataList> getReportListByUserId(Long userid, Integer pageNum, Integer pageSize);
 
-    ReportDataHtml getReportDataHtml(Integer id, Long userId);
+    ReportDataHtml getReportDataHtml(Long id, Long userId);
 
     int saveReportDataHtml(ReportDataHtml reportDataHtml);
 
@@ -39,5 +39,7 @@ public interface FillService {
 
     Integer getStatementSum(ReportVO reportVO, User user);
 
-    TableHeadInfo getTableHeadInfo(Integer reportId);
+    TableHeadInfo getTableHeadInfo(Long reportId);
+
+    ReportDataHtml getLastYearData(Long id,Long userId);
 }

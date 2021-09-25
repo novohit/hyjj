@@ -64,11 +64,17 @@ public class FillController {
     @GetMapping("fill")
     @ApiOperation("点击报表名称，返回报表的html")
     @ApiImplicitParam(name = "id", value = "报表id", required = true, dataTypeClass = Integer.class)
-    public CommonReturnType getReportData(Integer id) {
+    public CommonReturnType getReportData(Long id) {
         User user = threadLocal.get();
         long userId = user.getId();
         ReportDataHtml reportDataHtml = fillService.getReportDataHtml(id, userId);
         TableHeadInfo tableHeadInfo = fillService.getTableHeadInfo(id);
+        ReportDataHtml lastYearData = fillService.getLastYearData(id, userId);
+        if(lastYearData != null){
+            return CommonReturnType.ok().add("data", reportDataHtml).add("LastYearData",reportDataHtml).add("tableHeadInfo",tableHeadInfo);
+
+        }
+
         return CommonReturnType.ok().add("data", reportDataHtml).add("tableHeadInfo",tableHeadInfo);
     }
 

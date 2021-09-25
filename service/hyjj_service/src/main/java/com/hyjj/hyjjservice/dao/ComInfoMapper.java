@@ -90,7 +90,7 @@ public interface ComInfoMapper {
 
     List<ComInfo> getNotUsedCompanyList();
 
-    TableHeadInfo getTableHeadInfo(Integer reportId);
+    TableHeadInfo getTableHeadInfo(Long reportId);
 
     List<Long> selectComInfoIds();
 

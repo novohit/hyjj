@@ -733,4 +733,12 @@
     <select id="judgeIfExists"  resultType="java.lang.Integer">
         select count(*) from report_data where user_id = #{id} and month(end_date) = month(#{date}) and year(end_date) = year(#{date})
     </select>
+
+    <select id="getReportTemplateIdByReportId" resultType="java.lang.Integer">
+        select report_template_id from report_data where id = #{id}
+    </select>
+
+    <select id="selectLastYearReport" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml">
+        select id,head_html,body_html,tail_html from report_data where user_id = #{userId} and report_template_id = #{reportTemplateId} and year(begin_date) = #{year} and month(begin_date) = #{month}
+    </select>
 </mapper>

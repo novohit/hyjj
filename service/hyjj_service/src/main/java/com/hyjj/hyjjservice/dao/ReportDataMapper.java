@@ -6,6 +6,7 @@ import com.hyjj.hyjjservice.dataobject.ReportData;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataHtml;
 import com.hyjj.hyjjservice.controller.fill.viewObject.ReportDataList;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -182,4 +183,6 @@ public interface ReportDataMapper {
                                             @Param("nextYear") String nextYear);
     Integer judgeIfExists(Long id,String date);
 
+    Integer getReportTemplateIdByReportId(Integer id);
+    ReportDataHtml selectLastYearReport(Long userId,Long reportTemplateId,Integer year,Integer month);
 }

@@ -132,11 +132,11 @@
   </update>
 
   <select id="selectFillReport" resultType="com.hyjj.hyjjservice.controller.settings.viewObject.UnitFillReportVO">
-    select rt.number,rt.id from report_template rt inner join com_fill_report cfr on cfr.report_template_id = rt.id where cfr.cominfo_id = #{id}
+    select rt.number,rt.id from report_template rt inner join com_fill_report cfr on cfr.report_template_id = rt.id where cfr.cominfo_id = #{id} and rt.type != -1
   </select>
   <select id="selectNotFillReport" resultType="com.hyjj.hyjjservice.controller.settings.viewObject.UnitFillReportVO">
     select rt.number,rt.id from report_template rt
-    where rt.id not in (select report_template_id from com_fill_report where cominfo_id = #{id})
+    where rt.id not in (select report_template_id from com_fill_report where cominfo_id = #{id}) and rt.type != -1
 
   </select>
   <select id="selectReportTemplateId" resultType="java.lang.Integer">

@@ -18,7 +18,9 @@ import com.hyjj.hyjjservice.service.statistic.impl.template.AbstractTargetTempla
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -47,7 +49,7 @@ public class FillServiceImpl implements FillService {
     }
 
     @Override
-    public TableHeadInfo getTableHeadInfo(Integer reportId) {
+    public TableHeadInfo getTableHeadInfo(Long reportId) {
         TableHeadInfo tableHeadInfo = comInfoMapper.getTableHeadInfo(reportId);
         String organizationCode = tableHeadInfo.getOrganizationCode();
         if(organizationCode != null){
@@ -64,8 +66,33 @@ public class FillServiceImpl implements FillService {
     }
 
     @Override
-    public ReportDataHtml getReportDataHtml(Integer id, Long userId) {
-        return reportDataMapper.getReportDataHtml(id, userId);
+    public ReportDataHtml getReportDataHtml(Long id, Long userId) {
+
+
+
+
+        return reportDataMapper.getReportDataHtml(id.intValue(), userId);
+
+    }
+
+    @Override
+    public ReportDataHtml getLastYearData(Long id, Long userId){
+        int[] array = new int[]{16,17,18,19,20};
+        ReportData reportData = reportDataMapper.selectByPrimaryKey(id);
+        Date beginDate = reportData.getBeginDate();
+        String[] strDate = new SimpleDateFormat("yyyy-MM-dd").format(beginDate).toString().split("-");
+        int year = Integer.parseInt(strDate[0]);
+        int month = Integer.parseInt(strDate[1]);
+        Long reportTemplateId = reportData.getReportTemplateId();
+        for (int i : array) {
+            if(i == reportTemplateId){
+                ReportDataHtml LastYearReportData = reportDataMapper.selectLastYearReport(userId, reportTemplateId, year - 1, month);
+                if(LastYearReportData != null){
+                    return LastYearReportData;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
