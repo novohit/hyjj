@@ -6,6 +6,7 @@ import com.hyjj.hyjjservice.controller.settings.viewObject.ReportTemplateVO;
 import com.hyjj.hyjjservice.controller.settings.viewObject.SearchReportTemplateVO;
 import com.hyjj.hyjjservice.dataobject.ReportData;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 
@@ -72,4 +73,6 @@ public interface ReportTemplateMapper {
 
     @Update("UPDATE report_template SET head_html = #{head}, body_html = #{body}, tail_html = #{tail} WHERE title = #{name}")
     void upload(String name,String head, String body, String tail);
+
+    ReportTemplate getAllValueRowAndCol(Integer reportId);
 }

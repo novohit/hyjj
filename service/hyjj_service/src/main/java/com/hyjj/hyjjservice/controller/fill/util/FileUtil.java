@@ -3,7 +3,9 @@ package com.hyjj.hyjjservice.controller.fill.util;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -117,5 +119,45 @@ public class FileUtil<E> {
             cells.add((E)getCellValue(excelValue));
         }
         return cells;
+    }
+
+    public void setExcelValue(ReportTemplate reportTemplate,String[] values,String filename,HttpServletResponse res) throws Exception{
+        int i = 0;
+        String[] rowStringArray = reportTemplate.getAllValueRow().split(",");
+        String[] colStringArray = reportTemplate.getAllValueCol().split(",");
+        int[] rowArray = new int[rowStringArray.length];
+        System.out.println(rowArray.length);
+
+        int[] colArray = new int[colStringArray.length];
+        System.out.println(colArray.length);
+
+        for (String s : colStringArray) {
+            colArray[i] = Integer.parseInt(s);
+            i++;
+        }
+        i = 0;
+        for (String s : rowStringArray) {
+            rowArray[i] = Integer.parseInt(s);
+            i++;
+        }
+        filename = filename + ".xlsx";
+        System.out.println(filename);
+        XSSFWorkbook workbook = new XSSFWorkbook(pathName + filename);
+        System.out.println(workbook);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+        System.out.println(sheet);
+        for (int j = 0; j < rowArray.length; j++) {
+            try {
+                XSSFRow row = sheet.getRow(rowArray[j]);
+                XSSFCell cell = row.getCell(colArray[j]);
+                cell.setCellValue(values[j]);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        res.setContentType("application/octet-stream");
+        res.setHeader("content-disposition", "attachment;filename=" + filename);
+        res.setHeader("filename", filename);
+        workbook.write(res.getOutputStream());
     }
 }

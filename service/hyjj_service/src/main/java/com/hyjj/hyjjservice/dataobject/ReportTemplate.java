@@ -700,4 +700,23 @@ public class ReportTemplate {
     public void setDataCol(String dataCol) {
         this.dataCol = dataCol;
     }
+
+    private String allValueRow;
+    private String allValueCol;
+
+    public String getAllValueRow() {
+        return allValueRow;
+    }
+
+    public void setAllValueRow(String allValueRow) {
+        this.allValueRow = allValueRow;
+    }
+
+    public String getAllValueCol() {
+        return allValueCol;
+    }
+
+    public void setAllValueCol(String allValueCol) {
+        this.allValueCol = allValueCol;
+    }
 }

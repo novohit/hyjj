@@ -35,6 +35,9 @@ public class AuditServiceImpl implements AuditService {
     @Autowired
     private ProcessMapper processMapper;
 
+    @Autowired
+    private ReportTemplateMapper reportTemplateMapper;
+
     private static final Character IS_SELECT = '1';
     private static final int INDUSTRY_NUMBER = 14;
     private static final int ALL_INDUSTRY_NUMBER = 35;
@@ -225,5 +228,10 @@ public class AuditServiceImpl implements AuditService {
     @Override
     public List<ComInfo> selectAllCompany() {
         return comInfoMapper.selectAllCompany();
+    }
+
+    @Override
+    public ReportTemplate getAllValueRowAndCol(Integer reportId) {
+        return reportTemplateMapper.getAllValueRowAndCol(reportId);
     }
 }

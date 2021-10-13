@@ -31,4 +31,5 @@ public interface AuditService {
      * @return
      */
     Integer getStatementSum(AuditVO auditVO, User user);
+    ReportTemplate getAllValueRowAndCol(Integer reportId);
 }

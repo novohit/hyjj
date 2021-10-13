@@ -396,4 +396,10 @@
   <select id="getRowAndColByTemplateId" resultType="com.hyjj.hyjjservice.dataobject.ReportTemplate">
     select `data_row`,data_col from report_template rt  where id = #{reportId}
   </select>
+
+  <select id="getAllValueRowAndCol" resultType="com.hyjj.hyjjservice.dataobject.ReportTemplate">
+    select rt.all_value_row,rt.all_value_col from report_template rt
+    inner join report_data rd on rd.report_template_id = rt.id
+    where rd.id = #{reportId}
+  </select>
 </mapper>

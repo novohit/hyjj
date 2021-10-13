@@ -1,20 +1,25 @@
 package com.hyjj.hyjjservice.controller.report;
 
 import com.hyjj.hyjjservice.annotation.GetUser;
+import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditVO;
 import com.hyjj.hyjjservice.controller.report.viewobject.Degital;
+import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.report.AuditService;
 import com.hyjj.util.responce.CommonReturnType;
+import com.sun.tools.corba.se.idl.InterfaceGen;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RestController
@@ -25,6 +30,9 @@ public class AuditController {
 
     @Autowired
     private AuditService auditService;
+
+    @Autowired
+    private FileUtil fileUtil;
 
     @Resource(name = "userThreadLocal")
     private ThreadLocal<User> threadLocal;
@@ -86,5 +94,20 @@ public class AuditController {
     @ApiOperation("获取单位信息")
     public CommonReturnType getCompany() {
         return CommonReturnType.ok().add("company", auditService.selectAllCompany());
+    }
+
+    @GetMapping("download")
+    public void download(@RequestParam String values,String filename, HttpServletResponse response,Integer reportId) throws Exception {
+
+        String[] split = values.split(",");
+
+        System.out.println(split.length);
+        System.out.println(filename);
+        System.out.println(values);
+        System.out.println(reportId);
+        ReportTemplate reportTemplate = auditService.getAllValueRowAndCol(reportId);
+        System.out.println(reportTemplate.getAllValueCol());
+        System.out.println(reportTemplate.getAllValueRow());
+        fileUtil.setExcelValue(reportTemplate,split,filename,response);
     }
 }
