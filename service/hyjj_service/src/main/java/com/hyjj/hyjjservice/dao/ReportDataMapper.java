@@ -91,7 +91,7 @@ public interface ReportDataMapper {
                                  @Param("processId") Long processId,
                                  @Param("proStatus") String proStatus,
                                  @Param("proStatusName") String proStatusName,
-                                 @Param("tailHtml") String tailHtml,
+
                                  @Param("isSave") Integer isSave);
 
 

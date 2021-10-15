@@ -513,7 +513,7 @@
             pro_status = #{proStatus,jdbcType=VARCHAR},
             pro_status_name = #{proStatusName,jdbcType=VARCHAR},
             process_id = #{processId,jdbcType=BIGINT},
-            tail_html = #{tailHtml}
+
         </set>
         where id = #{reportId}
     </update>

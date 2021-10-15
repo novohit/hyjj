@@ -3,7 +3,6 @@ package com.hyjj.hyjjservice.service.report.impl;
 import com.github.pagehelper.PageHelper;
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditReportVO;
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditVO;
-import com.hyjj.hyjjservice.controller.report.viewobject.Degital;
 import com.hyjj.hyjjservice.dao.*;
 import com.hyjj.hyjjservice.dataobject.*;
 import com.hyjj.hyjjservice.dataobject.Process;
@@ -21,6 +20,9 @@ import java.util.*;
 public class AuditServiceImpl implements AuditService {
 
     @Autowired
+    private ReportTemplateMapper reportTemplateMapper;
+
+    @Autowired
     private StrategyFactory strategyFactory;
 
     @Autowired
@@ -34,9 +36,6 @@ public class AuditServiceImpl implements AuditService {
 
     @Autowired
     private ProcessMapper processMapper;
-
-    @Autowired
-    private ReportTemplateMapper reportTemplateMapper;
 
     private static final Character IS_SELECT = '1';
     private static final int INDUSTRY_NUMBER = 14;
@@ -126,9 +125,10 @@ public class AuditServiceImpl implements AuditService {
 
 
     @Override
-    public String batchAuditReport(Map<Long, Degital> map, User user) {
+    public String batchAuditReport(Map<Long, Integer> map, User user) {
+        System.out.println(map);
         for (Long reportId : map.keySet()) {
-            auditReport(reportId, map.get(reportId).getJudge(), map.get(reportId).getTailHtml(), user);
+            auditReport(reportId, map.get(reportId), user);
         }
         return "audit success";
     }
@@ -189,7 +189,7 @@ public class AuditServiceImpl implements AuditService {
      * @return
      */
     @Override
-    public String auditReport(Long reportId, Integer judge, String tailHtml, User user) {
+    public String auditReport(Long reportId, Integer judge, User user) {
         //获取当前时间
         Date date = new Date();
         Integer isSave;
@@ -220,7 +220,7 @@ public class AuditServiceImpl implements AuditService {
             processMapper.updateByPrimaryKeySelective(process);
         }
 
-        reportDataMapper.updateProcessByReportId(reportId, process.getId(), process.getProcessName(), judge == 0 ? "2" : "3", tailHtml, isSave);
+        reportDataMapper.updateProcessByReportId(reportId, process.getId(), process.getProcessName(), judge == 0 ? "2" : "3", isSave);
 
         return "audit success";
     }
@@ -229,6 +229,7 @@ public class AuditServiceImpl implements AuditService {
     public List<ComInfo> selectAllCompany() {
         return comInfoMapper.selectAllCompany();
     }
+
 
     @Override
     public ReportTemplate getAllValueRowAndCol(Integer reportId) {

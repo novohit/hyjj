@@ -3,17 +3,14 @@ package com.hyjj.hyjjservice.controller.report;
 import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditVO;
-import com.hyjj.hyjjservice.controller.report.viewobject.Degital;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.report.AuditService;
 import com.hyjj.util.responce.CommonReturnType;
-import com.sun.tools.corba.se.idl.InterfaceGen;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +26,10 @@ import java.util.Map;
 public class AuditController {
 
     @Autowired
-    private AuditService auditService;
+    private FileUtil fileUtil;
 
     @Autowired
-    private FileUtil fileUtil;
+    private AuditService auditService;
 
     @Resource(name = "userThreadLocal")
     private ThreadLocal<User> threadLocal;
@@ -56,7 +53,7 @@ public class AuditController {
     @GetMapping("statementSum")
     @ApiOperation("查看总记录条数")
     @GetUser
-    public CommonReturnType getStatementSum(AuditVO auditVO) {
+    public CommonReturnType getStatementSum(AuditVO auditVO){
         User user = threadLocal.get();
         return CommonReturnType.ok().add("reportData", auditService.getStatementSum(auditVO, user));
     }
@@ -74,18 +71,17 @@ public class AuditController {
     @GetUser
     @ApiImplicitParams({
             @ApiImplicitParam(name = "reportId", value = "报表id", required = true, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "judge", value = "审核结果，0为不通过，1为通过", required = true, dataTypeClass = Integer.class),
-            @ApiImplicitParam(name = "tailHtml", value = "尾html")
+            @ApiImplicitParam(name = "judge", value = "审核结果，0为不通过，1为通过", required = true, dataTypeClass = Integer.class)
     })
-    public CommonReturnType auditReport(Long reportId, Integer judge, String tailHtml) {
+    public CommonReturnType auditReport(Long reportId, Integer judge) {
         User user = threadLocal.get();
-        return CommonReturnType.ok().add("result", auditService.auditReport(reportId, judge, tailHtml, user));
+        return CommonReturnType.ok().add("result", auditService.auditReport(reportId, judge, user));
     }
 
     @PutMapping("batchReport")
     @ApiOperation("批量审核报表")
     @GetUser
-    public CommonReturnType auditReport(@RequestBody Map<Long, Degital> map) {
+    public CommonReturnType auditReport(@RequestBody Map<Long,Integer> map) {
         User user = threadLocal.get();
         return CommonReturnType.ok().add("result", auditService.batchAuditReport(map, user));
     }
@@ -96,8 +92,9 @@ public class AuditController {
         return CommonReturnType.ok().add("company", auditService.selectAllCompany());
     }
 
+
     @GetMapping("download")
-    public void download(@RequestParam String values,String filename, HttpServletResponse response,Integer reportId) throws Exception {
+    public void download(@RequestParam String values, String filename, HttpServletResponse response, Integer reportId) throws Exception {
 
         String[] split = values.split(",");
 

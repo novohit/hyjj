@@ -2,7 +2,6 @@ package com.hyjj.hyjjservice.service.report;
 
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditReportVO;
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditVO;
-import com.hyjj.hyjjservice.controller.report.viewobject.Degital;
 import com.hyjj.hyjjservice.dataobject.*;
 import com.hyjj.util.error.BusinessException;
 
@@ -16,13 +15,13 @@ public interface AuditService {
 
     ReportData getDetailReport(Long reportId);
 
-    String auditReport(Long reportId, Integer judge,String tailHtml, User user);
+    String auditReport(Long reportId, Integer judge, User user);
 
     List<ComInfo> selectAllCompany();
 
     List<ReportData> getStatement(Integer select, User user, Boolean isManager, int pageNum, int pageSize);
 
-    String batchAuditReport(Map<Long, Degital> map, User user);
+    String batchAuditReport(Map<Long, Integer> map, User user);
 
     /**
      * 返回总记录数
@@ -31,5 +30,6 @@ public interface AuditService {
      * @return
      */
     Integer getStatementSum(AuditVO auditVO, User user);
+
     ReportTemplate getAllValueRowAndCol(Integer reportId);
 }
