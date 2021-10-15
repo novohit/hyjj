@@ -76,7 +76,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         }
         String name = companyInfoPo.getName();
         if (!StringUtils.isEmpty(name)) {
-            comInfoQueryPo.setCounty(name);
+            comInfoQueryPo.setName(name);
         }
         List<ComInfo> comInfos = comInfoMapper.selectByIndustryEtc(comInfoQueryPo);
 
