@@ -50,19 +50,25 @@ public class FillServiceImpl implements FillService {
 
     @Override
     public TableHeadInfo getTableHeadInfo(Long reportId) {
-        TableHeadInfo tableHeadInfo = comInfoMapper.getTableHeadInfo(reportId);
-        String organizationCode = tableHeadInfo.getOrganizationCode();
-        if(organizationCode != null){
-            tableHeadInfo.setCreditCode(organizationCode);
-        }
-        String creditCode = tableHeadInfo.getCreditCode();
+        try{
+            TableHeadInfo tableHeadInfo = comInfoMapper.getTableHeadInfo(reportId);
+            String organizationCode = tableHeadInfo.getOrganizationCode();
+            if(organizationCode != null){
+                tableHeadInfo.setCreditCode(organizationCode);
+            }
+            String creditCode = tableHeadInfo.getCreditCode();
 
-        if(creditCode != null && creditCode.length() == 18){
-            organizationCode = creditCode.substring(8,16);
-            tableHeadInfo.setOrganizationCode(organizationCode);
+            if(creditCode != null && creditCode.length() == 18){
+                organizationCode = creditCode.substring(8,16);
+                tableHeadInfo.setOrganizationCode(organizationCode);
 
+            }
+            return tableHeadInfo;
+
+        }catch (Exception e){
+            return null;
         }
-        return tableHeadInfo;
+
     }
 
     @Override

@@ -268,6 +268,9 @@ public class CompanyServiceImpl implements CompanyService {
             }
             ComInfo comInfo = new ComInfo();
             BeanUtils.copyProperties(companyVO,comInfo);
+            if(companyVO.getIndustryId()==14){
+                comInfo.setIndustryId(35);
+            }
             comInfo.setComAddressCounty(companyVO.getComAddressXian());
             comInfo.setGmtModified(new Date());
             comInfoMapper.updateByPrimaryKeySelective(comInfo);
@@ -306,7 +309,9 @@ public class CompanyServiceImpl implements CompanyService {
             comInfo.setId(id);
             comInfo.setGmtCreate(new Date());
             comInfo.setGmtModified(new Date());
-
+            if(companyVO.getIndustryId()==14){
+                comInfo.setIndustryId(35);
+            }
             comInfoMapper.insert(comInfo);
 
             ComInfoAppendix comInfoAppendix = new ComInfoAppendix();
