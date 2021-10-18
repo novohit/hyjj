@@ -73,9 +73,9 @@ public class AuditController {
             @ApiImplicitParam(name = "reportId", value = "报表id", required = true, dataTypeClass = Long.class),
             @ApiImplicitParam(name = "judge", value = "审核结果，0为不通过，1为通过", required = true, dataTypeClass = Integer.class)
     })
-    public CommonReturnType auditReport(Long reportId, Integer judge) {
+    public CommonReturnType auditReport(Long reportId, Integer judge, String tailHtml) {
         User user = threadLocal.get();
-        return CommonReturnType.ok().add("result", auditService.auditReport(reportId, judge, user));
+        return CommonReturnType.ok().add("result", auditService.auditReport(reportId, judge, tailHtml, user));
     }
 
     @PutMapping("batchReport")

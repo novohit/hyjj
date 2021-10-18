@@ -513,7 +513,9 @@
             pro_status = #{proStatus,jdbcType=VARCHAR},
             pro_status_name = #{proStatusName,jdbcType=VARCHAR},
             process_id = #{processId,jdbcType=BIGINT},
-
+            <if test="tailHtml != null">
+                tail_html = #{tailHtml,jdbcType=VARCHAR}
+            </if>
         </set>
         where id = #{reportId}
     </update>
@@ -548,6 +550,28 @@
         rd.`end_date`,rd.`submit_date`,rd.`pro_status`,rd.`pro_status_name`,rd.`process_id`,rd.`statistics_principal`,
         rd.`unit_principal`,rd.`org_code`,rd.`expire_date`,rd.`audit_id`,rd.`enterprise_name`,rd.`data_from`,
         rd.`enterprise`,rd.`begin_date`,rd.`fill_date`,rd.`number`,rd.`title`
+        FROM report_data rd
+        inner join process on rd.`process_id` = process.`id`
+        <where>
+            1 = 1
+            <if test="week != null">
+                and week(process.`update_time`) = #{week}
+            </if>
+            <if test="month != null">
+                and MONTH(process.`update_time`) = #{month}
+            </if>
+            <if test="audit != null">
+                and rd.`pro_status` like #{audit}
+            </if>
+            <if test="userId != null">
+                and rd.`user_id` = #{userId}
+            </if>
+        </where>
+        order by rd.`add_date` DESC
+    </select>
+
+    <select id="getStatementSum" resultType="java.lang.Integer">
+        SELECT count(*)
         FROM report_data rd
         inner join process on rd.`process_id` = process.`id`
         <where>

@@ -91,7 +91,7 @@ public interface ReportDataMapper {
                                  @Param("processId") Long processId,
                                  @Param("proStatus") String proStatus,
                                  @Param("proStatusName") String proStatusName,
-
+                                 @Param("tailHtml") String tailHtml,
                                  @Param("isSave") Integer isSave);
 
 
@@ -121,6 +121,11 @@ public interface ReportDataMapper {
                                   @Param("month") Integer month,
                                   @Param("audit") String audit,
                                   @Param("userId") Long userId);
+
+    Integer getStatementSum(@Param("week") Integer week,
+                            @Param("month") Integer month,
+                            @Param("audit") String audit,
+                            @Param("userId") Long userId);
 
     List<UrgeReportVO> selectByYearAndCompany(@Param("year") Integer years,
                                               @Param("company") String company);

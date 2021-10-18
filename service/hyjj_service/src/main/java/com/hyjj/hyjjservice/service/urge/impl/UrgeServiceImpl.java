@@ -13,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UrgeServiceImpl implements UrgeService {
@@ -89,5 +87,19 @@ public class UrgeServiceImpl implements UrgeService {
     @Override
     public Integer getUrgeSum(Integer year, String company) {
         return reportDataMapper.selectByYearAndCompanySum(year, "全部".equals(company) ? null : company);
+    }
+
+    @Override
+    public String urgeAll(User user,Integer year, String company) {
+        if ("全部".equals(company)) {
+            company = null;
+        }
+        List<UrgeReportVO> urgeReportVOS = reportDataMapper.selectByYearAndCompany(year, company);
+        Set<String> companies = new HashSet<>();
+        for (UrgeReportVO urgeReportVO : urgeReportVOS) {
+            companies.add(urgeReportVO.getFillUnit());
+        }
+        String urge = urge(user, new ArrayList<>(companies));
+        return urge;
     }
 }

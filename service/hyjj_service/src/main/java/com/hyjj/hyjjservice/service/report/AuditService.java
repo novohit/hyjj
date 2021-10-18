@@ -15,7 +15,7 @@ public interface AuditService {
 
     ReportData getDetailReport(Long reportId);
 
-    String auditReport(Long reportId, Integer judge, User user);
+    String auditReport(Long reportId, Integer judge,String tailHtml, User user);
 
     List<ComInfo> selectAllCompany();
 
@@ -32,4 +32,6 @@ public interface AuditService {
     Integer getStatementSum(AuditVO auditVO, User user);
 
     ReportTemplate getAllValueRowAndCol(Integer reportId);
+
+    Integer getStatementSum(Integer select, User user, Boolean isManager);
 }

@@ -40,4 +40,6 @@ public interface UrgeService {
      * @return
      */
     Integer getUrgeSum(Integer year, String company);
+
+    String urgeAll(User user,Integer year, String company);
 }

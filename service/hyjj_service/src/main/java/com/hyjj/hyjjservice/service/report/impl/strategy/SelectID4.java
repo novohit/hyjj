@@ -20,4 +20,9 @@ public class SelectID4 implements GetStatementStrategy{
     public List<ReportData> getStatement(String audit, Long userId) {
         return reportDataMapper.getStatement(null, null, "审核%", userId);
     }
+
+    @Override
+    public Integer getStatementSum(String audit, Long userId) {
+        return reportDataMapper.getStatementSum(null, null, "审核%", userId);
+    }
 }

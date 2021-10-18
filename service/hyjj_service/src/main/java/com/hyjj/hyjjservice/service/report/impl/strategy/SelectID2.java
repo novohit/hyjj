@@ -23,7 +23,7 @@ public class SelectID2 implements GetStatementStrategy{
 
     @Override
     public List<ReportData> getStatement(String audit, Long userId) {
-        int i = g.get(Calendar.MONTH);
+        int i = g.get(Calendar.MONTH)+1;
         List<ReportData> list = new ArrayList<>();
         switch (i){
             case 1:
@@ -58,5 +58,43 @@ public class SelectID2 implements GetStatementStrategy{
 
         }
 
+    }
+
+    @Override
+    public Integer getStatementSum(String audit, Long userId) {
+        int i = g.get(Calendar.MONTH);
+        List<ReportData> list = new ArrayList<>();
+        int sum = 0;
+        switch (i){
+            case 1:
+            case 2:
+            case 3:
+                sum += reportDataMapper.getStatementSum(null, 1, "审核%", userId);
+                sum += reportDataMapper.getStatementSum(null, 2, "审核%", userId);
+                sum += reportDataMapper.getStatementSum(null, 3, "审核%", userId);
+                return sum;
+            case 4:
+            case 5:
+            case 6:
+                sum += reportDataMapper.getStatementSum(null, 4, "审核%", userId);
+                sum += reportDataMapper.getStatementSum(null, 5, "审核%", userId);
+                sum += reportDataMapper.getStatementSum(null, 6, "审核%", userId);
+                return sum;
+            case 7:
+            case 8:
+            case 9:
+                sum += reportDataMapper.getStatementSum(null, 7, "审核%", userId);
+                sum += reportDataMapper.getStatementSum(null, 8, "审核%", userId);
+                sum += reportDataMapper.getStatementSum(null, 9, "审核%", userId);
+                return sum;
+            case 10:
+            case 11:
+            case 12:
+                sum += reportDataMapper.getStatementSum(null, 10, "审核%", userId);
+                sum += reportDataMapper.getStatementSum(null, 11, "审核%", userId);
+                sum += reportDataMapper.getStatementSum(null, 12, "审核%", userId);
+                return sum;
+            default: return 0;
+        }
     }
 }

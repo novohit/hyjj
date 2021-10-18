@@ -69,6 +69,13 @@ public class UrgeController {
         return CommonReturnType.ok().add("status", urgeService.urge(threadLocal.get(), company));
     }
 
+    @PostMapping("urgeAll")
+    @ApiOperation("一键催办")
+    @GetUser
+    public CommonReturnType urgeAll(Integer year, String company) {
+        return CommonReturnType.ok().add("status", urgeService.urgeAll(threadLocal.get(),year, company));
+    }
+
     @GetMapping("urgeStatus")
     @ApiOperation("查看有没有被催办")
     @GetUser
@@ -84,7 +91,7 @@ public class UrgeController {
     //隐藏功能
     @GetMapping("update")
     public CommonReturnType upload() {
-        List<String> file = TemplateId1.getAllFile("D:\\WeChat Files\\wxid_173poa14wlvf22\\FileStorage\\File\\2021-08\\html", false);
+        List<String> file = TemplateId1.getAllFile("D:\\WeChat Files\\wxid_173poa14wlvf22\\FileStorage\\File\\2021-10\\html", false);
 
         for (String s : file) {
             String[] strings = TemplateId1.readFileByChars(s).split("asdfghjkl");

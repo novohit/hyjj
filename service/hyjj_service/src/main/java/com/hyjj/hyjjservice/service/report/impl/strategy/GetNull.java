@@ -12,4 +12,9 @@ public class GetNull implements GetStatementStrategy{
     public List<ReportData> getStatement(String audit, Long userId) {
         return null;
     }
+
+    @Override
+    public Integer getStatementSum(String audit, Long userId) {
+        return 0;
+    }
 }

@@ -1,6 +1,7 @@
 package com.hyjj.hyjjservice.service.report.impl.factory;
 
 import com.hyjj.hyjjservice.dao.ReportDataMapper;
+import com.hyjj.hyjjservice.service.report.AuditService;
 import com.hyjj.hyjjservice.service.report.impl.strategy.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -54,6 +54,15 @@ public class IndexController {
                 : CommonReturnType.ok().add("reports", auditService.getStatement(1, user, true, pageNum, pageSize));
     }
 
+    @ApiOperation(value = "获取当前用户待审核/填报列表")
+    @GetMapping("waitToAuditSum")
+    @GetUser
+    public CommonReturnType checkPendingOrFillSum() {
+        User user = threadLocal.get();
+        return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatementSum(1, user, false))
+                : CommonReturnType.ok().add("reports", auditService.getStatementSum(1, user, true));
+    }
+
     /**
      * 这里的功能原来是本周已填报/审核，但是甲方要求改成本季度。。。所以函数名就懒得改了
      * @param pageNum
@@ -71,6 +80,15 @@ public class IndexController {
                 : CommonReturnType.ok().add("reports", auditService.getStatement(2, user, true, pageNum, pageSize));
     }
 
+    @ApiOperation(value = "获取当前用户本周已审核/填报列表")
+    @GetMapping("alreadyAuditInWeekSum")
+    @GetUser
+    public CommonReturnType alreadyAuditOrFillInWeekSum() {
+        User user = threadLocal.get();
+        return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatementSum(2, user, false))
+                : CommonReturnType.ok().add("reports", auditService.getStatementSum(2, user, true));
+    }
+
     @ApiOperation(value = "获取当前用户本月已审核/填报列表")
     @GetMapping("alreadyAuditInMonth")
     @GetUser
@@ -82,6 +100,15 @@ public class IndexController {
                 : CommonReturnType.ok().add("reports", auditService.getStatement(3, user, true, pageNum, pageSize));
     }
 
+    @ApiOperation(value = "获取当前用户本月已审核/填报列表")
+    @GetMapping("alreadyAuditInMonthSum")
+    @GetUser
+    public CommonReturnType alreadyAuditOrFillInMonthSum() {
+        User user = threadLocal.get();
+        return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatementSum(3, user, false))
+                : CommonReturnType.ok().add("reports", auditService.getStatementSum(3, user, true));
+    }
+
     @ApiOperation(value = "获取当前用户累计审核/填报列表")
     @GetMapping("alreadyAuditTotal")
     @GetUser
@@ -91,6 +118,15 @@ public class IndexController {
         User user = threadLocal.get();
         return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatement(4, user, false, pageNum, pageSize))
                 : CommonReturnType.ok().add("reports", auditService.getStatement(4, user, true, pageNum, pageSize));
+    }
+
+    @ApiOperation(value = "获取当前用户累计审核/填报列表")
+    @GetMapping("alreadyAuditTotalSum")
+    @GetUser
+    public CommonReturnType alreadyAuditOrFillTotalSum() {
+        User user = threadLocal.get();
+        return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatementSum(4, user, false))
+                : CommonReturnType.ok().add("reports", auditService.getStatementSum(4, user, true));
     }
 
     public Boolean checkUser(User user) {

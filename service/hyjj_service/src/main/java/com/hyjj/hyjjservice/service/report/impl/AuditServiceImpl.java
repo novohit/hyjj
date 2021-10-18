@@ -65,6 +65,17 @@ public class AuditServiceImpl implements AuditService {
     }
 
     @Override
+    public Integer getStatementSum(Integer select, User user, Boolean isManager) {
+        String audit = "填报数据";
+        Long userId = user.getId();
+        if (isManager) {
+            audit = "审核数据";
+            userId = null;
+        }
+        return strategyFactory.getStatementStrategy(select).getStatementSum(audit, userId);
+    }
+
+    @Override
     public List<AuditReportVO> getStatement(AuditVO auditVO, User user, int pageNum, int pageSize) throws BusinessException {
 
         PageHelper.startPage(pageNum, pageSize);
@@ -128,7 +139,7 @@ public class AuditServiceImpl implements AuditService {
     public String batchAuditReport(Map<Long, Integer> map, User user) {
         System.out.println(map);
         for (Long reportId : map.keySet()) {
-            auditReport(reportId, map.get(reportId), user);
+            auditReport(reportId, map.get(reportId),null ,user);
         }
         return "audit success";
     }
@@ -189,7 +200,7 @@ public class AuditServiceImpl implements AuditService {
      * @return
      */
     @Override
-    public String auditReport(Long reportId, Integer judge, User user) {
+    public String auditReport(Long reportId, Integer judge,String tailHtml, User user) {
         //获取当前时间
         Date date = new Date();
         Integer isSave;
@@ -220,7 +231,7 @@ public class AuditServiceImpl implements AuditService {
             processMapper.updateByPrimaryKeySelective(process);
         }
 
-        reportDataMapper.updateProcessByReportId(reportId, process.getId(), process.getProcessName(), judge == 0 ? "2" : "3", isSave);
+        reportDataMapper.updateProcessByReportId(reportId, process.getId(), process.getProcessName(), judge == 0 ? "2" : "3",tailHtml ,isSave);
 
         return "audit success";
     }

@@ -24,4 +24,9 @@ public class SelectID3 implements GetStatementStrategy{
     public List<ReportData> getStatement(String audit, Long userId) {
         return reportDataMapper.getStatement(null, g.get(Calendar.MONTH) + 1, "审核%", userId);
     }
+
+    @Override
+    public Integer getStatementSum(String audit, Long userId) {
+        return reportDataMapper.getStatementSum(null, g.get(Calendar.MONTH) + 1, "审核%", userId);
+    }
 }
