@@ -2,6 +2,7 @@ package com.hyjj.hyjjservice.controller.report;
 
 import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.controller.fill.util.FileUtil;
+import com.hyjj.hyjjservice.controller.report.viewobject.AuditDto;
 import com.hyjj.hyjjservice.controller.report.viewobject.AuditVO;
 import com.hyjj.hyjjservice.dataobject.ReportTemplate;
 import com.hyjj.hyjjservice.dataobject.User;
@@ -73,9 +74,9 @@ public class AuditController {
             @ApiImplicitParam(name = "reportId", value = "报表id", required = true, dataTypeClass = Long.class),
             @ApiImplicitParam(name = "judge", value = "审核结果，0为不通过，1为通过", required = true, dataTypeClass = Integer.class)
     })
-    public CommonReturnType auditReport(Long reportId, Integer judge, String tailHtml) {
+    public CommonReturnType auditReport(@RequestBody AuditDto auditDto) {
         User user = threadLocal.get();
-        return CommonReturnType.ok().add("result", auditService.auditReport(reportId, judge, tailHtml, user));
+        return CommonReturnType.ok().add("result", auditService.auditReport(auditDto.getReportId(), auditDto.getJudge(), auditDto.getTailHtml(), user));
     }
 
     @PutMapping("batchReport")
