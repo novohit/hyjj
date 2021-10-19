@@ -237,8 +237,9 @@
 
   <select id="getUrgeData" resultMap="BaseResultMap">
     SELECT ud.*
-    FROM USER u JOIN cominfo c ON u.`cominfo_id` = c.`id` JOIN urge_data ud ON ud.`accept_group` = c.`com_name`
+    FROM user u JOIN cominfo c ON u.`cominfo_id` = c.`id` JOIN urge_data ud ON ud.`accept_group` = c.`com_name`
     WHERE u.`id` = #{userId}
+    and ud.is_read = 0
   </select>
 
   <update id="updateByPrimaryKeysSelective">

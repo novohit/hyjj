@@ -62,8 +62,7 @@ public class SelectID2 implements GetStatementStrategy{
 
     @Override
     public Integer getStatementSum(String audit, Long userId) {
-        int i = g.get(Calendar.MONTH);
-        List<ReportData> list = new ArrayList<>();
+        int i = g.get(Calendar.MONTH) + 1;
         int sum = 0;
         switch (i){
             case 1:
