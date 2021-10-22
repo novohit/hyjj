@@ -71,7 +71,7 @@ public class UrgeServiceImpl implements UrgeService {
         List<Long> ids = new ArrayList<>();
         for (UrgeData urgeDatum : urgeData)
             ids.add(urgeDatum.getId());
-        urgeDataMapper.updateByPrimaryKeysSelective(ids);
+        if(ids.size() != 0) urgeDataMapper.updateByPrimaryKeysSelective(ids);
         return urgeData;
     }
 

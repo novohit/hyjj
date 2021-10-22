@@ -22,6 +22,8 @@ public class AddTargetStrategyFactory implements InitializingBean {
     @Autowired
     TemplateId11 templateId11;
     @Autowired
+    TemplateId12 templateId12;
+    @Autowired
     TemplateId13 templateId13;
     @Autowired
     TemplateId14 templateId14;
@@ -72,6 +74,7 @@ public class AddTargetStrategyFactory implements InitializingBean {
         map.put(9L, templateId9);
         map.put(10L, templateId10);
         map.put(11L, templateId11);
+        map.put(12L, templateId12);
         map.put(13L, templateId13);
         map.put(14L, templateId14);
         map.put(16L, templateId16);

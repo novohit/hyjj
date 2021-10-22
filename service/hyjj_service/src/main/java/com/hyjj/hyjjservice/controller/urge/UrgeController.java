@@ -24,7 +24,6 @@ import java.util.List;
 @RestController
 @RequestMapping("urge")
 @Api("催办相关的接口")
-@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
 public class UrgeController {
 
     @Resource(name = "userThreadLocal")
@@ -83,9 +82,9 @@ public class UrgeController {
         List<UrgeData> urgeData = urgeService.urgeStatus(threadLocal.get().getId());
         List<UrgeVO> urgeVOList = new ArrayList<>();
         for (UrgeData urgeDatum : urgeData) {
-            urgeVOList.add(new UrgeVO(urgeDatum.getSendUser(), urgeDatum.getSendGroup()));
+            urgeVOList.add(new UrgeVO(urgeDatum.getId(), urgeDatum.getSendUser(), urgeDatum.getSendGroup()));
         }
-        return CommonReturnType.ok().add("urgeStatus", urgeVOList);
+        return CommonReturnType.ok().add("urgeStatus", urgeVOList.size() == 0 ? "没有催办状态" : urgeVOList);
     }
 
     //隐藏功能

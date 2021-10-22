@@ -44,9 +44,14 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("company")
@@ -127,6 +132,26 @@ public class CompanyController {
         return CommonReturnType.ok().add("analyseData", res);
     }
 
+    public static void main(String[] args) throws IOException {
+        String fileName = "D:\\WeChat Files\\wxid_173poa14wlvf22\\FileStorage\\File\\2021-10\\系统导入数据.txt";
+
+        // 读取文件内容到Stream流中，按行读取
+        Stream<String> lines = Files.lines(Paths.get(fileName));
+        Map<String, Integer> map = new HashMap<>(15);
+
+
+        // 随机行顺序进行数据处理
+        CompanyVO companyVO = new CompanyVO();
+        lines.forEach(ele -> {
+            String[] strings = ele.split("\t");
+            companyVO.setComName(strings[1]);
+            companyVO.setComCode(strings[2]);
+            companyVO.setComComtype(strings[3]);
+            companyVO.setIndustryId(100);
+            System.out.println(strings[7]);
+            System.out.println(ele);
+        });
+    }
 
     @PostMapping
     @ApiOperation("添加企业")

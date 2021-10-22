@@ -14,14 +14,6 @@ import java.util.List;
  */
 @Component
 public class TemplateId12 extends AbstractTargetTemplate {
-    @Autowired
-    private TargetKeyValueMapper targetKeyValueMapper;
-
-    @Autowired
-    private TargetValueMapper targetValueMapper;
-
-    @Autowired
-    private StatisticService statisticService;
 
     @Override
     public Integer changeValue(Long reportDataId, List<Double> data) {
@@ -30,6 +22,6 @@ public class TemplateId12 extends AbstractTargetTemplate {
 
     @Override
     public Boolean formulaVerification(List<Double> data) {
-        return data.get(0) > data.get(1);
+        return data.get(0) >= data.get(1);
     }
 }
