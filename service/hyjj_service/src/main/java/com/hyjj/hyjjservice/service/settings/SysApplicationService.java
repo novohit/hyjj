@@ -9,8 +9,13 @@ import com.hyjj.hyjjservice.controller.settings.viewObject.ReportNameAndIdVO;
 import java.util.List;
 
 public interface SysApplicationService {
+
+
     List<UserInfoVO> getUserInfoList(UserInfoVO userInfoVO, Integer pageNum, Integer pageSize);
     int getUserInfoListSum(UserInfoVO userInfoVO);
+
+    List<UserInfoVO> getDeleteUserInfoList(Integer pageNum, Integer pageSize);
+    int getDeleteUserInfoListSum();
 
     User getUserDetail(Long id);
     int updateUserInfo(User user);
@@ -21,4 +26,7 @@ public interface SysApplicationService {
     boolean enableUser(Long id);
     boolean batchUpload(UploadVO uploadVOS);
     List<ReportNameAndIdVO> getReportInfo();
+
+    List<ComInfo> searchNotUseCom(String comName);
+
 }

@@ -333,6 +333,7 @@
     <if test="name != null">
       where com_name like concat('%',#{name},'%')
     </if>
+    order by CONVERT( com_name USING gbk ) COLLATE gbk_chinese_ci ASC
   </select>
   <select id="getCompanyNameListSum" resultType="java.lang.Integer">
     select count(*) from cominfo
@@ -343,7 +344,7 @@
   <select id="getNotUsedCompanyList" resultMap="BaseResultMap">
     select cominfo.id, cominfo.com_name from cominfo
 
-    where (select count(*) from user_role where id = cominfo.id) = 0
+    where (select count(*) from user_role where id = cominfo.id) = 0 order by CONVERT( cominfo.com_name USING gbk ) COLLATE gbk_chinese_ci ASC
   </select>
 
   <select id="getTableHeadInfo" resultType="com.hyjj.hyjjservice.controller.fill.viewObject.TableHeadInfo">
@@ -356,5 +357,15 @@
 
   <select id="getCompanyList" resultType="com.hyjj.hyjjservice.controller.company.viewObject.CompanyInfo">
     SELECT c.id, c.com_name, i.`name` FROM cominfo c LEFT JOIN industry i ON c.`industry_id` = i.`id` where c.id = #{id};
+  </select>
+
+  <select id="searchCompanyList" resultMap="BaseResultMap">
+    select cominfo.id, cominfo.com_name from cominfo
+
+    where (select count(*) from user_role where id = cominfo.id) = 0 and cominfo.com_name like concat('%',#{comName},'%')
+  </select>
+
+  <select id="judgeComCode" resultType="java.lang.Integer">
+    select count(*) from cominfo where com_code = #{comCode}
   </select>
 </mapper>

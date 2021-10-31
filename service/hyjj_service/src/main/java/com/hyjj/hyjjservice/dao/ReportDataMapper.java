@@ -186,7 +186,7 @@ public interface ReportDataMapper {
                                             @Param("statue") String statue,
                                             @Param("year") String year,
                                             @Param("nextYear") String nextYear);
-    Integer judgeIfExists(Long id,String date);
+    Integer judgeIfExists(Long id,String date,Integer rtId);
 
     Integer getReportTemplateIdByReportId(Integer id);
     ReportDataHtml selectLastYearReport(Long userId,Long reportTemplateId,Integer year,Integer month);

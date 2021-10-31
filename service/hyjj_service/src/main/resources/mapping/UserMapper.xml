@@ -256,6 +256,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.hyjj.hyjjservice.dataobject.User">
     <!--
       WARNING - @mbg.generated
@@ -281,17 +282,12 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
+
   <select id="selectUserInfoList" resultMap="userInfo">
-    select u.id,u.account,u.name,u.statue,ci.com_name,r.name "roleName" from
+    select u.id,u.account,u.name,u.statue,ci.com_name,u.user_type "roleName" from
     ((user u inner join cominfo ci on u.cominfo_id = ci.id)inner join user_role ur on u.cominfo_id = ur.id)
-    inner join role r on ur.role_id = r.id
+
     where 1 = 1
-    <if test="obj.statue == 'deleted'">
-        and statue = "已删除"
-    </if>
-    <if test="obj.statue == null">
-      and statue != "已删除"
-    </if>
     <if test="obj.accountName != null">
       and u.account like concat('%',#{obj.accountName},'%')
     </if>
@@ -301,27 +297,26 @@
     <if test="obj.comName != null">
       and ci.com_name like concat('%',#{obj.comName},'%')
     </if>
-    <if test="obj.roleName != null">
-      and r.name = #{obj.roleName}
+    <if test="obj.roleName != '不限'">
+      and u.user_type = #{obj.roleName}
     </if>
-    <if test="obj.statue == '正常'">
-      and u.statue = "正常"
+    <if test="obj.statue != '不限'">
+      and u.statue = #{obj.statue}
     </if>
-    <if test="obj.statue == '禁用'">
-      and u.statue = "禁用"
-    </if>
+    and u.statue != "已删除"
   </select>
+
+  <select id="selectDeleteUserInfoList" resultMap="userInfo">
+    select u.id,u.account,u.name,u.statue,ci.com_name,r.name "roleName" from
+    ((user u inner join cominfo ci on u.cominfo_id = ci.id)inner join user_role ur on u.cominfo_id = ur.id)
+    where u.statue = "已删除"
+  </select>
+
   <select id="selectUserInfoListSum" resultType="java.lang.Integer">
     select count(*) from
     ((user u inner join cominfo ci on u.cominfo_id = ci.id)inner join user_role ur on u.cominfo_id = ur.id)
-    inner join role r on ur.role_id = r.id
+    inner join `role` r on ur.role_id = r.id
     where 1 = 1
-    <if test="obj.statue == 'deleted'">
-      and statue = "已删除"
-    </if>
-    <if test="obj.statue == null">
-      and statue != "已删除"
-    </if>
     <if test="obj.accountName != null">
       and u.account like concat('%',#{obj.accountName},'%')
     </if>
@@ -331,16 +326,22 @@
     <if test="obj.comName != null">
       and ci.com_name like concat('%',#{obj.comName},'%')
     </if>
-    <if test="obj.roleName != null">
+    <if test="obj.roleName != '不限'">
       and r.name = #{obj.roleName}
     </if>
-    <if test="obj.statue == '正常'">
-      and u.statue = "正常"
+    <if test="obj.statue != '不限'">
+      and u.statue = #{obj.statue}
     </if>
-    <if test="obj.statue == '禁用'">
-      and u.statue = "禁用"
-    </if>
+    and u.statue != "已删除"
   </select>
+
+  <select id="selectDeleteUserInfoListSum" resultType="java.lang.Integer">
+    select count(*) from
+    ((user u inner join cominfo ci on u.cominfo_id = ci.id)inner join user_role ur on u.cominfo_id = ur.id)
+    inner join role r on ur.role_id = r.id
+    where u.statue = "已删除"
+  </select>
+
   <select id="selectByComInfoId" resultMap="BaseResultMap">
     <!--
       WARNING - @mbg.generated

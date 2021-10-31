@@ -95,4 +95,8 @@ public interface ComInfoMapper {
     List<Long> selectComInfoIds();
 
     CompanyInfo getCompanyList(@Param("id") Long id);
+
+    List<ComInfo> searchCompanyList(String comName);
+
+    int judgeComCode(String comCode);
 }

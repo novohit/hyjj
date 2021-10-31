@@ -106,6 +106,18 @@ public class SysApplicationServiceImpl implements SysApplicationService {
     }
 
     @Override
+    public List<UserInfoVO> getDeleteUserInfoList(Integer pageNum, Integer pageSize) {
+        Page Page = PageHelper.startPage(pageNum, pageSize == null ? 10 : pageSize);
+        List<UserInfoVO> userInfoVOS = userMapper.selectDeleteUserInfoList();
+        return userInfoVOS;
+    }
+
+    @Override
+    public int getDeleteUserInfoListSum() {
+        return userMapper.selectDeleteUserInfoListSum();
+    }
+
+    @Override
     public User getUserDetail(Long id){
         User user = userMapper.selectByPrimaryKey(id);
         return user;
@@ -182,6 +194,11 @@ public class SysApplicationServiceImpl implements SysApplicationService {
 
     }
 
+
+    @Override
+    public List<ComInfo> searchNotUseCom(String comName) {
+        return comInfoMapper.searchCompanyList(comName);
+    }
 
 
 }

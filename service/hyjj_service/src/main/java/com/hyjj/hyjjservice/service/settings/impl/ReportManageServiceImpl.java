@@ -207,14 +207,18 @@ public class ReportManageServiceImpl implements ReportManageService {
     @Override
     public boolean manualCreateReport(String endDate, Long id) throws Exception{
         User user = userMapper.selectByComInfoId(id);
+        List<Integer> integers = comFillReportMapper.selectReportTemplateId(id);
 
-        Integer tag = reportDataMapper.judgeIfExists(user.getId(),endDate);
-        if(tag!=0){
-            return false;
+        for (Integer integer : integers) {
+            Integer tag = reportDataMapper.judgeIfExists(user.getId(),endDate,integer);
+            if(tag!=0){
+                return false;
+            }
+            if(user == null){
+                return false;
+            }
         }
-        if(user == null){
-            return false;
-        }
+
         Date beginDate = new Date();
         ReportData reportData = new ReportData();
         Process process = new Process();
@@ -241,7 +245,6 @@ public class ReportManageServiceImpl implements ReportManageService {
         reportData.setFillPerson(user.getName());
         reportData.setIsSave(0);
         reportData.setUserId(user.getId());
-        List<Integer> integers = comFillReportMapper.selectReportTemplateId(id);
         if (integers.size() == 0){
             return false;
         }
@@ -303,21 +306,21 @@ public class ReportManageServiceImpl implements ReportManageService {
 
 
 
-    @Scheduled(cron = "0 0 0 1 * ?")
-    public void autoCreateReport() throws Exception{
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        List<Long> ids = comInfoMapper.selectComInfoIds();
-        for (Long id : ids) {
-            System.out.println(id);
-        }
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH,1);
-        for (Long id : ids) {
-            manualCreateReport(dateFormat.format(calendar.getTime()),id);
-        }
-
-    }
+//    @Scheduled(cron = "0 0 0 1 * ?")
+//    public void autoCreateReport() throws Exception{
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//
+//        List<Long> ids = comInfoMapper.selectComInfoIds();
+//        for (Long id : ids) {
+//            System.out.println(id);
+//        }
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.add(Calendar.MONTH,1);
+//        for (Long id : ids) {
+//            manualCreateReport(dateFormat.format(calendar.getTime()),id);
+//        }
+//
+//    }
 
     @Override
     public boolean oneKeyCreateReport(String endDate) throws Exception {

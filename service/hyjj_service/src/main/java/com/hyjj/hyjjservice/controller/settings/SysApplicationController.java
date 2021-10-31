@@ -29,9 +29,22 @@ public class SysApplicationController {
         List<UserInfoVO> userInfoList = sysApplicationService.getUserInfoList(userInfoVO, pageNum, pageSize);
         return CommonReturnType.ok().add("userInfoList", userInfoList);
     }
+
+    @GetMapping("deleteUserList")
+    public CommonReturnType getDeleteUserList(Integer pageNum, Integer pageSize) {
+        List<UserInfoVO> userInfoList = sysApplicationService.getDeleteUserInfoList(pageNum, pageSize);
+        return CommonReturnType.ok().add("userInfoList", userInfoList);
+    }
+
     @GetMapping("userListSum")
     public CommonReturnType getUserListSum(UserInfoVO userInfoVO) {
         int data = sysApplicationService.getUserInfoListSum(userInfoVO);
+        return CommonReturnType.ok().add("sum", data);
+    }
+
+    @GetMapping("deleteUserListSum")
+    public CommonReturnType getDeleteUserListSum() {
+        int data = sysApplicationService.getDeleteUserInfoListSum();
         return CommonReturnType.ok().add("sum", data);
     }
 
@@ -80,5 +93,10 @@ public class SysApplicationController {
     @GetMapping("reportInfo")
     public CommonReturnType reportInfo(){
         return CommonReturnType.ok().add("list",sysApplicationService.getReportInfo());
+    }
+
+    @GetMapping("searchCom")
+    public CommonReturnType searchCom(String comName){
+        return CommonReturnType.ok().add("list",sysApplicationService.searchNotUseCom(comName));
     }
 }

@@ -221,6 +221,11 @@ public class CompanyServiceImpl implements CompanyService {
             throw  new BusinessException(CommonReturnType.error());
         }
 
+        int tag = comInfoMapper.judgeComCode(companyVO.getComCode());
+        if (tag == 1){
+            return false;
+        }
+
         // 上传的文件将保存在项目运行目录下的 uploadFile 文件夹，
         //String realPath = request.getSession().getServletContext().getRealPath("/companyimage/");
         String realPath =  uploadUrl + "companyimage/";
