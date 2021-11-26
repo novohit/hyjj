@@ -28,6 +28,7 @@ public class TemplateId30 extends AbstractTargetTemplate {
         data.remove(1);
         data.remove(2);
         data.remove(3);
+        data.add(7, 0.0);
         List<StatisticsTargetKey> statisticTargetKey = statisticService.getStatisticTargetKey(146L);
         return addTargetValue(targetValueMapper, targetKeyValueMapper, reportDataId, data, statisticTargetKey);
     }

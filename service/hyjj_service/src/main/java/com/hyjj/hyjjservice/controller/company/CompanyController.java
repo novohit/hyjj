@@ -132,12 +132,26 @@ public class CompanyController {
         return CommonReturnType.ok().add("analyseData", res);
     }
 
-    public static void main(String[] args) throws IOException {
+    @GetMapping("update")
+    public CommonReturnType update(HttpServletRequest request) throws Exception {
         String fileName = "D:\\WeChat Files\\wxid_173poa14wlvf22\\FileStorage\\File\\2021-10\\系统导入数据.txt";
 
         // 读取文件内容到Stream流中，按行读取
         Stream<String> lines = Files.lines(Paths.get(fileName));
         Map<String, Integer> map = new HashMap<>(15);
+        map.put("海洋渔业",1);
+        map.put("海洋油气业",2);
+        map.put("海洋矿业",3);
+        map.put("海洋盐业",4);
+        map.put("海洋船舶工业",5);
+        map.put("海洋化工业",6);
+        map.put("海洋药物和生物制品业",7);
+        map.put("海洋工程建筑业",8);
+        map.put("海洋可再生能源利用业",9);
+        map.put("海水利用业",10);
+        map.put("海洋交通运输业",11);
+        map.put("海洋旅游业",12);
+        map.put("海洋工程装备业",13);
 
 
         // 随机行顺序进行数据处理
@@ -147,10 +161,19 @@ public class CompanyController {
             companyVO.setComName(strings[1]);
             companyVO.setComCode(strings[2]);
             companyVO.setComComtype(strings[3]);
-            companyVO.setIndustryId(100);
-            System.out.println(strings[7]);
-            System.out.println(ele);
+            //System.out.println(map.get(strings[4]));
+            companyVO.setIndustryId(map.containsKey(strings[4]) ? map.get(strings[4]) : 14);
+            companyVO.setComRegaddrXian(strings[5]);
+            companyVO.setComAddressXian(strings[6]);
+            companyVO.setComAddressXiang(strings[7]);
+            try {
+                addOrUpdateCompany(companyVO,1,request);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
+
+        return CommonReturnType.ok();
     }
 
     @PostMapping
@@ -193,7 +216,9 @@ public class CompanyController {
             //转换并设置单位类型
             String comType = comInfo.getComComtype();
             if (StringUtils.isNotEmpty(comType)) {
-                companyInfoVo.setComComtype(Comtype.getNameByOrdinal(comType));
+                if (comType.equals("0") || comType.equals("1") ||comType.equals("2") || comType.equals("3"))
+                    companyInfoVo.setComComtype(Comtype.getNameByOrdinal(comType));
+                else companyInfoVo.setComComtype(comType);
             }
 
             //转换并设置营业状态

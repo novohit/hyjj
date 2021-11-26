@@ -232,6 +232,81 @@ public class CompanyVO {
     @ApiModelProperty("填报人")
     private String comFillperson;
 
+    @Override
+    public String toString() {
+        return "CompanyVO{" +
+                "id=" + id +
+                ", comName='" + comName + '\'' +
+                ", comCode='" + comCode + '\'' +
+                ", comDelegate='" + comDelegate + '\'' +
+                ", comComtype='" + comComtype + '\'' +
+                ", comOrgtype='" + comOrgtype + '\'' +
+                ", image=" + image +
+                ", comImgurl='" + comImgurl + '\'' +
+                ", industryId=" + industryId +
+                ", comIndustrycode='" + comIndustrycode + '\'' +
+                ", bussiness=" + bussiness +
+                ", comRegtype='" + comRegtype + '\'' +
+                ", comBusinessstatus='" + comBusinessstatus + '\'' +
+                ", comCreateyear='" + comCreateyear + '\'' +
+                ", comCreatemonth='" + comCreatemonth + '\'' +
+                ", comStatisticsorg='" + comStatisticsorg + '\'' +
+                ", comRegaddrSheng='" + comRegaddrSheng + '\'' +
+                ", comRegaddrDi='" + comRegaddrDi + '\'' +
+                ", comRegaddrXian='" + comRegaddrXian + '\'' +
+                ", comRegaddrXiang='" + comRegaddrXiang + '\'' +
+                ", comRegaddrJie='" + comRegaddrJie + '\'' +
+                ", comRegaddrShe='" + comRegaddrShe + '\'' +
+                ", comRegaddr='" + comRegaddr + '\'' +
+                ", comRegareacode='" + comRegareacode + '\'' +
+                ", comFax='" + comFax + '\'' +
+                ", comEmail='" + comEmail + '\'' +
+                ", comHttp='" + comHttp + '\'' +
+                ", comZipcode='" + comZipcode + '\'' +
+                ", comOrglevelBus='" + comOrglevelBus + '\'' +
+                ", comRegcodeBus='" + comRegcodeBus + '\'' +
+                ", comOrglevelForm='" + comOrglevelForm + '\'' +
+                ", comRegcodeForm='" + comRegcodeForm + '\'' +
+                ", comOrglevelCivil='" + comOrglevelCivil + '\'' +
+                ", comRegcodeCivil='" + comRegcodeCivil + '\'' +
+                ", comOrglevelNattax='" + comOrglevelNattax + '\'' +
+                ", comRegcodeNattax='" + comRegcodeNattax + '\'' +
+                ", comOrglevelTax='" + comOrglevelTax + '\'' +
+                ", comRegcodeTax='" + comRegcodeTax + '\'' +
+                ", comOrglevelOth='" + comOrglevelOth + '\'' +
+                ", comRegcodeOth='" + comRegcodeOth + '\'' +
+                ", comStock='" + comStock + '\'' +
+                ", comSubrel='" + comSubrel + '\'' +
+                ", comImpaccclass='" + comImpaccclass + '\'' +
+                ", comIsimprule='" + comIsimprule + '\'' +
+                ", comComclass='" + comComclass + '\'' +
+                ", comDelcomcode='" + comDelcomcode + '\'' +
+                ", comDelcomname='" + comDelcomname + '\'' +
+                ", comDelcomaddr='" + comDelcomaddr + '\'' +
+                ", comDelcomareacode='" + comDelcomareacode + '\'' +
+                ", comIndustrycount=" + comIndustrycount +
+                ", comComscale='" + comComscale + '\'' +
+                ", comCitycode='" + comCitycode + '\'' +
+                ", comRegcitycode='" + comRegcitycode + '\'' +
+                ", comTelext='" + comTelext + '\'' +
+                ", comFaxext='" + comFaxext + '\'' +
+                ", comZone='" + comZone + '\'' +
+                ", comTel='" + comTel + '\'' +
+                ", comMobile='" + comMobile + '\'' +
+                ", comIndustrytype='" + comIndustrytype + '\'' +
+                ", comContacttel='" + comContacttel + '\'' +
+                ", comAddressSheng='" + comAddressSheng + '\'' +
+                ", comAddressDi='" + comAddressDi + '\'' +
+                ", comAddressXian='" + comAddressXian + '\'' +
+                ", comAddressXiang='" + comAddressXiang + '\'' +
+                ", comAddressJie='" + comAddressJie + '\'' +
+                ", comAddressShe='" + comAddressShe + '\'' +
+                ", comAddress='" + comAddress + '\'' +
+                ", comComprincipal='" + comComprincipal + '\'' +
+                ", comStaprincipal='" + comStaprincipal + '\'' +
+                ", comFillperson='" + comFillperson + '\'' +
+                '}';
+    }
 
     public String getComName() {
         return comName;

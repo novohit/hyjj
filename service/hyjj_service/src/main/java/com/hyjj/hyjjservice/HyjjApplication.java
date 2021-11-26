@@ -7,16 +7,14 @@ import org.springframework.context.annotation.ComponentScan;
 
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
-import org.springframework.stereotype.Component;
-
 
 @SpringBootApplication
 @EnableRedisHttpSession
 @EnableScheduling
 @ComponentScan("com.hyjj")
-@MapperScan(basePackages = {"com.hyjj.hyjjservice.dao","com.xfvape.uid"})
+@MapperScan(basePackages = {"com.hyjj.hyjjservice.dao", "com.xfvape.uid"})
 public class HyjjApplication {
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) {
         SpringApplication.run(HyjjApplication.class, args);
     }
 }

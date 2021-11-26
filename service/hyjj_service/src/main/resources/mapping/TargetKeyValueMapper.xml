@@ -149,7 +149,11 @@
         FROM target_key_value tkv
         INNER JOIN target_value tv ON tkv.`value_id` = tv.`id`
         INNER JOIN report_data rd ON tkv.`report_data_id` = rd.`id`
-        WHERE rd.`area_name` = #{areaName}
+        WHERE
+        1 = 1
+        <if test="areaName != '江门市'">
+            and rd.`area_name` = #{areaName}
+        </if>
         AND tkv.`target_key_id` = #{targetId}
         AND YEAR(rd.`submit_date`) IN
         <foreach collection="years" item="year" open="(" close=")" separator=",">

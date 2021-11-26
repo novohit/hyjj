@@ -25,7 +25,7 @@ public class TemplateId31 extends AbstractTargetTemplate {
 
     @Override
     public Integer changeValue(Long reportDataId, List<Double> data) {
-        List<StatisticsTargetKey> statisticTargetKey = statisticService.getStatisticTargetKey(145l);
+        List<StatisticsTargetKey> statisticTargetKey = statisticService.getStatisticTargetKey(145L);
         return addTargetValue(targetValueMapper, targetKeyValueMapper, reportDataId, data, statisticTargetKey);
     }
 }
