@@ -119,7 +119,8 @@ public class CompanyServiceImpl implements CompanyService {
             }
             res = comInfoMapper.countByByComType();
             for(CompanyAnalyseModel c : res){
-                c.setDataName(comTypeToName.get(Integer.valueOf(c.getDataName())));
+                if(c.getDataName().equals("0") || c.getDataName().equals("1") || c.getDataName().equals("2") || c.getDataName().equals("3"))
+                    c.setDataName(comTypeToName.get(Integer.valueOf(c.getDataName())));
             }
 
         }
