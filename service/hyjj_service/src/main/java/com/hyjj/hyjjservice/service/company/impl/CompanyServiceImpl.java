@@ -97,27 +97,15 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<CompanyAnalyseModel> getAnalyseData(Integer type) {
+    public List<CompanyAnalyseModel> getAnalyseData(Integer type, String dis) {
 
         List<CompanyAnalyseModel> res = null;
         if(type == 0){
-            res = (List<CompanyAnalyseModel>)redisUtil.get(IndustryAnalyseData_KEY);
-            if(res != null){
-                return res;
-            }
-            res = comInfoMapper.countByIndustry();
+            res = comInfoMapper.countByIndustry(dis);
         }else if(type == 1){
-            res = (List<CompanyAnalyseModel>)redisUtil.get(RegionAnalyseData_KEY);
-            if(res != null){
-                return res;
-            }
             res = comInfoMapper.countByRegion();
         }else if(type == 2){
-            res = (List<CompanyAnalyseModel>)redisUtil.get(ComTypeAnalyseData_KEY);
-            if(res != null){
-                return res;
-            }
-            res = comInfoMapper.countByByComType();
+            res = comInfoMapper.countByByComType(dis);
             for(CompanyAnalyseModel c : res){
                 if(c.getDataName().equals("0") || c.getDataName().equals("1") || c.getDataName().equals("2") || c.getDataName().equals("3"))
                     c.setDataName(comTypeToName.get(Integer.valueOf(c.getDataName())));
@@ -125,14 +113,6 @@ public class CompanyServiceImpl implements CompanyService {
 
         }
         getPercent(res);
-
-        if(type == 0){
-            redisUtil.set(IndustryAnalyseData_KEY,res);
-        }else if(type == 1){
-            redisUtil.set(RegionAnalyseData_KEY,res);
-        }else if(type == 2){
-            redisUtil.set(ComTypeAnalyseData_KEY,res);
-        }
         return res;
     }
 
@@ -193,7 +173,7 @@ public class CompanyServiceImpl implements CompanyService {
         }
         String name = companyInfoPo.getName();
         if (!StringUtils.isEmpty(name)) {
-            comInfoQueryPo.setCounty(name);
+            comInfoQueryPo.setCounty("%"+name+"%");
         }
 
         return comInfoMapper.selectCountCompany(comInfoQueryPo);

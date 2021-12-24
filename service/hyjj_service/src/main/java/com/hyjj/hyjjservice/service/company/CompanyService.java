@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface CompanyService {
 
-    List<CompanyAnalyseModel> getAnalyseData(Integer type);
+    List<CompanyAnalyseModel> getAnalyseData(Integer type, String dis);
     boolean addOrUpdateCompany(CompanyVO companyVO,Integer jude, HttpServletRequest request) throws BusinessException;
     //boolean update(CompanyVO companyVO, HttpServletRequest request);
     Long selectCountCompany(CompanyInfoPo queryPo);

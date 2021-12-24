@@ -270,6 +270,9 @@
         select
             i.name name, count(*) num
          from cominfo c join industry i on c.industry_id = i.id
+        <if test="dis != null">
+            where com_address_county = #{dis}
+        </if>
          group by  industry_id
   </select>
 
@@ -283,6 +286,9 @@
         select
             com_comtype , count(*) num
          from cominfo
+        <if test="dis != null">
+            where com_address_county = #{dis}
+        </if>
          group by  com_comtype
   </select>
 
@@ -305,7 +311,7 @@
         </foreach>
       </if>
       <if test="county != null">
-        and com_address_county = #{county}
+        and com_name like #{county}
       </if>
       <if test="name != null">
         and com_name like CONCAT('%', #{name}, '%')

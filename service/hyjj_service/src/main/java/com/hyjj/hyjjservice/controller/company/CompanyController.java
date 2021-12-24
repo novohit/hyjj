@@ -125,10 +125,8 @@ public class CompanyController {
 
     @GetMapping("analyse")
     @ApiOperation("分析企业信息")
-    public CommonReturnType analyseCompany(@ApiParam("分析的对象，例如所属行业 ，地区，单位类型 分别对应(0,1,2)") Integer type) {
-
-
-        List<CompanyAnalyseModel> res = companyService.getAnalyseData(type);
+    public CommonReturnType analyseCompany(@ApiParam("分析的对象，例如所属行业 ，地区，单位类型 分别对应(0,1,2)") Integer type, String dis) {
+        List<CompanyAnalyseModel> res = companyService.getAnalyseData(type, "江门市".equals(dis) ? null : dis);
         return CommonReturnType.ok().add("analyseData", res);
     }
 
@@ -256,7 +254,7 @@ public class CompanyController {
     }
 
 
-    @GetMapping("/sum")
+    @GetMapping("sum")
     @ApiOperation("查询企业总数，则分页总数为sum / 每页的大小（向上取整）")
     public CommonReturnType getCompanyCount(@Valid CompanyInfoPo companyInfoPo) {
         Long companyCounty = companyService.selectCountCompany(companyInfoPo);

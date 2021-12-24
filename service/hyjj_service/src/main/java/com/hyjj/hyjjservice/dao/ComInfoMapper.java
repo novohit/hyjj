@@ -68,9 +68,9 @@ public interface ComInfoMapper {
 
     List<CompanyAnalyseModel> countByRegion();
 
-    List<CompanyAnalyseModel> countByIndustry();
+    List<CompanyAnalyseModel> countByIndustry(@Param("dis") String dis);
 
-    List<CompanyAnalyseModel> countByByComType();
+    List<CompanyAnalyseModel> countByByComType(@Param("dis") String dis);
 
     /**
      * 查询所有单位信息
