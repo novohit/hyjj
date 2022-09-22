@@ -21,10 +21,8 @@ import javax.annotation.Resource;
 import javax.xml.crypto.Data;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ReportManageServiceImpl implements ReportManageService {
@@ -187,7 +185,8 @@ public class ReportManageServiceImpl implements ReportManageService {
     @Override
     public List<Gdp> searchGdpData(String district, String year,Integer pageNum,Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize==null?10:pageSize);
-        return gdpMapper.searchGdpData(district, year);
+        List<Gdp> gdpList = gdpMapper.searchGdpData(district, year);
+        return gdpList.stream().sorted(Comparator.comparing(Gdp::getYear)).collect(Collectors.toList());
     }
 
 
