@@ -2,7 +2,7 @@ package com.hyjj.util.error;
 
 import com.hyjj.util.responce.CommonReturnType;
 
-public class BusinessException extends Exception implements CommonError {
+public class BusinessException extends RuntimeException implements CommonError {
     private CommonReturnType commonReturnType;
     private CommonError commonError;
 
