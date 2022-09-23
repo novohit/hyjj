@@ -64,7 +64,7 @@ public interface ComInfoMapper {
      */
     int updateByPrimaryKey(ComInfo record);
 
-    Long selectCountCompany(ComInfoQueryPo queryPo);
+    Long selectCountCompany(@Param("po")ComInfoQueryPo queryPo);
 
     List<CompanyAnalyseModel> countByRegion();
 

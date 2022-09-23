@@ -298,23 +298,23 @@
     from cominfo inner join industry
     on cominfo.industry_id = industry.id
     <where>
-      <if test="comTypes != null">
+      <if test="po.comTypes != null">
         com_comtype in
-        <foreach collection="comTypes" open="(" close=")" separator=", " item="comType">
-          #{comType}
+        <foreach collection="po.comTypes" open="(" close=")" separator=", " item="comType">
+          #{po.comType}
         </foreach>
       </if>
-      <if test="industryIds != null">
+      <if test="po.industryIds != null">
         and industry_id in
-        <foreach collection="industryIds" open="(" close=")" separator=", " item="id">
+        <foreach collection="po.industryIds" open="(" close=")" separator=", " item="id">
           #{id}
         </foreach>
       </if>
-      <if test="county != null">
-        and com_name like #{county}
+      <if test='po.county != null and po.county != ""'>
+        and com_address_county like #{po.county}
       </if>
-      <if test="name != null">
-        and com_name like CONCAT('%', #{name}, '%')
+      <if test='po.name != null and po.name != ""'>
+        and com_name like CONCAT('%', #{po.name}, '%')
       </if>
     </where>
   </select>

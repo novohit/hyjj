@@ -174,7 +174,7 @@ public class CompanyServiceImpl implements CompanyService {
         }
         String name = companyInfoPo.getName();
         if (!StringUtils.isEmpty(name)) {
-            comInfoQueryPo.setCounty("%" + name + "%");
+            comInfoQueryPo.setName(name);
         }
 
         return comInfoMapper.selectCountCompany(comInfoQueryPo);
