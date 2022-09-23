@@ -188,6 +188,19 @@ public class CompanyController {
 
     }
 
+    @DeleteMapping("/delete/{id}")
+    @ApiOperation("删除企业")
+    public CommonReturnType deleteCompany(@PathVariable(name = "id") Long id) {
+
+        boolean res = companyService.deleteCompany(id);
+
+        if (!res) {
+            return CommonReturnType.error();
+        }
+        return CommonReturnType.ok();
+
+    }
+
 
     @GetMapping
     @ApiOperation("根据所属行业，单位类型，所属地区，企业名称等查询企业名录")

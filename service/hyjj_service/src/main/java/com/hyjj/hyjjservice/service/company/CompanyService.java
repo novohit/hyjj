@@ -22,4 +22,6 @@ public interface CompanyService {
     DeatailComInfoModel getDeatailComInfo(Long id);
 
     CompanyInfo getCompanyList(Long id);
+
+    boolean deleteCompany(Long id);
 }

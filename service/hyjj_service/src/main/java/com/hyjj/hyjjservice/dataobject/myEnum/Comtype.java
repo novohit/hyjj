@@ -3,9 +3,15 @@ package com.hyjj.hyjjservice.dataobject.myEnum;
 import org.apache.commons.lang.StringUtils;
 
 public enum Comtype {
+    /**
+     * 这里顺序不能调换
+     * 0: 单产业法人单位
+     * 1: 产业活动单位
+     * 2: 多产业法人单位
+     */
     SINGLE_INDUSTRY("单产业法人单位"),
-    MULTI_INDUSTRY("多产业法人单位"),
     INDUSTRY_ACTIVITY("产业活动单位"),
+    MULTI_INDUSTRY("多产业法人单位"),
     OTHER("其他");
     private final String name;
     private Comtype(String name) {

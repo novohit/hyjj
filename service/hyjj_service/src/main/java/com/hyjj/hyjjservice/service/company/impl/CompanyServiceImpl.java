@@ -359,6 +359,15 @@ public class CompanyServiceImpl implements CompanyService {
         return companyList;
     }
 
+    @Transactional
+    @Override
+    public boolean deleteCompany(Long id) {
+        int i = comInfoMapper.deleteByPrimaryKey(id);
+        int j = comInfoAppendixMapper.deleteByPrimaryKey(id);
+        businessMapper.deleteByComInfoId(id);
+        return i == j;
+    }
+
     private void getPercent(List<CompanyAnalyseModel> list){
         double count = 0;
         for(CompanyAnalyseModel c : list){

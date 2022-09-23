@@ -52,7 +52,10 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         bitmap = companyInfoPo.getIndustrys();
         for (int i = 0; i < bitmap.length(); i++) {
             char bit = bitmap.charAt(i);
-            if (bit == '1') {
+            // 其他放在最后一位 传入10001
+            if (bit == '1' && i == bitmap.length() - 1) {
+                industrys.add(10001);
+            } else if (bit == '1') {
                 industrys.add(i + 1);
             } else {
                 hasZero = true;

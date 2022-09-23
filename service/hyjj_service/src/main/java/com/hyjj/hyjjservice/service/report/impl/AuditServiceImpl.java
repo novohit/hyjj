@@ -45,7 +45,7 @@ public class AuditServiceImpl implements AuditService {
     public List<Industry> getIndustry() {
         List<Industry> industries = industryMapper.selectSomeIndustry();
         Industry industry = new Industry();
-        industry.setId(14);
+        industry.setId(10001);
         industry.setName("其他");
         industry.setGmtCreate(new Date());
         industries.add(industry);
