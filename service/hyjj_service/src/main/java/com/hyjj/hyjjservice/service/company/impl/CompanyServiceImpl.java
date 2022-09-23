@@ -69,7 +69,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     private static final String RegionAnalyseData_KEY = "analyseData:regionAnalyseData:";
 
-    private static HashMap<Integer,String> comTypeToName =new HashMap<>();
+    private static HashMap<Integer, String> comTypeToName = new HashMap<>();
 
     private static HashSet<String> countySet = new HashSet<>();
 
@@ -79,11 +79,11 @@ public class CompanyServiceImpl implements CompanyService {
     private String uploadUrl;
 
     @PostConstruct
-    private void init(){
+    private void init() {
         comTypeToName.put(0, Comtype.getNameByOrdinal(0));
-        comTypeToName.put(1,Comtype.getNameByOrdinal(1));
-        comTypeToName.put(2,Comtype.getNameByOrdinal(2));
-        comTypeToName.put(3,Comtype.getNameByOrdinal(3));
+        comTypeToName.put(1, Comtype.getNameByOrdinal(1));
+        comTypeToName.put(2, Comtype.getNameByOrdinal(2));
+        comTypeToName.put(3, Comtype.getNameByOrdinal(3));
 
         countySet.add("台山市");
         countySet.add("鹤山市");
@@ -100,14 +100,14 @@ public class CompanyServiceImpl implements CompanyService {
     public List<CompanyAnalyseModel> getAnalyseData(Integer type, String dis) {
 
         List<CompanyAnalyseModel> res = null;
-        if(type == 0){
+        if (type == 0) {
             res = comInfoMapper.countByIndustry(dis);
-        }else if(type == 1){
+        } else if (type == 1) {
             res = comInfoMapper.countByRegion();
-        }else if(type == 2){
+        } else if (type == 2) {
             res = comInfoMapper.countByByComType(dis);
-            for(CompanyAnalyseModel c : res){
-                if(c.getDataName().equals("0") || c.getDataName().equals("1") || c.getDataName().equals("2") || c.getDataName().equals("3"))
+            for (CompanyAnalyseModel c : res) {
+                if (c.getDataName().equals("0") || c.getDataName().equals("1") || c.getDataName().equals("2") || c.getDataName().equals("3"))
                     c.setDataName(comTypeToName.get(Integer.valueOf(c.getDataName())));
             }
 
@@ -115,7 +115,6 @@ public class CompanyServiceImpl implements CompanyService {
         getPercent(res);
         return res;
     }
-
 
 
     @Override
@@ -131,7 +130,9 @@ public class CompanyServiceImpl implements CompanyService {
         boolean hasZero = false;
         for (int i = 0; i < bitmap.length(); i++) {
             char bit = bitmap.charAt(i);
-            if (bit == '1') {
+            if (bit == '1' && i == bitmap.length() - 1) {
+                comTypes.add(10001);
+            } else if (bit == '1') {
                 comTypes.add(i);
             } else {
                 hasZero = true;
@@ -173,7 +174,7 @@ public class CompanyServiceImpl implements CompanyService {
         }
         String name = companyInfoPo.getName();
         if (!StringUtils.isEmpty(name)) {
-            comInfoQueryPo.setCounty("%"+name+"%");
+            comInfoQueryPo.setCounty("%" + name + "%");
         }
 
         return comInfoMapper.selectCountCompany(comInfoQueryPo);
@@ -181,36 +182,36 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @Transactional
-    public boolean addOrUpdateCompany(CompanyVO companyVO,Integer jude,HttpServletRequest request)  throws BusinessException{
-        if(validator.validate(companyVO).isHasErrors()){
-            throw  new BusinessException(CommonReturnType.error().setErrMsg(validator.validate(companyVO).getErrMsg()));
+    public boolean addOrUpdateCompany(CompanyVO companyVO, Integer jude, HttpServletRequest request) throws BusinessException {
+        if (validator.validate(companyVO).isHasErrors()) {
+            throw new BusinessException(CommonReturnType.error().setErrMsg(validator.validate(companyVO).getErrMsg()));
         }
 
-        if(!countySet.contains(companyVO.getComAddressXian()) || !countySet.contains(companyVO.getComRegaddrXian())){
+        if (!countySet.contains(companyVO.getComAddressXian()) || !countySet.contains(companyVO.getComRegaddrXian())) {
             logger.info("输入的县不合法");
-            throw  new BusinessException(CommonReturnType.error());
+            throw new BusinessException(CommonReturnType.error());
         }
 
-        if(companyVO.getComCreateyear() != null && !StringUtils.equals("",companyVO.getComCreateyear()) && (Integer.valueOf(companyVO.getComCreateyear()) < 0 || Integer.valueOf(companyVO.getComCreateyear()) - 1900 > new Date().getYear() )){
+        if (companyVO.getComCreateyear() != null && !StringUtils.equals("", companyVO.getComCreateyear()) && (Integer.valueOf(companyVO.getComCreateyear()) < 0 || Integer.valueOf(companyVO.getComCreateyear()) - 1900 > new Date().getYear())) {
             logger.info("输入的注册年不合法");
-            throw  new BusinessException(CommonReturnType.error());
+            throw new BusinessException(CommonReturnType.error());
         }
 
 
-        if(companyVO.getComCreatemonth() != null && !StringUtils.equals("",companyVO.getComCreatemonth()) && (Integer.valueOf(companyVO.getComCreatemonth()) < 0 || Integer.valueOf(companyVO.getComCreatemonth()) > 12)){
+        if (companyVO.getComCreatemonth() != null && !StringUtils.equals("", companyVO.getComCreatemonth()) && (Integer.valueOf(companyVO.getComCreatemonth()) < 0 || Integer.valueOf(companyVO.getComCreatemonth()) > 12)) {
             logger.info("输入的注册月不合法");
-            throw  new BusinessException(CommonReturnType.error());
+            throw new BusinessException(CommonReturnType.error());
         }
 
         int tag = comInfoMapper.judgeComCode(companyVO.getComCode());
         // 企业代码不能重复 如果是新增返回false 更新就继续
-        if (tag == 1 && jude != 0){
+        if (tag == 1 && jude != 0) {
             return false;
         }
 
         // 上传的文件将保存在项目运行目录下的 uploadFile 文件夹，
         //String realPath = request.getSession().getServletContext().getRealPath("/companyimage/");
-        String realPath =  uploadUrl + "companyimage/";
+        String realPath = uploadUrl + "companyimage/";
         System.out.println(realPath);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/");
 
@@ -223,12 +224,12 @@ public class CompanyServiceImpl implements CompanyService {
         }
         MultipartFile uploadFile = companyVO.getImage();
         String filePath = null;
-        if(uploadFile != null && !"".equals(uploadFile.getOriginalFilename())){
+        if (uploadFile != null && !"".equals(uploadFile.getOriginalFilename())) {
 
             // 对上传的文件重命名，避免文件重名
             String oldName = uploadFile.getOriginalFilename();
             String type = oldName.indexOf(".") != -1 ? oldName.substring(oldName.lastIndexOf(".") + 1, oldName.length()) : null;
-            if (!"GIF".equals(type.toUpperCase()) && !"PNG".equals(type.toUpperCase()) && !"JPG".equals(type.toUpperCase())&& !"PJP".equals(type.toUpperCase())&& !"PJPEG".equals(type.toUpperCase())&& !"JPEG".equals(type.toUpperCase())&& !"JFIF".equals(type.toUpperCase())) {
+            if (!"GIF".equals(type.toUpperCase()) && !"PNG".equals(type.toUpperCase()) && !"JPG".equals(type.toUpperCase()) && !"PJP".equals(type.toUpperCase()) && !"PJPEG".equals(type.toUpperCase()) && !"JPEG".equals(type.toUpperCase()) && !"JFIF".equals(type.toUpperCase())) {
                 throw new BusinessException(CommonReturnType.error(EmBusinessError.Image_Format_Error));
             }
             String newName = UUID.randomUUID().toString()
@@ -249,13 +250,13 @@ public class CompanyServiceImpl implements CompanyService {
             }
         }
         // jude为0表示更新，需要对id字段进行非空判断
-        if(jude == 0){
-            if(companyVO.getId() == null){
+        if (jude == 0) {
+            if (companyVO.getId() == null) {
                 throw new BusinessException(CommonReturnType.error(EmBusinessError.PARAMETER_VALIDATION_ERROR));
             }
             ComInfo comInfo = new ComInfo();
-            BeanUtils.copyProperties(companyVO,comInfo);
-            if(companyVO.getIndustryId()==14){
+            BeanUtils.copyProperties(companyVO, comInfo);
+            if (companyVO.getIndustryId() == 14) {
                 comInfo.setIndustryId(35);
             }
             comInfo.setComAddressCounty(companyVO.getComAddressXian());
@@ -263,17 +264,17 @@ public class CompanyServiceImpl implements CompanyService {
             comInfoMapper.updateByPrimaryKeySelective(comInfo);
 
             ComInfoAppendix comInfoAppendix = new ComInfoAppendix();
-            BeanUtils.copyProperties(companyVO,comInfoAppendix);
-            if(filePath != null){
+            BeanUtils.copyProperties(companyVO, comInfoAppendix);
+            if (filePath != null) {
                 comInfoAppendix.setComImgurl(filePath);
             }
             comInfoAppendix.setGmtModified(new Date());
             comInfoAppendixMapper.updateByPrimaryKeySelective(comInfoAppendix);
 
             businessMapper.deleteByComInfoId(comInfo.getId());
-            if(companyVO.getBussiness() != null && companyVO.getBussiness().size() != 0){
-                for(int i = 0 ;i < companyVO.getBussiness().size();i++){
-                    if(companyVO.getBussiness().get(i).equals("")){
+            if (companyVO.getBussiness() != null && companyVO.getBussiness().size() != 0) {
+                for (int i = 0; i < companyVO.getBussiness().size(); i++) {
+                    if (companyVO.getBussiness().get(i).equals("")) {
                         continue;
                     }
                     Business business = new Business();
@@ -286,32 +287,32 @@ public class CompanyServiceImpl implements CompanyService {
                 }
             }
             return true;
-        }else if(jude == 1){
+        } else if (jude == 1) {
             Long id = uidService.getUid();
 
 
             ComInfo comInfo = new ComInfo();
-            BeanUtils.copyProperties(companyVO,comInfo);
+            BeanUtils.copyProperties(companyVO, comInfo);
             comInfo.setComAddressCounty(companyVO.getComAddressXian());
             comInfo.setId(id);
             comInfo.setGmtCreate(new Date());
             comInfo.setGmtModified(new Date());
-            if(companyVO.getIndustryId()==14){
+            if (companyVO.getIndustryId() == 14) {
                 comInfo.setIndustryId(35);
             }
             comInfoMapper.insert(comInfo);
 
             ComInfoAppendix comInfoAppendix = new ComInfoAppendix();
-            BeanUtils.copyProperties(companyVO,comInfoAppendix);
+            BeanUtils.copyProperties(companyVO, comInfoAppendix);
             comInfoAppendix.setComImgurl(filePath);
             comInfoAppendix.setId(id);
             comInfoAppendix.setGmtCreate(new Date());
             comInfoAppendix.setGmtModified(new Date());
             comInfoAppendixMapper.insert(comInfoAppendix);
 
-            if(companyVO.getBussiness() != null && companyVO.getBussiness().size() != 0){
-                for(int i = 0 ;i < companyVO.getBussiness().size();i++){
-                    if(companyVO.getBussiness().get(i).equals("")){
+            if (companyVO.getBussiness() != null && companyVO.getBussiness().size() != 0) {
+                for (int i = 0; i < companyVO.getBussiness().size(); i++) {
+                    if (companyVO.getBussiness().get(i).equals("")) {
                         continue;
                     }
                     Business business = new Business();
@@ -328,9 +329,6 @@ public class CompanyServiceImpl implements CompanyService {
         }
 
 
-
-
-
         return false;
     }
 
@@ -338,7 +336,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public DeatailComInfoModel getDeatailComInfo(Long id) {
 
-        DeatailComInfoModel deatailComInfoModel =  comInfoAppendixMapper.selectDetailByPrimaryKey(id);
+        DeatailComInfoModel deatailComInfoModel = comInfoAppendixMapper.selectDetailByPrimaryKey(id);
 
         List<String> bussiness = businessMapper.selectByComInfoId(id);
 
@@ -368,14 +366,14 @@ public class CompanyServiceImpl implements CompanyService {
         return i == j;
     }
 
-    private void getPercent(List<CompanyAnalyseModel> list){
+    private void getPercent(List<CompanyAnalyseModel> list) {
         double count = 0;
-        for(CompanyAnalyseModel c : list){
+        for (CompanyAnalyseModel c : list) {
             count += c.getDataNum();
         }
 
-        for(CompanyAnalyseModel c : list){
-            c.setPercent(BigDecimal.valueOf((double)c.getDataNum() / count * 100).setScale(2,BigDecimal.ROUND_DOWN));
+        for (CompanyAnalyseModel c : list) {
+            c.setPercent(BigDecimal.valueOf((double) c.getDataNum() / count * 100).setScale(2, BigDecimal.ROUND_DOWN));
         }
 
         return;
@@ -383,8 +381,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
 
-    private boolean clearCache(){
-        redisUtil.del(IndustryAnalyseData_KEY,ComTypeAnalyseData_KEY,RegionAnalyseData_KEY);
+    private boolean clearCache() {
+        redisUtil.del(IndustryAnalyseData_KEY, ComTypeAnalyseData_KEY, RegionAnalyseData_KEY);
         return true;
     }
 
