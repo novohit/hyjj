@@ -4,11 +4,15 @@ import com.hyjj.hyjjservice.annotation.GetUser;
 import com.hyjj.hyjjservice.dataobject.Menu;
 import com.hyjj.hyjjservice.dataobject.User;
 import com.hyjj.hyjjservice.service.report.AuditService;
+import com.hyjj.hyjjservice.service.settings.ReportManageService;
 import com.hyjj.hyjjservice.service.user.UserRoleService;
 import com.hyjj.util.responce.CommonReturnType;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +33,9 @@ public class IndexController {
     @Autowired
     private UserRoleService userRoleService;
 
+    @Autowired
+    private ReportManageService reportManageService;
+
     @Resource(name = "userThreadLocal")
     private ThreadLocal<User> threadLocal;
 
@@ -41,6 +48,12 @@ public class IndexController {
     public CommonReturnType queryAllMenus() {
         List<Menu> menus = menuService.queryAllMenus();
         return CommonReturnType.ok().add("menu", menus);
+    }
+
+    @ApiOperation(value = "首页GDP曲线图展示")
+    @GetMapping("searchGdpData")
+    public CommonReturnType searchGdpData(String district,String year,Integer pageNum,Integer pageSize){
+        return CommonReturnType.ok().add("GdpData",reportManageService.searchGdpData(district, year,pageNum,pageSize));
     }
 
     @ApiOperation(value = "获取当前用户待审核/填报列表")
@@ -61,6 +74,13 @@ public class IndexController {
         User user = threadLocal.get();
         return checkUser(user) ? CommonReturnType.ok().add("reports", auditService.getStatementSum(1, user, false))
                 : CommonReturnType.ok().add("reports", auditService.getStatementSum(1, user, true));
+    }
+
+    @GetMapping("detailReport")
+    @ApiOperation("获取报表的详情信息")
+    @ApiImplicitParam(name = "reportId", value = "报表id", required = true, dataTypeClass = String.class)
+    public CommonReturnType getDetailReport(Long reportId) {
+        return CommonReturnType.ok().add("detailReport", auditService.getDetailReport(reportId));
     }
 
     /**

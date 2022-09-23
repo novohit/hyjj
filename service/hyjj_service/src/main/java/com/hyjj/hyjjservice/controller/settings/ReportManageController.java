@@ -106,11 +106,6 @@ public class ReportManageController {
         return CommonReturnType.ok().add("sum",data);
     }
 
-    @GetMapping("searchGdpData")
-    public CommonReturnType searchGdpData(String district,String year,Integer pageNum,Integer pageSize){
-        return CommonReturnType.ok().add("GdpData",reportManageService.searchGdpData(district, year,pageNum,pageSize));
-    }
-
     @GetMapping("getSearchGdpDataSum")
     public CommonReturnType getSearchGpaDataSum(String district,String year){
         int data = reportManageService.getSearchGpaDataSum(district,year);

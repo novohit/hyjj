@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -234,7 +235,11 @@ public class CompanyController {
 
     @ExceptionHandler(Exception.class)
     public CommonReturnType exceptionHandler(Exception e) {
-        if (e instanceof BusinessException) {
+        if (e instanceof AccessDeniedException) {
+            log.error(e.getMessage());
+            return CommonReturnType.error(EmBusinessError.USER_DONOT_HVER_PERMISSION);
+        }
+        else if (e instanceof BusinessException) {
             log.error(((BusinessException) (e)).getErrMsg());
             CommonReturnType commonReturnType = ((BusinessException) (e)).getCommonReturnType();
             if (commonReturnType.getCode() == 10003) {
