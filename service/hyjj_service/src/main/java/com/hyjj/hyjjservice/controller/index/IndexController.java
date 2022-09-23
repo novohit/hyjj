@@ -51,7 +51,7 @@ public class IndexController {
     }
 
     @ApiOperation(value = "首页GDP曲线图展示")
-    @GetMapping("searchGdpData")
+    @GetMapping("/settings/report/searchGdpData")
     public CommonReturnType searchGdpData(String district,String year,Integer pageNum,Integer pageSize){
         return CommonReturnType.ok().add("GdpData",reportManageService.searchGdpData(district, year,pageNum,pageSize));
     }
@@ -76,7 +76,7 @@ public class IndexController {
                 : CommonReturnType.ok().add("reports", auditService.getStatementSum(1, user, true));
     }
 
-    @GetMapping("detailReport")
+    @GetMapping("/audit/detailReport")
     @ApiOperation("获取报表的详情信息")
     @ApiImplicitParam(name = "reportId", value = "报表id", required = true, dataTypeClass = String.class)
     public CommonReturnType getDetailReport(Long reportId) {

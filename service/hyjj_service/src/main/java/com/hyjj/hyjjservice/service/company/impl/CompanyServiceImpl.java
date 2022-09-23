@@ -203,7 +203,8 @@ public class CompanyServiceImpl implements CompanyService {
         }
 
         int tag = comInfoMapper.judgeComCode(companyVO.getComCode());
-        if (tag == 1){
+        // 企业代码不能重复 如果是新增返回false 更新就继续
+        if (tag == 1 && jude != 0){
             return false;
         }
 
