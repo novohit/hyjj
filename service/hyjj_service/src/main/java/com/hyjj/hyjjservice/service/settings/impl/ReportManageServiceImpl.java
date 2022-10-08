@@ -23,10 +23,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class ReportManageServiceImpl implements ReportManageService {
-
+    private final Logger logger = LoggerFactory.getLogger(ReportManageServiceImpl.class);
 
     @Autowired
     private FormulaMapper formulaMapper;
@@ -211,9 +213,7 @@ public class ReportManageServiceImpl implements ReportManageService {
         for (Integer integer : integers) {
             Integer tag = reportDataMapper.judgeIfExists(user.getId(),endDate,integer);
             if(tag!=0){
-                return false;
-            }
-            if(user == null){
+                logger.info("该企业已在该月生成报表, 企业id={}",user.getId());
                 return false;
             }
         }
@@ -234,7 +234,7 @@ public class ReportManageServiceImpl implements ReportManageService {
         reportData.setBeginDate(beginDate);
         reportData.setEndDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endDate));
         reportData.setGmtModified(beginDate);
-        reportData.setReportDate(beginDate);
+        reportData.setReportDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endDate));
         reportData.setProStatus("填报数据");
         reportData.setProStatusName("1");
         reportData.setAreaCode("04");

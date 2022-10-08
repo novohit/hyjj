@@ -30,6 +30,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -188,6 +189,7 @@ public class CompanyController {
 
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @DeleteMapping("/delete/{id}")
     @ApiOperation("删除企业")
     public CommonReturnType deleteCompany(@PathVariable(name = "id") Long id) {
@@ -259,7 +261,7 @@ public class CompanyController {
                 return commonReturnType;
             }
         } else {
-            log.error(e.getMessage());
+            e.printStackTrace();
         }
         return CommonReturnType.error(EmBusinessError.PARAMETER_VALIDATION_ERROR);
     }

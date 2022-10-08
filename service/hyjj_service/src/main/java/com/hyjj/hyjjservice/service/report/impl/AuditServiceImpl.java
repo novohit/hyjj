@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -61,7 +62,7 @@ public class AuditServiceImpl implements AuditService {
             audit = "审核数据";
             userId = null;
         }
-        return strategyFactory.getStatementStrategy(select).getStatement(audit, userId);
+        return strategyFactory.getStatementStrategy(select).getStatement(audit, userId).stream().sorted(Comparator.comparing(ReportData::getEndDate).reversed()).collect(Collectors.toList());
     }
 
     @Override
