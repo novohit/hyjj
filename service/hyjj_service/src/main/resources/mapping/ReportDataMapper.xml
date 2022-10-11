@@ -592,6 +592,23 @@
         order by rd.`begin_date` DESC
     </select>
 
+    <select id="getStatementByQuarterSum" resultMap="BaseResultMap">
+        SELECT count(*)
+        FROM report_data rd
+        inner join process on rd.`process_id` = process.`id`
+        <where>
+            1 = 1
+            and QUARTER(process.`update_time`) = quarter(curdate())
+            and YEAR (process.`update_time`) = YEAR (NOW())
+            <if test="audit != null">
+                and rd.`pro_status` like #{audit}
+            </if>
+            <if test="userId != null">
+                and rd.`user_id` = #{userId}
+            </if>
+        </where>
+    </select>
+
     <select id="getStatementSum" resultType="java.lang.Integer">
         SELECT count(*)
         FROM report_data rd

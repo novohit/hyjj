@@ -66,7 +66,9 @@ public class SelectID2 implements GetStatementStrategy{
 
     @Override
     public Integer getStatementSum(String audit, Long userId) {
-        int i = g.get(Calendar.MONTH) + 1;
+        logger.info("策略选择 SelectID2");
+        return reportDataMapper.getStatementByQuarterSum("审核%", userId);
+        /*int i = g.get(Calendar.MONTH) + 1;
         int sum = 0;
         switch (i){
             case 1:
@@ -98,6 +100,6 @@ public class SelectID2 implements GetStatementStrategy{
                 sum += reportDataMapper.getStatementSum(null, 12, "审核%", userId);
                 return sum;
             default: return 0;
-        }
+        }*/
     }
 }

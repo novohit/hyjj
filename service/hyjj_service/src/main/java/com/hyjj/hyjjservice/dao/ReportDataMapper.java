@@ -126,6 +126,10 @@ public interface ReportDataMapper {
                                   @Param("audit") String audit,
                                   @Param("userId") Long userId);
 
+    Integer getStatementByQuarterSum(
+            @Param("audit") String audit,
+            @Param("userId") Long userId);
+
     Integer getStatementSum(@Param("week") Integer week,
                             @Param("month") Integer month,
                             @Param("audit") String audit,
