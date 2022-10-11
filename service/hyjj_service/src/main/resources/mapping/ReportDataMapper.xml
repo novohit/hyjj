@@ -567,7 +567,7 @@
                 and rd.`user_id` = #{userId}
             </if>
         </where>
-        order by rd.`add_date` DESC
+        order by rd.`begin_date` DESC
     </select>
 
     <select id="getStatementSum" resultType="java.lang.Integer">

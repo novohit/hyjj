@@ -62,7 +62,8 @@ public class AuditServiceImpl implements AuditService {
             audit = "审核数据";
             userId = null;
         }
-        return strategyFactory.getStatementStrategy(select).getStatement(audit, userId).stream().sorted(Comparator.comparing(ReportData::getEndDate).reversed()).collect(Collectors.toList());
+        //return strategyFactory.getStatementStrategy(select).getStatement(audit, userId).stream().sorted(Comparator.comparing(ReportData::getEndDate).reversed()).collect(Collectors.toList());
+        return strategyFactory.getStatementStrategy(select).getStatement(audit, userId);
     }
 
     @Override
