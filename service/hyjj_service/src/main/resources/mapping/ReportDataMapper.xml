@@ -570,6 +570,28 @@
         order by rd.`begin_date` DESC
     </select>
 
+    <select id="getStatementByQuarter" resultMap="BaseResultMap">
+        SELECT
+        rd.`id`,rd.`fill_person`,rd.`fill_unit`,rd.`add_date`,rd.`area_name`,rd.`report_template_id`,rd.`area_code`,rd.`begin_date`,
+        rd.`end_date`,rd.`submit_date`,rd.`pro_status`,rd.`pro_status_name`,rd.`process_id`,rd.`statistics_principal`,
+        rd.`unit_principal`,rd.`org_code`,rd.`expire_date`,rd.`audit_id`,rd.`enterprise_name`,rd.`data_from`,
+        rd.`enterprise`,rd.`begin_date`,rd.`fill_date`,rd.`number`,rd.`title`
+        FROM report_data rd
+        inner join process on rd.`process_id` = process.`id`
+        <where>
+            1 = 1
+            and QUARTER(process.`update_time`) = quarter(curdate())
+            and YEAR (process.`update_time`) = YEAR (NOW())
+            <if test="audit != null">
+                and rd.`pro_status` like #{audit}
+            </if>
+            <if test="userId != null">
+                and rd.`user_id` = #{userId}
+            </if>
+        </where>
+        order by rd.`begin_date` DESC
+    </select>
+
     <select id="getStatementSum" resultType="java.lang.Integer">
         SELECT count(*)
         FROM report_data rd
