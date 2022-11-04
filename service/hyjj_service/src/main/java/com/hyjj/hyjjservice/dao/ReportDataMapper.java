@@ -95,7 +95,7 @@ public interface ReportDataMapper {
                                  @Param("isSave") Integer isSave);
 
 
-  //  @Select("select id,number,title,end_date,fill_unit,begin_date,pro_status from report_data where user_id = #{userId} order by end_date desc")
+    //  @Select("select id,number,title,end_date,fill_unit,begin_date,pro_status from report_data where user_id = #{userId} order by end_date desc")
     List<ReportDataList> getReportDataListByUserId(Long userId);
 
     ReportDataHtml getReportDataHtml(int id, Long userId);
@@ -122,18 +122,25 @@ public interface ReportDataMapper {
                                   @Param("audit") String audit,
                                   @Param("userId") Long userId);
 
-    List<ReportData> getStatementByQuarter(
-                                  @Param("audit") String audit,
-                                  @Param("userId") Long userId);
 
-    int getStatementByQuarterSum(
-            @Param("audit") String audit,
-            @Param("userId") Long userId);
+    List<ReportData> getStatementByMonth(@Param("month") Integer month,
+                                         @Param("audit") String audit,
+                                         @Param("userId") Long userId);
+
+    List<ReportData> getStatementByQuarter(@Param("audit") String audit,
+                                           @Param("userId") Long userId);
+
+    int getStatementByQuarterSum(@Param("audit") String audit,
+                                 @Param("userId") Long userId);
 
     int getStatementSum(@Param("week") Integer week,
-                            @Param("month") Integer month,
-                            @Param("audit") String audit,
-                            @Param("userId") Long userId);
+                        @Param("month") Integer month,
+                        @Param("audit") String audit,
+                        @Param("userId") Long userId);
+
+    int getStatementByMonthSum(@Param("month") Integer month,
+                               @Param("audit") String audit,
+                               @Param("userId") Long userId);
 
     List<UrgeReportVO> selectByYearAndCompany(@Param("year") Integer years,
                                               @Param("company") String company);
@@ -194,8 +201,10 @@ public interface ReportDataMapper {
                                             @Param("statue") String statue,
                                             @Param("year") String year,
                                             @Param("nextYear") String nextYear);
-    Integer judgeIfExists(Long id,String date,Integer rtId);
+
+    Integer judgeIfExists(Long id, String date, Integer rtId);
 
     Integer getReportTemplateIdByReportId(Integer id);
-    ReportDataHtml selectLastYearReport(Long userId,Long reportTemplateId,Integer year,Integer month);
+
+    ReportDataHtml selectLastYearReport(Long userId, Long reportTemplateId, Integer year, Integer month);
 }

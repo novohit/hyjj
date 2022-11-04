@@ -15,11 +15,13 @@ import com.hyjj.hyjjservice.service.fill.FillService;
 import com.hyjj.hyjjservice.service.settings.SysApplicationService;
 import com.hyjj.hyjjservice.service.statistic.StatisticService;
 import com.hyjj.security.security.DefaultPasswordEncoder;
+import com.hyjj.util.error.BusinessException;
 import com.hyjj.util.responce.CommonReturnType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,11 +55,11 @@ public class SysApplicationServiceImpl implements SysApplicationService {
 
     @Override
     public boolean enableUser(Long id) {
-        return userMapper.enableUser(id)!=0;
+        return userMapper.enableUser(id) != 0;
     }
 
     @Override
-    public boolean batchUpload(UploadVO uploadVO){
+    public boolean batchUpload(UploadVO uploadVO) {
         if (uploadVO.getFiles().length == 0) {
             return false;
         }
@@ -69,12 +71,12 @@ public class SysApplicationServiceImpl implements SysApplicationService {
         System.out.println(reportTemplate.getRow());
         for (MultipartFile file : uploadVO.getFiles()) {
 
-            try{
+            try {
                 byte[] bytes = file.getBytes();
                 InputStream is = new ByteArrayInputStream(bytes);
                 cellList[i] = fileUtil.getCellList(reportTemplate, is);
                 i++;
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -84,7 +86,7 @@ public class SysApplicationServiceImpl implements SysApplicationService {
             sum += integer;
         }
 
-        return sum!=0;
+        return sum != 0;
 
     }
 
@@ -94,7 +96,7 @@ public class SysApplicationServiceImpl implements SysApplicationService {
     }
 
     @Override
-    public List<UserInfoVO> getUserInfoList(UserInfoVO userInfoVO,Integer pageNum,Integer pageSize){
+    public List<UserInfoVO> getUserInfoList(UserInfoVO userInfoVO, Integer pageNum, Integer pageSize) {
         Page Page = PageHelper.startPage(pageNum, pageSize == null ? 10 : pageSize);
         List<UserInfoVO> userInfoVOS = userMapper.selectUserInfoList(userInfoVO);
         return userInfoVOS;
@@ -118,35 +120,35 @@ public class SysApplicationServiceImpl implements SysApplicationService {
     }
 
     @Override
-    public User getUserDetail(Long id){
+    public User getUserDetail(Long id) {
         User user = userMapper.selectByPrimaryKey(id);
         return user;
     }
 
     @Override
     public boolean deleteUser(Long id) {
-        return userMapper.deleteUser(id)!=0;
+        return userMapper.deleteUser(id) != 0;
     }
 
     @Override
     public int updateUserInfo(User user) {
         Date date = new Date();
         user.setGmtModified(date);
-        if(user.getPassword()!=null){
-            if(!user.getPassword().equals(userMapper.selectByPrimaryKey(user.getId()).getPassword())){
+        if (user.getPassword() != null) {
+            if (!user.getPassword().equals(userMapper.selectByPrimaryKey(user.getId()).getPassword())) {
                 user.setPassword(new DefaultPasswordEncoder().encode(user.getPassword()));
             }
         }
-        if(user.getStatue().equals("禁用")){
+        if (user.getStatue().equals("禁用")) {
             userMapper.disableUser(user.getId());
         }
         UserRole ur = new UserRole();
         ur.setId(user.getCominfoId());
-        if(user.getUserType().equals("超级管理员")){
+        if (user.getUserType().equals("超级管理员")) {
             ur.setRoleId(4);
-        }else if(user.getUserType().equals("管理员")){
+        } else if (user.getUserType().equals("管理员")) {
             ur.setRoleId(3);
-        }else if(user.getUserType().equals("普通用户")){
+        } else if (user.getUserType().equals("普通用户")) {
             ur.setRoleId(2);
         }
         int i = userRoleMapper.updateByPrimaryKeySelective(ur);
@@ -155,7 +157,7 @@ public class SysApplicationServiceImpl implements SysApplicationService {
 
     @Override
     public boolean checkUserName(String name) {
-        return userMapper.checkUserName(name)==1;
+        return userMapper.checkUserName(name) == 1;
     }
 
     @Override
@@ -164,12 +166,19 @@ public class SysApplicationServiceImpl implements SysApplicationService {
     }
 
     @Override
+    @Transactional
     public boolean insertUserInfo(User user) {
 
-        if(user.getCominfoId()==null){
+
+/*        if(user.getCominfoId()==null){
             return false;
+        }*/
+        ComInfo comInfo = comInfoMapper.selectByComName(user.getComName());
+        if (comInfo == null) {
+            throw new BusinessException(CommonReturnType.error("cominfo表中没有该企业"));
         }
         Date date = new Date();
+        user.setCominfoId(comInfo.getId());
         user.setGmtCreate(date);
         user.setGmtModified(date);
         user.setPassword(new DefaultPasswordEncoder().encode(user.getPassword()));
@@ -178,19 +187,23 @@ public class SysApplicationServiceImpl implements SysApplicationService {
         UserRole userRole = new UserRole();
         userRole.setId(user.getCominfoId());
         userRole.setUserId(user.getId());
-        if(user.getUserType().equals("超级管理员")){
+        if (user.getUserType().equals("超级管理员")) {
             userRole.setRoleId(4);
-        }else if(user.getUserType().equals("管理员")){
+        } else if (user.getUserType().equals("管理员")) {
             userRole.setRoleId(3);
-        }else if(user.getUserType().equals("普通用户")){
+        } else if (user.getUserType().equals("普通用户")) {
             userRole.setRoleId(2);
         }
         userRole.setIsUsed(false);
         userRole.setGmtCreate(date);
         userRole.setGmtModified(date);
+        UserRole dbUserRole = userRoleMapper.selectByPrimaryKey(comInfo.getId());
+        if (dbUserRole != null) {
+            throw new BusinessException(CommonReturnType.error("user_role该企业用户已经存在"));
+        }
         int j = userRoleMapper.insertSelective(userRole);
         redisTemplate.boundSetOps("NewUserComInfoId").add(user.getCominfoId());
-        return i==j;
+        return i == j;
 
     }
 

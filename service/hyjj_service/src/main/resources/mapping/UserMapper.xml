@@ -100,16 +100,13 @@
     -->
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="account != null">
         account,
       </if>
       <if test="password != null">
         password,
       </if>
-      <if test="name != null">
+      <if test="comName != null">
         name,
       </if>
       <if test="email != null">
@@ -150,9 +147,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
       <if test="account != null">
         #{account,jdbcType=VARCHAR},
       </if>
@@ -160,7 +154,7 @@
         #{password,jdbcType=VARCHAR},
       </if>
       <if test="name != null">
-        #{name,jdbcType=VARCHAR},
+        #{comName,jdbcType=VARCHAR},
       </if>
       <if test="email != null">
         #{email,jdbcType=VARCHAR},

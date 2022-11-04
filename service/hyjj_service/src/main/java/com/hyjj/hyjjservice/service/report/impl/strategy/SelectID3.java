@@ -10,23 +10,23 @@ import java.util.List;
 /**
  * 获取本周已审核/填报列表
  */
-public class SelectID3 implements GetStatementStrategy{
+public class SelectID3 implements GetStatementStrategy {
 
     private ReportDataMapper reportDataMapper;
     private GregorianCalendar g;
 
-    public SelectID3(ReportDataMapper reportDataMapper){
+    public SelectID3(ReportDataMapper reportDataMapper) {
         this.reportDataMapper = reportDataMapper;
         this.g = new GregorianCalendar();
     }
 
     @Override
     public List<ReportData> getStatement(String audit, Long userId) {
-        return reportDataMapper.getStatement(null, g.get(Calendar.MONTH) + 1, "审核%", userId);
+        return reportDataMapper.getStatementByMonth(g.get(Calendar.MONTH) + 1, "审核%通过", userId);
     }
 
     @Override
     public Integer getStatementSum(String audit, Long userId) {
-        return reportDataMapper.getStatementSum(null, g.get(Calendar.MONTH) + 1, "审核%", userId);
+        return reportDataMapper.getStatementByMonthSum(g.get(Calendar.MONTH) + 1, "审核%通过", userId);
     }
 }

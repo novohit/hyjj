@@ -257,9 +257,7 @@ public class CompanyController {
         else if (e instanceof BusinessException) {
             log.error(((BusinessException) (e)).getErrMsg());
             CommonReturnType commonReturnType = ((BusinessException) (e)).getCommonReturnType();
-            if (commonReturnType.getCode() == 10003) {
-                return commonReturnType;
-            }
+            return commonReturnType;
         } else {
             e.printStackTrace();
         }
