@@ -476,9 +476,9 @@
         rd.`submit_date`,rd.`pro_status`,
         rd.`enterprise_name`,rd.`report_date`,rd.`number`,rd.`title`,i.`name`
         FROM report_data rd
-        INNER JOIN report_template rt
+        LEFT JOIN report_template rt
         ON rd.`report_template_id` = rt.`id`
-        INNER JOIN industry i
+        LEFT JOIN industry i
         ON rt.`type` = i.`id`
         <where>
             and rt.`rep_class` = #{type}
@@ -492,9 +492,9 @@
         SELECT
         count(*)
         FROM report_data rd
-        INNER JOIN report_template rt
+        LEFT JOIN report_template rt
         ON rd.`report_template_id` = rt.`id`
-        INNER JOIN industry i
+        LEFT JOIN industry i
         ON rt.`type` = i.`id`
         <where>
             and rt.`rep_class` = #{type}
@@ -836,7 +836,7 @@
     </select>
 
     <select id="judgeIfExists"  resultType="java.lang.Integer">
-        select count(*) from report_data where user_id = #{id} and month(end_date) = month(#{date}) and year(end_date) = year(#{date}) and report_template_id = #{rtId}
+        select count(*) from report_data where user_id = #{id} and month(begin_date) = month(#{date}) and year(begin_date) = year(#{date}) and report_template_id = #{rtId}
     </select>
 
     <select id="getReportTemplateIdByReportId" resultType="java.lang.Integer">

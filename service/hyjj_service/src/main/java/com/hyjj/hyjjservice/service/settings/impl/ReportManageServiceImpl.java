@@ -10,6 +10,8 @@ import com.hyjj.hyjjservice.dao.*;
 import com.hyjj.hyjjservice.dataobject.*;
 import com.hyjj.hyjjservice.dataobject.Process;
 import com.hyjj.hyjjservice.service.settings.ReportManageService;
+import com.hyjj.util.error.BusinessException;
+import com.hyjj.util.responce.CommonReturnType;
 import io.swagger.models.auth.In;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,30 +61,30 @@ public class ReportManageServiceImpl implements ReportManageService {
     private RedisTemplate redisTemplate;
 
     @Override
-    public List<FormulaListVO> getFormulaList(Integer pageNum,Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize==null?10:pageSize);
+    public List<FormulaListVO> getFormulaList(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize == null ? 10 : pageSize);
         List<FormulaListVO> formulaList = formulaMapper.getFormulaList();
         return formulaList;
     }
 
     @Override
-    public List<FormulaListVO> getFormulaByFormName(String formName,Integer pageNum,Integer pageSize){
-        PageHelper.startPage(pageNum, pageSize==null?10:pageSize);
+    public List<FormulaListVO> getFormulaByFormName(String formName, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize == null ? 10 : pageSize);
         List<FormulaListVO> formulaByFormName = formulaMapper.getFormulaByFormName(formName);
         return formulaByFormName;
     }
 
 
     @Override
-    public List<ReportTemplateVO> getReportTemplateList(ReportTemplateVO reportTemplateVO){
-        PageHelper.startPage(reportTemplateVO.getPageNum(), reportTemplateVO.getPageSize()==null?10: reportTemplateVO.getPageSize());
+    public List<ReportTemplateVO> getReportTemplateList(ReportTemplateVO reportTemplateVO) {
+        PageHelper.startPage(reportTemplateVO.getPageNum(), reportTemplateVO.getPageSize() == null ? 10 : reportTemplateVO.getPageSize());
         List<ReportTemplateVO> reportTemplateList = reportTemplateMapper.getReportTemplateList(reportTemplateVO);
         return reportTemplateList;
     }
 
     @Override
     public Boolean setFillReportList(Long comInfoId, String reportIds) {
-        if(reportIds == null||reportIds == ""){
+        if (reportIds == null || reportIds == "") {
             int i = comFillReportMapper.deleteAllFillReport(comInfoId);
             return i != 0;
         }
@@ -92,45 +95,45 @@ public class ReportManageServiceImpl implements ReportManageService {
         for (String s : stringSplit) {
             boolean isRepeat = false;
             for (int i = 0; i < oldReportIds.size(); i++) {
-                if(oldReportIds.get(i).equals(Integer.parseInt(s))){
+                if (oldReportIds.get(i).equals(Integer.parseInt(s))) {
                     isRepeat = true;
                     oldReportIds.remove(i);
                 }
             }
-            if(!isRepeat){
+            if (!isRepeat) {
                 newReportIds.add(Integer.parseInt(s));
             }
         }
         int tag1 = 0;
-        if(newReportIds.size() != 0){
+        if (newReportIds.size() != 0) {
             for (Integer integer : newReportIds) {
-                comFillReportMapper.insertFillReport(comInfoId,integer,date);
+                comFillReportMapper.insertFillReport(comInfoId, integer, date);
                 tag1++;
             }
         }
         int tag2 = 0;
-        if(oldReportIds.size() != 0){
+        if (oldReportIds.size() != 0) {
             int tag = 0;
             for (Integer integer : oldReportIds) {
-                comFillReportMapper.deleteFillReport(comInfoId,integer);
+                comFillReportMapper.deleteFillReport(comInfoId, integer);
                 tag2++;
             }
         }
         Boolean isMember = redisTemplate.boundSetOps("NewUserComInfoId").isMember(comInfoId);
-        if(isMember){
-            try{
+        if (isMember) {
+            try {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Calendar calendar = Calendar.getInstance();
-                calendar.add(Calendar.MONTH,1);
-                manualCreateReport(dateFormat.format(calendar.getTime()),comInfoId);
+                calendar.add(Calendar.MONTH, 1);
+                manualCreateReport(dateFormat.format(calendar.getTime()), comInfoId);
                 redisTemplate.boundSetOps("NewUserComInfoId").remove(comInfoId);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
         }
 
-        return tag1 == newReportIds.size()&&tag2 == oldReportIds.size();
+        return tag1 == newReportIds.size() && tag2 == oldReportIds.size();
     }
 
     @Override
@@ -146,21 +149,21 @@ public class ReportManageServiceImpl implements ReportManageService {
     }
 
     @Override
-    public List<ComInfo> getComInfoList(String name,Integer pageNum,Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize==null?10:pageSize);
+    public List<ComInfo> getComInfoList(String name, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize == null ? 10 : pageSize);
         List<ComInfo> comInfos = comInfoMapper.getCompanyNameList(name);
         return comInfos;
     }
 
     @Override
-    public ReportTemplateInfoVO getReportTemplateInfo(Integer id){
+    public ReportTemplateInfoVO getReportTemplateInfo(Integer id) {
         ReportTemplateInfoVO reportTemplateInfo = reportTemplateMapper.getReportTemplateInfo(id);
         return reportTemplateInfo;
     }
 
     @Override
-    public List<Gdp> getCurrentYearData(Integer pageNum,Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize==null?10:pageSize);
+    public List<Gdp> getCurrentYearData(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize == null ? 10 : pageSize);
         List<Gdp> gdps = gdpMapper.selectCurrentYearData();
         return gdps;
     }
@@ -185,17 +188,16 @@ public class ReportManageServiceImpl implements ReportManageService {
     }
 
     @Override
-    public List<Gdp> searchGdpData(String district, String year,Integer pageNum,Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize==null?10:pageSize);
+    public List<Gdp> searchGdpData(String district, String year, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize == null ? 10 : pageSize);
         List<Gdp> gdpList = gdpMapper.searchGdpData(district, year);
         return gdpList.stream().sorted(Comparator.comparing(Gdp::getYear)).collect(Collectors.toList());
     }
 
 
-
     @Override
-    public List<Gdp> getPassYearData(Integer pageNum,Integer pageSize){
-        PageHelper.startPage(pageNum,pageSize==null?10:pageSize);
+    public List<Gdp> getPassYearData(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize == null ? 10 : pageSize);
         List<Gdp> gdps = gdpMapper.selectPassYearData();
         return gdps;
     }
@@ -206,15 +208,22 @@ public class ReportManageServiceImpl implements ReportManageService {
     }
 
     @Override
-    public boolean manualCreateReport(String endDate, Long id) throws Exception{
+    public boolean manualCreateReport(String endDate, Long id) throws Exception {
+
         User user = userMapper.selectByComInfoId(id);
         List<Integer> integers = comFillReportMapper.selectReportTemplateId(id);
-
+        Date now = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        if (dateFormat.parse(endDate).before(now)) {
+            logger.info("填报时间不能小于当前系统时间");
+            throw new BusinessException(CommonReturnType.error("填报时间不能小于当前系统时间"));
+        }
+        String nowDate = dateFormat.format(now);
         for (Integer integer : integers) {
-            Integer tag = reportDataMapper.judgeIfExists(user.getId(),endDate,integer);
-            if(tag!=0){
-                logger.info("该企业已在该月生成报表, 企业id={}",user.getId());
-                return false;
+            Integer tag = reportDataMapper.judgeIfExists(user.getId(), nowDate, integer);
+            if (tag != 0) {
+                logger.info("该企业已在该月生成报表, 企业id={}", user.getId());
+                throw new BusinessException(CommonReturnType.error("该企业已在该月生成报表"));
             }
         }
 
@@ -225,7 +234,7 @@ public class ReportManageServiceImpl implements ReportManageService {
         process.setProsessDescription("填报数据");
         process.setCreatTime(beginDate);
         process.setGmtCreate(beginDate);
-        endDate = endDate +" 00:00:00";
+        endDate = endDate + " 00:00:00";
         ComInfo comInfo = comInfoMapper.selectByPrimaryKey(id);
         reportData.setFillUnit(comInfo.getComName());
         reportData.setAreaName(comInfo.getComAddressCounty());
@@ -244,7 +253,7 @@ public class ReportManageServiceImpl implements ReportManageService {
         reportData.setFillPerson(user.getName());
         reportData.setIsSave(0);
         reportData.setUserId(user.getId());
-        if (integers.size() == 0){
+        if (integers.size() == 0) {
             return false;
         }
         int i = 0;
@@ -259,15 +268,83 @@ public class ReportManageServiceImpl implements ReportManageService {
             reportData.setNumber(reportTemplate.getNumber());
             reportData.setReportTemplateId(reportTemplate.getId());
             process.setId(null);
-            if(reportDataMapper.insertSelective(reportData)==1)
+            if (reportDataMapper.insertSelective(reportData) == 1)
                 i++;
         }
-            return i==integers.size();
-
+        return i == integers.size();
 
 
     }
 
+    @Override
+    public boolean manualCreateReportV2(String endDate, String beginDate, Long id) throws Exception {
+        User user = userMapper.selectByComInfoId(id);
+        List<Integer> integers = comFillReportMapper.selectReportTemplateId(id);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date begin = dateFormat.parse(beginDate);
+        Date end = dateFormat.parse(endDate);
+        if (end.before(begin)) {
+            logger.info("填报时间不能小于报告时间");
+            throw new BusinessException(CommonReturnType.error("填报时间不能小于报告时间"));
+        }
+
+        for (Integer integer : integers) {
+            Integer tag = reportDataMapper.judgeIfExists(user.getId(), beginDate, integer);
+            if (tag != 0) {
+                logger.info("该企业已在该月生成报表, 企业id={}", user.getId());
+                throw new BusinessException(CommonReturnType.error("该企业已在该月生成报表"));
+            }
+        }
+
+
+        endDate = endDate + " 00:00:00";
+        beginDate = beginDate + " 00:00:00";
+        ReportData reportData = new ReportData();
+        Process process = new Process();
+        process.setProcessName("填报数据");
+        process.setProsessDescription("填报数据");
+        process.setCreatTime(begin);
+        process.setGmtCreate(begin);
+        ComInfo comInfo = comInfoMapper.selectByPrimaryKey(id);
+        reportData.setFillUnit(comInfo.getComName());
+        reportData.setAreaName(comInfo.getComAddressCounty());
+        reportData.setEnterpriseName(comInfo.getComName());
+        reportData.setOrgCode(comInfo.getComCode());
+        reportData.setBeginDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(beginDate));
+        reportData.setEndDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endDate));
+        reportData.setGmtModified(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(beginDate));
+        reportData.setReportDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endDate));
+        reportData.setProStatus("填报数据");
+        reportData.setProStatusName("1");
+        reportData.setAreaCode("04");
+        reportData.setGmtCreate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(beginDate));
+        reportData.setExpireDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endDate));
+        reportData.setDataFrom("null");
+        reportData.setFillPerson(user.getName());
+        reportData.setIsSave(0);
+        reportData.setUserId(user.getId());
+        if (integers.size() == 0) {
+            return false;
+        }
+        int i = 0;
+        for (Integer integer : integers) {
+            processMapper.insertSelective(process);
+            ReportTemplate reportTemplate = reportTemplateMapper.selectByPrimaryKey(integer.longValue());
+            reportData.setProcessId(process.getId());
+            reportData.setHeadHtml(reportTemplate.getHeadHtml());
+            reportData.setBodyHtml(reportTemplate.getBodyHtml());
+            reportData.setTailHtml(reportTemplate.getTailHtml());
+            reportData.setTitle(reportTemplate.getTitle());
+            reportData.setNumber(reportTemplate.getNumber());
+            reportData.setReportTemplateId(reportTemplate.getId());
+            process.setId(null);
+            if (reportDataMapper.insertSelective(reportData) == 1)
+                i++;
+        }
+        return i == integers.size();
+
+
+    }
     @Override
     public int getFormulaListSum() {
         return formulaMapper.getFormulaListSum();
@@ -290,7 +367,7 @@ public class ReportManageServiceImpl implements ReportManageService {
 
     @Override
     public int getSearchGpaDataSum(String district, String year) {
-        return gdpMapper.getSearchGdpDataSum(district,year);
+        return gdpMapper.getSearchGdpDataSum(district, year);
     }
 
     @Override
@@ -302,7 +379,6 @@ public class ReportManageServiceImpl implements ReportManageService {
     public int getComInfoListSum(String name) {
         return comInfoMapper.getCompanyNameListSum(name);
     }
-
 
 
 //    @Scheduled(cron = "0 0 0 1 * ?")
@@ -326,15 +402,33 @@ public class ReportManageServiceImpl implements ReportManageService {
         List<Long> ids = comInfoMapper.selectComInfoIds();
         Integer flag = 0;
         for (Long id : ids) {
-            boolean b = manualCreateReport(endDate,id);
-            if (b){
+            boolean b = manualCreateReport(endDate, id);
+            if (b) {
                 flag++;
 
             }
         }
-        if (flag==0){
+        if (flag == 0) {
             return false;
-        }else{
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public boolean oneKeyCreateReportV2(String endDate, String beginDate) throws Exception {
+        List<Long> ids = comInfoMapper.selectComInfoIds();
+        Integer flag = 0;
+        for (Long id : ids) {
+            boolean b = manualCreateReportV2(endDate, beginDate, id);
+            if (b) {
+                flag++;
+
+            }
+        }
+        if (flag == 0) {
+            return false;
+        } else {
             return true;
         }
     }

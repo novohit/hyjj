@@ -32,121 +32,147 @@ public class ReportManageController {
 
     @GetMapping("formulaList")
     @ApiOperation("获取公式列表")
-    public CommonReturnType formulaList(Integer pageNum,Integer pageSize){
-        List<FormulaListVO> formulaList = reportManageService.getFormulaList(pageNum,pageSize);
-        return CommonReturnType.ok().add("list",formulaList);
+    public CommonReturnType formulaList(Integer pageNum, Integer pageSize) {
+        List<FormulaListVO> formulaList = reportManageService.getFormulaList(pageNum, pageSize);
+        return CommonReturnType.ok().add("list", formulaList);
     }
 
     @GetMapping("getFormulaListSum")
-    public CommonReturnType getFormulaListSum(){
+    public CommonReturnType getFormulaListSum() {
         int data = reportManageService.getFormulaListSum();
-        return CommonReturnType.ok().add("sum",data);
+        return CommonReturnType.ok().add("sum", data);
     }
 
 
     @GetMapping("reportTemplateList")
     @ApiOperation("报表列表")
-    public CommonReturnType reportTemplateList(ReportTemplateVO reportTemplateVO){
-        return CommonReturnType.ok().add("list",reportManageService.getReportTemplateList(reportTemplateVO));
+    public CommonReturnType reportTemplateList(ReportTemplateVO reportTemplateVO) {
+        return CommonReturnType.ok().add("list", reportManageService.getReportTemplateList(reportTemplateVO));
     }
 
     @GetMapping("getReportTemplateListSum")
-    public CommonReturnType getReportTemplateListSum(ReportTemplateVO reportTemplateVO){
+    public CommonReturnType getReportTemplateListSum(ReportTemplateVO reportTemplateVO) {
         int data = reportManageService.getReportTemplateListSum(reportTemplateVO);
-        return CommonReturnType.ok().add("sum",data);
+        return CommonReturnType.ok().add("sum", data);
     }
 
     @GetMapping("getComInfoList")
-    public CommonReturnType getComInfoList(String name,Integer pageNum,Integer pageSize){
-        return CommonReturnType.ok().add("list",reportManageService.getComInfoList(name,pageNum,pageSize));
+    public CommonReturnType getComInfoList(String name, Integer pageNum, Integer pageSize) {
+        return CommonReturnType.ok().add("list", reportManageService.getComInfoList(name, pageNum, pageSize));
     }
 
     @GetMapping("getComInfoListSum")
-    public CommonReturnType getComInfoListSum(String name){
-        return CommonReturnType.ok().add("sum",reportManageService.getComInfoListSum(name));
+    public CommonReturnType getComInfoListSum(String name) {
+        return CommonReturnType.ok().add("sum", reportManageService.getComInfoListSum(name));
     }
 
     @GetMapping("getFillReport")
-    public CommonReturnType getFillReport(Long id){
-        return CommonReturnType.ok().add("neededFillList",reportManageService.getNeededFillList(id)).add("notNeededFillList",reportManageService.getNotNeededFillList(id));
+    public CommonReturnType getFillReport(Long id) {
+        return CommonReturnType.ok().add("neededFillList", reportManageService.getNeededFillList(id)).add("notNeededFillList", reportManageService.getNotNeededFillList(id));
 
     }
 
     @PostMapping("setFillReport")
-    public CommonReturnType setFillReportList(@RequestBody Map<String,Object> mapParam){
+    public CommonReturnType setFillReportList(@RequestBody Map<String, Object> mapParam) {
         Long id = Long.parseLong(mapParam.get("id").toString());
         String reportIds = mapParam.get("reportIds").toString();
-        return CommonReturnType.ok().add("success",reportManageService.setFillReportList(id, reportIds));
+        return CommonReturnType.ok().add("success", reportManageService.setFillReportList(id, reportIds));
     }
 
     @GetMapping("getReportTemplateInfo")
-    public CommonReturnType getReportTemplateInfo(Integer id){
-        return CommonReturnType.ok().add("info",reportManageService.getReportTemplateInfo(id));
+    public CommonReturnType getReportTemplateInfo(Integer id) {
+        return CommonReturnType.ok().add("info", reportManageService.getReportTemplateInfo(id));
     }
 
     @GetMapping("getCurrentYearData")
-    public CommonReturnType getCurrentYearData(Integer pageNum,Integer pageSize){
-        return CommonReturnType.ok().add("GdpData",reportManageService.getCurrentYearData(pageNum,pageSize));
+    public CommonReturnType getCurrentYearData(Integer pageNum, Integer pageSize) {
+        return CommonReturnType.ok().add("GdpData", reportManageService.getCurrentYearData(pageNum, pageSize));
     }
 
     @GetMapping("getCurrentYearDataSum")
-    public CommonReturnType getCurrentYearDataSum(){
+    public CommonReturnType getCurrentYearDataSum() {
         int data = reportManageService.getCurrentYearDataSum();
-        return CommonReturnType.ok().add("sum",data);
+        return CommonReturnType.ok().add("sum", data);
     }
 
     @GetMapping("getPassYearData")
-    public CommonReturnType getPassYearData(Integer pageNum,Integer pageSize){
-        return CommonReturnType.ok().add("GdpData",reportManageService.getPassYearData(pageNum,pageSize));
+    public CommonReturnType getPassYearData(Integer pageNum, Integer pageSize) {
+        return CommonReturnType.ok().add("GdpData", reportManageService.getPassYearData(pageNum, pageSize));
     }
 
     @GetMapping("getPassYearDataSum")
-    public CommonReturnType getPassYearDataSum(){
+    public CommonReturnType getPassYearDataSum() {
         int data = reportManageService.getPassYearDataSum();
-        return CommonReturnType.ok().add("sum",data);
+        return CommonReturnType.ok().add("sum", data);
     }
 
     @GetMapping("getSearchGdpDataSum")
-    public CommonReturnType getSearchGpaDataSum(String district,String year){
-        int data = reportManageService.getSearchGpaDataSum(district,year);
-        return CommonReturnType.ok().add("sum",data);
+    public CommonReturnType getSearchGpaDataSum(String district, String year) {
+        int data = reportManageService.getSearchGpaDataSum(district, year);
+        return CommonReturnType.ok().add("sum", data);
     }
 
     @PostMapping("updateGdpData")
-    public CommonReturnType updateGdpData(@RequestBody Gdp gdpObj){
-        return CommonReturnType.ok().add("success",reportManageService.updateGdpData(gdpObj));
+    public CommonReturnType updateGdpData(@RequestBody Gdp gdpObj) {
+        return CommonReturnType.ok().add("success", reportManageService.updateGdpData(gdpObj));
     }
 
     @GetMapping("getGdpDataById")
-    public CommonReturnType getGdpDataById(Integer id){
-        return CommonReturnType.ok().add("gdpData",reportManageService.getGdpDataById(id));
+    public CommonReturnType getGdpDataById(Integer id) {
+        return CommonReturnType.ok().add("gdpData", reportManageService.getGdpDataById(id));
     }
 
     @DeleteMapping("deleteGdpData")
-    public CommonReturnType deleteGdpData(Integer id){
-        return CommonReturnType.ok().add("success",reportManageService.deleteGdpDataById(id));
+    public CommonReturnType deleteGdpData(Integer id) {
+        return CommonReturnType.ok().add("success", reportManageService.deleteGdpDataById(id));
     }
 
     @PostMapping("addGdpData")
-    public CommonReturnType addGdpData(@RequestBody Gdp gdpObj){
+    public CommonReturnType addGdpData(@RequestBody Gdp gdpObj) {
         System.out.println(gdpObj.getDistrict());
-        return CommonReturnType.ok().add("success",reportManageService.insertGdpDataById(gdpObj));
+        return CommonReturnType.ok().add("success", reportManageService.insertGdpDataById(gdpObj));
     }
 
+    /**
+     * 报告时间: 报表生成的时间 系统当时时间
+     * endDate: 填报时间
+     *
+     * @param endDate
+     * @param ids
+     * @return
+     * @throws Exception
+     */
     @GetMapping("manualCreateReport")
-    public CommonReturnType manualCreateReport(String endDate,Long[] ids) throws Exception{
+    public CommonReturnType manualCreateReport(String endDate, Long[] ids) throws Exception {
         boolean flag = true;
         for (Long id : ids) {
-            if(!reportManageService.manualCreateReport(endDate,id)){
+            if (!reportManageService.manualCreateReport(endDate, id)) {
                 flag = false;
             }
         }
-        return CommonReturnType.ok().add("success",flag);
+        return CommonReturnType.ok().add("success", flag);
+    }
+
+    @GetMapping("/manualCreateReport/v2")
+    public CommonReturnType manualCreateReportV2(@RequestParam("endDate") String endDate, @RequestParam("beginDate") String beginDate, Long[] ids) throws Exception {
+        boolean flag = true;
+        for (Long id : ids) {
+            if (!reportManageService.manualCreateReportV2(endDate, beginDate, id)) {
+                flag = false;
+            }
+        }
+        return CommonReturnType.ok().add("success", flag);
     }
 
     @GetMapping("oneKeyCreate")
-    public CommonReturnType oneKeyCreate(String endDate) throws Exception{
+    public CommonReturnType oneKeyCreate(String endDate) throws Exception {
         boolean b = reportManageService.oneKeyCreateReport(endDate);
-        return CommonReturnType.ok().add("success",b);
+        return CommonReturnType.ok().add("success", b);
+    }
+
+    @GetMapping("/oneKeyCreate/v2")
+    public CommonReturnType oneKeyCreateV2(@RequestParam("endDate") String endDate, @RequestParam("beginDate") String beginDate) throws Exception {
+        boolean b = reportManageService.oneKeyCreateReportV2(endDate, beginDate);
+        return CommonReturnType.ok().add("success", b);
     }
 }

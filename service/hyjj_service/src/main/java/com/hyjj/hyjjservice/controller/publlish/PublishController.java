@@ -53,6 +53,7 @@ public class PublishController {
         return CommonReturnType.ok();
     }
 
+    // TODO 异常捕获不要写这
     @ExceptionHandler(Exception.class)
     public CommonReturnType exceptionHandler(Exception e) {
         if(e instanceof BusinessException){

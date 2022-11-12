@@ -206,5 +206,5 @@ public interface ReportDataMapper {
 
     Integer getReportTemplateIdByReportId(Integer id);
 
-    ReportDataHtml selectLastYearReport(Long userId, Long reportTemplateId, Integer year, Integer month);
+    List<ReportDataHtml> selectLastYearReport(Long userId, Long reportTemplateId, Integer year, Integer month);
 }

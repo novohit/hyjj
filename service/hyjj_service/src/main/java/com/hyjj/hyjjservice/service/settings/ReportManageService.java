@@ -29,6 +29,7 @@ public interface ReportManageService {
     int deleteGdpDataById(Integer id);
     int insertGdpDataById(Gdp gdpObj);
     boolean manualCreateReport(String endDate,Long id) throws Exception;
+    boolean manualCreateReportV2(String endDate, String beginDate, Long id) throws Exception;
     int getFormulaListSum();
     int getSearchFormulaSum(String formName);
     int getCurrentYearDataSum();
@@ -37,4 +38,5 @@ public interface ReportManageService {
     int getReportTemplateListSum(ReportTemplateVO reportTemplateVO);
     int getComInfoListSum(String name);
     boolean oneKeyCreateReport(String endDate) throws Exception;
+    boolean oneKeyCreateReportV2(String endDate, String beginDate) throws Exception;
 }

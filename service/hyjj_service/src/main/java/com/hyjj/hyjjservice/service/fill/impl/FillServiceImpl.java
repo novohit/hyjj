@@ -92,9 +92,10 @@ public class FillServiceImpl implements FillService {
         Long reportTemplateId = reportData.getReportTemplateId();
         for (int i : array) {
             if(i == reportTemplateId){
-                ReportDataHtml LastYearReportData = reportDataMapper.selectLastYearReport(userId, reportTemplateId, year - 1, month);
-                if(LastYearReportData != null){
-                    return LastYearReportData;
+                // TODO 这里数据库数据有问题 会有多条数据
+                List<ReportDataHtml> lastYearReports = reportDataMapper.selectLastYearReport(userId, reportTemplateId, year - 1, month);
+                if(lastYearReports != null && lastYearReports.size() != 0){
+                    return lastYearReports.get(0);
                 }
             }
         }
