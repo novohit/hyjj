@@ -420,9 +420,12 @@ public class ReportManageServiceImpl implements ReportManageService {
         List<Long> ids = comInfoMapper.selectComInfoIds();
         Integer flag = 0;
         for (Long id : ids) {
-            boolean b = manualCreateReportV2(endDate, beginDate, id);
-            if (b) {
-                flag++;
+            try {
+                boolean b = manualCreateReportV2(endDate, beginDate, id);
+                if (b) {
+                    flag++;
+                }
+            }catch (BusinessException e){
 
             }
         }

@@ -19,10 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FillServiceImpl implements FillService {
@@ -45,7 +43,10 @@ public class FillServiceImpl implements FillService {
     @Override
     public List<ReportDataList> getReportListByUserId(Long userId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize == null ? 10 : pageSize);
-        return reportDataMapper.getReportDataListByUserId(userId);
+        return reportDataMapper.getReportDataListByUserId(userId)
+                .stream()
+                .sorted(Comparator.comparing(ReportDataList::getBeginDate).reversed())
+                .collect(Collectors.toList());
     }
 
     @Override

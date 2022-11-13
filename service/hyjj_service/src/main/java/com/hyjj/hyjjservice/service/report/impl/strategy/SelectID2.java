@@ -5,10 +5,9 @@ import com.hyjj.hyjjservice.dataobject.ReportData;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 获取本周已审核/填报列表
@@ -28,7 +27,10 @@ public class SelectID2 implements GetStatementStrategy{
         // int i = g.get(Calendar.MONTH)+1;
         // List<ReportData> list = new ArrayList<>();
         logger.info("策略选择 SelectID2");
-        return reportDataMapper.getStatementByQuarter("审核%通过", userId);
+        return reportDataMapper.getStatementByQuarter("审核%通过", userId)
+                .stream()
+                .sorted(Comparator.comparing(ReportData::getBeginDate).reversed())
+                .collect(Collectors.toList());
 
     /*    switch (i){
             case 1:
