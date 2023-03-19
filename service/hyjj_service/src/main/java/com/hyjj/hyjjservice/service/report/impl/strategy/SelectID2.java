@@ -26,7 +26,7 @@ public class SelectID2 implements GetStatementStrategy{
     public List<ReportData> getStatement(String audit, Long userId) {
         // int i = g.get(Calendar.MONTH)+1;
         // List<ReportData> list = new ArrayList<>();
-        logger.info("策略选择 SelectID2");
+        logger.info("查看本季度 策略选择 SelectID2");
         return reportDataMapper.getStatementByQuarter("审核%通过", userId)
                 .stream()
                 .sorted(Comparator.comparing(ReportData::getBeginDate).reversed())
@@ -68,7 +68,7 @@ public class SelectID2 implements GetStatementStrategy{
 
     @Override
     public Integer getStatementSum(String audit, Long userId) {
-        logger.info("策略选择 SelectID2");
+        logger.info("查看本季度 策略选择 SelectID2");
         return reportDataMapper.getStatementByQuarterSum("审核%通过", userId);
         /*int i = g.get(Calendar.MONTH) + 1;
         int sum = 0;

@@ -71,8 +71,7 @@ public interface ReportDataMapper {
     List<AuditReportVO> selectReportDataByIndustryId(@Param("industriesIds") List<Integer> industriesIds,
                                                      @Param("type") Integer type,
                                                      @Param("statue") String statue,
-                                                     @Param("year") String year,
-                                                     @Param("nextYear") String nextYear);
+                                                     @Param("year") String year);
 
     /**
      * 行业全选的情况
@@ -81,8 +80,7 @@ public interface ReportDataMapper {
      */
     List<AuditReportVO> selectAllIndustryReportData(@Param("type") Integer type,
                                                     @Param("statue") String statue,
-                                                    @Param("year") String year,
-                                                    @Param("nextYear") String nextYear);
+                                                    @Param("year") String year);
 
     /**
      * 审核指定id的报表
@@ -193,14 +191,12 @@ public interface ReportDataMapper {
      */
     Integer selectAllIndustryReportDataSum(@Param("type") Integer type,
                                            @Param("statue") String statue,
-                                           @Param("year") String year,
-                                           @Param("nextYear") String nextYear);
+                                           @Param("year") String year);
 
     Integer selectReportDataByIndustryIdSum(@Param("industriesIds") List<Integer> industriesIds,
                                             @Param("type") Integer type,
                                             @Param("statue") String statue,
-                                            @Param("year") String year,
-                                            @Param("nextYear") String nextYear);
+                                            @Param("year") String year);
 
     Integer judgeIfExists(Long id, String date, Integer rtId);
 

@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @ApiModel
 public class AuditVO {
 
-    @ApiModelProperty(value = "类型，0为年表，1为月表",example = "1")
+    @ApiModelProperty(value = "类型，0为企事业监测点报表，1为海洋统计年报",example = "1")
     @NotBlank(message = "类型不能为空")
     Integer type;
 

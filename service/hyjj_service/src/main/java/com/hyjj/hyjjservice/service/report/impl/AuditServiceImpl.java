@@ -82,8 +82,7 @@ public class AuditServiceImpl implements AuditService {
 
         PageHelper.startPage(pageNum, pageSize);
         //指定搜索某一年
-        String year = auditVO.getYear() + "-01-01 00:00:00";
-        String nextYear = (Integer.parseInt(auditVO.getYear()) + 1) + "-01-01 00:00:00";
+        String year = auditVO.getYear();
 
         String status = "审核%";
         if (auditVO.getStatus() == 1) {
@@ -98,7 +97,7 @@ public class AuditServiceImpl implements AuditService {
         List<Integer> industriesId = new ArrayList<>();
         if (industry.charAt(0) == IS_SELECT) {
             //全选的情况
-            List<AuditReportVO> auditReportVOS = reportDataMapper.selectAllIndustryReportData(auditVO.getType(), status, year, nextYear);
+            List<AuditReportVO> auditReportVOS = reportDataMapper.selectAllIndustryReportData(auditVO.getType(), status, year);
             for (AuditReportVO auditReportVO : auditReportVOS) {
                 auditReportVO.setBeginDate(DateUtil.changeDateToStringWithDate(auditReportVO.getReportDate()));
                 auditReportVO.setReportDateString(DateUtil.changeDateToStringWithMonth(auditReportVO.getReportDate()));
@@ -122,7 +121,7 @@ public class AuditServiceImpl implements AuditService {
         if (industriesId.size() == 0) {
             return null;
         }
-        List<AuditReportVO> auditReportVOS = reportDataMapper.selectReportDataByIndustryId(industriesId, auditVO.getType(), status, year, nextYear);
+        List<AuditReportVO> auditReportVOS = reportDataMapper.selectReportDataByIndustryId(industriesId, auditVO.getType(), status, year);
         for (AuditReportVO auditReportVO : auditReportVOS) {
             auditReportVO.setBeginDate(DateUtil.changeDateToStringWithDate(auditReportVO.getReportDate()));
             auditReportVO.setReportDateString(DateUtil.changeDateToStringWithMonth(auditReportVO.getReportDate()));
@@ -156,8 +155,7 @@ public class AuditServiceImpl implements AuditService {
     @Override
     public Integer getStatementSum(AuditVO auditVO, User user) {
         //指定搜索某一年
-        String year = auditVO.getYear() + "-01-01 00:00:00";
-        String nextYear = (Integer.parseInt(auditVO.getYear()) + 1) + "-01-01 00:00:00";
+        String year = auditVO.getYear();
 
         String status = "审核%";
         if (auditVO.getStatus() == 1) {
@@ -171,7 +169,8 @@ public class AuditServiceImpl implements AuditService {
         //需要查询的行业id的集合
         List<Integer> industriesId = new ArrayList<>();
         if (industry.charAt(0) == IS_SELECT) {
-            return reportDataMapper.selectAllIndustryReportDataSum(auditVO.getType(), status, year, nextYear);
+            Integer rows = reportDataMapper.selectAllIndustryReportDataSum(auditVO.getType(), status, year);
+            return rows;
         } else {
             for (int i = 1; i < INDUSTRY_NUMBER; i++) {
                 if (industry.charAt(i) == IS_SELECT) {
@@ -188,7 +187,7 @@ public class AuditServiceImpl implements AuditService {
         if (industriesId.size() == 0) {
             return null;
         }
-        return reportDataMapper.selectReportDataByIndustryIdSum(industriesId, auditVO.getType(), status, year, nextYear);
+        return reportDataMapper.selectReportDataByIndustryIdSum(industriesId, auditVO.getType(), status, year);
 
     }
 

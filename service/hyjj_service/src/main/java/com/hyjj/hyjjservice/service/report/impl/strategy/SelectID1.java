@@ -24,7 +24,7 @@ public class SelectID1 implements GetStatementStrategy{
 
     @Override
     public List<ReportData> getStatement(String audit, Long userId) {
-        logger.info("策略选择 SelectID1");
+        logger.info("待审核/填报 策略选择 SelectID1");
         return reportDataMapper.getStatement(null, null, audit, userId)
                 .stream()
                 .sorted(Comparator.comparing(ReportData::getBeginDate).reversed())
@@ -33,6 +33,7 @@ public class SelectID1 implements GetStatementStrategy{
 
     @Override
     public Integer getStatementSum(String audit, Long userId) {
+        logger.info("待审核/填报 策略选择 SelectID1");
         Integer count = reportDataMapper.getStatementSum(null, null, audit, userId);
         return count;
     }

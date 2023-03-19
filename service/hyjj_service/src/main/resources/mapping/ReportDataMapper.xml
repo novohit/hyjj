@@ -444,7 +444,7 @@
                 #{industriesId}
             </foreach>
             and rt.`rep_class` = #{type}
-            and rd.`submit_date` between #{year} and #{nextYear}
+            and YEAR(rd.`submit_date`) = #{year}
             and rd.`pro_status` like #{statue}
         </where>
         ORDER BY rd.`pro_status_name` DESC, rd.`report_date` DESC
@@ -482,7 +482,7 @@
         ON rt.`type` = i.`id`
         <where>
             and rt.`rep_class` = #{type}
-            and rd.`submit_date` between #{year} and #{nextYear}
+            and YEAR(rd.`submit_date`) = #{year}
             and rd.`pro_status` like #{statue}
         </where>
         ORDER BY rd.`pro_status_name` DESC, rd.`report_date` DESC
@@ -498,7 +498,7 @@
         ON rt.`type` = i.`id`
         <where>
             and rt.`rep_class` = #{type}
-            and rd.`submit_date` between #{year} and #{nextYear}
+            and YEAR(rd.`submit_date`) = #{year}
             and rd.`pro_status` like #{statue}
         </where>
         ORDER BY rd.`pro_status_name` DESC, rd.`report_date` DESC

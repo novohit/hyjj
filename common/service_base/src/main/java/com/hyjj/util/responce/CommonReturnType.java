@@ -1,6 +1,7 @@
 package com.hyjj.util.responce;
 
 import com.hyjj.util.error.EmBusinessError;
+import com.hyjj.util.tool.R;
 import com.hyjj.util.tool.ResultCode;
 
 import java.util.HashMap;
@@ -32,6 +33,14 @@ public class CommonReturnType {
         CommonReturnType commonReturnType = new CommonReturnType();
         commonReturnType.setCode(ResultCode.ERROR);
         commonReturnType.setSuccessful((short)0);
+        return commonReturnType;
+    }
+
+    public static CommonReturnType error(String errMsg) {
+        CommonReturnType commonReturnType = new CommonReturnType();
+        commonReturnType.setCode(ResultCode.ERROR);
+        commonReturnType.setSuccessful((short)0);
+        commonReturnType.setErrMsg(errMsg);
         return commonReturnType;
     }
 
